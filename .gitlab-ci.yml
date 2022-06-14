@@ -23,7 +23,6 @@ test:
   stage: test
   before_script:
     - pip install -r requirements.txt
-    - pip install junitxml
   script:
     - python run_tests.py
   artifacts:
