@@ -1,23 +1,19 @@
-# Assignment 2 Template
+# Assignment 2 Template - REPLACE WITH GROUP NAME
 
-Template Repository for use in Assignment 2
+Template Repository for use in Assignment 2 - REPLACE
 
-## Getting Started
+## Group Members
 
-### Collaborate with your team
+REPLACE WITH YOUR TEAM.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- Jackson Goerner (jackson.goerner@monash.edu)
+- Saksham Nagpal (saksham.nagpal@monash.edu)
+- Alexey Ignatiev (alexey.ignatiev@monash.edu)
+- Brendon Taylor (brendon.taylor@monash.edu)
 
-### Check code tests
+## Implement the code!
 
-- [ ] Check test results of runnin builds
-
-### Implement the code!
-
+- [x] Create the repository
 - [ ] Task 1
 - [ ] Task 2
 - [ ] Task 3
