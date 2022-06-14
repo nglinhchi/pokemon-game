@@ -4,12 +4,7 @@ Template Repository for use in Assignment 2 - REPLACE
 
 ## Group Members
 
-REPLACE WITH YOUR TEAM.
-
-- Jackson Goerner (jackson.goerner@monash.edu)
-- Saksham Nagpal (saksham.nagpal@monash.edu)
-- Alexey Ignatiev (alexey.ignatiev@monash.edu)
-- Brendon Taylor (brendon.taylor@monash.edu)
+- John Smith (jsmi0000@monash.edu)
 
 ## Implement the code!
 
