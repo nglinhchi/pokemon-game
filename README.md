@@ -4,7 +4,6 @@
 
 
 - Joong Do Chiang (jchi0099@student.monash.edu)
-- Saksham Nagpal (saksham.nagpal@monash.edu)
 - Chloe Nguyen (lngu0070@student.monash.edu)
 - Jane Butcher (jbut0024@student.monash.edu)
 
