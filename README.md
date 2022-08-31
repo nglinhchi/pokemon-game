@@ -1,10 +1,10 @@
-# Assignment 2 Template - REPLACE WITH GROUP NAME
+# Assignment 2 Group 33
 
 Template Repository for use in Assignment 2 - REPLACE
 
 ## Group Members
 
-- John Smith (jsmi0000@monash.edu)
+- Joong Do Chiang (jchi0099@student.monash.edu)
 - Saksham Nagpal (saksham.nagpal@monash.edu)
 
 ## Implement the code!
