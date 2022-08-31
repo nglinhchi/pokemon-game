@@ -1,7 +1,5 @@
 # Assignment 2 Group 33
 
-Template Repository for use in Assignment 2 - REPLACE
-
 ## Group Members
 
 
