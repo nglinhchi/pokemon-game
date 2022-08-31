@@ -4,8 +4,7 @@ Template Repository for use in Assignment 2 - REPLACE
 
 ## Group Members
 
-- John Smith (jsmi0000@monash.edu)
-- Saksham Nagpal (saksham.nagpal@monash.edu)
+- Chloe Nguyen (lngu0070@student.monash.edu)
 
 ## Implement the code!
 
