@@ -5,6 +5,7 @@ Template Repository for use in Assignment 2 - REPLACE
 ## Group Members
 
 - Chloe Nguyen (lngu0070@student.monash.edu)
+- Jane Butcher (jbut0024@student.monash.edu)
 
 ## Implement the code!
 
