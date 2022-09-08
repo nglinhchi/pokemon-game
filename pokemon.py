@@ -2,11 +2,22 @@
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
-class Charizard:
-    pass
+from pokemon_base import PokemonBase, StatusEffect, PokeType
+
+
+class Charizard(PokemonBase):
+    def __init__(self):
+        self.level = 3
+        PokemonBase.__init__(self, 12, PokeType.FIRE)
+        
+        
+    
+    def hp_scaler(self) -> int:
+        scaled_hp = self.base_hp + 1 * self.level
+        return scaled_hp
 
 class Charmander:
-    pass
+    
 
 
 class Venusaur:
