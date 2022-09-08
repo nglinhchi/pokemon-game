@@ -3,116 +3,115 @@ from abc import abstractmethod, ABC
 from typing_extensions import Self
 from random_gen import RandomGen
 
+from enum import Enum, auto
+
 """
+
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
+class StatusEffect(Enum):
+    BURN = 1
+    POISON = 3
+    PARALYSIS = 0
+    SLEEP = 0
+    CONFUSION = 0
+
+class PokeType(Enum):
+    FIRE = (0, StatusEffect.BURN)
+    GRASS = (1, StatusEffect.POISON)
+    WATER = (2, StatusEffect.PARALYSIS)
+    GHOST = (3, StatusEffect.SLEEP)
+    NORMAL = (4, StatusEffect.CONFUSION)
+    def __init__(self, type_index: int, status_effect: StatusEffect):
+        self.type_index = type_index
+        self.type_status_effect = status_effect
+    
 class PokemonBase(ABC):
 
-    def __init__(self, hp: int, poke_type) -> None:
-        self.name = ""
+    EFFECTIVE_ATTACK = [[1,     2,      0.5,    1,      1],
+                        [0.5,   1,      2,      1,      1],
+                        [2,     0.5,    1,      1,      1],
+                        [1.25,  1.25,   1.25,   2,      0],
+                        [1.25,  1.25,   1.25,   0,      1]]
+
+    def __init__(self, hp: int, poke_type: PokeType) -> None:
         self.hp = hp
         self.poke_type = poke_type
+        self.name = None
         self.status_effect = None
-
-        # if self.poke_type == "fire":
-        #     self.status_effect = "burn"
-        # elif self.poke_type == "grass":
-        #     self.status_effect = "poison"
-        # elif self.status_effect == "water":
-        #     self.status_effect = "paralysis"
-        # elif self.status_effect == "ghost":
-        #     self.status_effect = "sleep"
-        # elif self.status_effect == "normal":
-        #     self.status_effect = "confusion"
-        
-        self.base_level = 1
-        self.level = self.base_level
-
+        self.level = 1
         self.base_attack = 0
         self.attack = self.base_attack
-
         self.base_speed = 0
         self.speed = self.base_speed
-
         self.defence = 0
-
         self.evolve = False
-
-        # raise NotImplementedError()
 
     def is_fainted(self) -> bool:
         return self.hp <= 0
-        # raise NotImplementedError()
 
     def level_up(self) -> None:
         self.level += 1
-        # raise NotImplementedError()
 
     def get_speed(self) -> int:
         return self.speed
-        # raise NotImplementedError()
 
     def get_attack_damage(self) -> int:
         return self.attack
-        # raise NotImplementedError()
 
     def get_defence(self) -> int:
         return self.defence
-        # raise NotImplementedError()
 
     def lose_hp(self, lost_hp: int) -> None:
         self.hp -= lost_hp
-        # raise NotImplementedError()
 
     @abstractmethod
     def defend(self, damage: int) -> None:
         pass
-        # raise NotImplementedError()
 
     def attack(self, other: PokemonBase):
-        # raise NotImplementedError()
 
         # Step 1: Status effects on attack damage / redirecting attacks
-        if self.status_effect == "sleep":
+        if self.status_effect == StatusEffect.SLEEP:
             return # TODO stop the attack
-        elif self.status_effect == "confusion":
+        elif self.status_effect == StatusEffect.CONFUSION:
             if(RandomGen.random_chance(0.5)): # True 33% of the time, False 67% of the time.
                 other = self
-        elif self.status_effect == "paralysis":
+        elif self.status_effect == StatusEffect.PARALYSIS:
             self.speed = self.speed // 2
                 
-        # Step 2: Do the attack TODO
+        # Step 2: Do the attack
         
         # calculate attack
-        # check other.type
-        # other.poke_type self.get_attack_damage
-        
-        # if (self.speed > other.speed):
-        #     pass #  self attacks
-        # elif (self.speed == other.speed):
-        #     pass #  team 1 attacks
+        base_ad = self.get_attack_damage() 
+        multipler = PokemonBase.EFFECTIVE_ATTACK[self.poke_type.type_index][other.poke_type.type_index]
+        effective_ad = int(base_ad * multipler)
 
+        # defend and lose hp
+        other.defend(effective_ad)
 
         # Step 3: Losing hp to status effects
-
-
+        if (self.status_effect != None):
+            self.lose_hp(self.status_effect.value)
+        
         # Step 4: Possibly applying status effects
+        if(RandomGen.random_chance(0.2)): # True 33% of the time, False 67% of the time.
+            other.status_effect = self.poke_type.type_status_effect
 
     def get_poke_name(self) -> str:
         return self.name
-        # raise NotImplementedError()
 
     def __str__(self) -> str:
         return print(f"LV.{self.level} {self.name}: {self.hp} HP")
-        # raise NotImplementedError()
 
-    def should_evolve(self) -> bool:
-        return (self.can_evolve() and not self.is_fainted() and self.level >= 16) # TODO level depends upon its class?
-        # raise NotImplementedError()
+    def should_evolve(self) -> bool:\
+        return (self.can_evolve() and not self.is_fainted() and (self.level == self.get_evolved_version().level))
 
-    def can_evolve(self) -> bool: # TODO use ADT to check if it's a member of the evolvable list
-        raise NotImplementedError()
+    @abstractmethod
+    def can_evolve(self) -> bool:
+        pass 
 
+    @abstractmethod
     def get_evolved_version(self) -> PokemonBase:
-        raise NotImplementedError()
+        pass
