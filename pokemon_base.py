@@ -44,13 +44,16 @@ class PokemonBase(ABC):
                         [1.25,  1.25,   1.25,   2,      0],
                         [1.25,  1.25,   1.25,   0,      1]]
 
-    def __init__(self, name: string, type: PokeType, level: int, hp: int) -> None:
-        self.name = name
+    def __init__(self, type: PokeType, max_hp: int) -> None:
+        self.name = self.__class__.__name__
         self.type = type
-        self.level = level
-        self.max_hp = hp
-        self.hp = self.max_hp
+        self.level = 1
+        self.max_hp = max_hp
+        self.hp = max_hp
         self.status_effect = None
+        # defence
+        # speed
+        # attack
 
     def is_fainted(self) -> bool:
         return self.hp <= 0
@@ -60,7 +63,21 @@ class PokemonBase(ABC):
 
     def level_up(self) -> None:
         self.level += 1
-        # max_hp = 
+        self.update_hp()
+
+
+    @abstractmethod
+    def get_max_hp(self) -> int:
+        pass
+
+    def update_hp(self) -> None: # method is called when (1) level_up() is called, (2) initialise an evolved pokemon
+        # save previous values
+        previous_max_hp = self.max_hp   # taken from lower-level / pre-evolved pokemon
+        previous_hp = self.hp           # taken from lower-level / pre-evolved pokemon
+        # change max hp
+        self.max_hp = self.get_max_hp() # the actual max HP value
+        # change current hp
+        self.hp = self.max_hp - (previous_max_hp - previous_hp) # ensure the difference remain the same
 
     @abstractmethod
     def get_speed(self) -> int:

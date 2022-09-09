@@ -9,12 +9,8 @@ from pokemon_base import PokeType, PokemonBase
 
 class Charmander(PokemonBase):
 
-    NAME = "Charmander"
-    BASE_LEVEL = 1
-    TYPE = PokeType.FIRE
-
     def __init__ (self) -> None:
-        PokemonBase.__init__(self, Charmander.NAME, Charmander.TYPE, Charmander.BASE_LEVEL, Charmander.BASE_LEVEL)
+        PokemonBase.__init__(self, PokeType.FIRE, 9)
 
     def get_speed(self) -> int:
         return 7 + 1 * self.level
@@ -37,16 +33,20 @@ class Charmander(PokemonBase):
     def get_evolved_version(self) -> PokemonBase:
         return Charizard()
 
+    def get_max_hp(self) -> int:
+        return 8 + 1 * self.level
 
 
-class Charizard:
+
+class Charizard(PokemonBase):
     
     BASE_LEVEL = 3
-    NAME = "Charizard"
 
     def __init__ (self, previous: Charmander) -> None:
-        # PokemonBase.__init__(self, Charizard.NAME, Charizard.TYPE, Charizard.BASE_LEVEL, Charizard.BASE_LEVEL - (previous.))
-        pass
+        PokemonBase.__init__(self, PokeType.FIRE, previous.max_hp)
+        self.level = previous.level
+        self.hp = previous.hp
+        self.update_hp()
 
     def get_speed(self) -> int:
         return 7 + 1 * self.level
