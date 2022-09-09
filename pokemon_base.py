@@ -11,6 +11,10 @@ from enum import Enum, auto
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
 class StatusEffect(Enum):
+    """
+    List of valid status effects with assigned values representing each effect's damage (where exists).
+    """
+
     BURN = 1
     POISON = 3
     PARALYSIS = 0
@@ -18,34 +22,40 @@ class StatusEffect(Enum):
     CONFUSION = 0
 
 class PokeType(Enum):
+    """
+    Assigns corresponding status effect and an index for each type to be used with TYPE_EFFECTIVENESS table.
+    """
+
+    # TYPE_EFFECTIVENESS = [[1,     2,      0.5,    1,      1],
+    #                     [0.5,   1,      2,      1,      1],
+    #                     [2,     0.5,    1,      1,      1],
+    #                     [1.25,  1.25,   1.25,   2,      0],
+    #                     [1.25,  1.25,   1.25,   0,      1]]
     FIRE = (0, StatusEffect.BURN)
     GRASS = (1, StatusEffect.POISON)
     WATER = (2, StatusEffect.PARALYSIS)
     GHOST = (3, StatusEffect.SLEEP)
     NORMAL = (4, StatusEffect.CONFUSION)
-    def __init__(self, type_index: int, status_effect: StatusEffect):
+    def __init__(self, type_index: int, status_effect):
         self.type_index = type_index
         self.type_status_effect = status_effect
     
 class PokemonBase(ABC):
 
-    EFFECTIVE_ATTACK = [[1,     2,      0.5,    1,      1],
-                        [0.5,   1,      2,      1,      1],
-                        [2,     0.5,    1,      1,      1],
-                        [1.25,  1.25,   1.25,   2,      0],
-                        [1.25,  1.25,   1.25,   0,      1]]
+    
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
-        self.hp = hp
-        self.poke_type = poke_type
-        self.name = None
-        self.status_effect = None
         self.level = 1
-        self.base_attack = 0
-        self.attack = self.base_attack
-        self.base_speed = 0
-        self.speed = self.base_speed
-        self.defence = 0
+        self.base_hp = hp
+        self.max_hp = self.hp_scaler()
+        self.current_hp= self.get_hp()
+        self.poke_type = poke_type
+        self.name = self.__class__.__name__
+        self.status_effect = None
+        self.attack_damage = None
+        self.speed = None
+        self.defence = None
+
         self.evolve = False
 
     def is_fainted(self) -> bool:
@@ -53,6 +63,27 @@ class PokemonBase(ABC):
 
     def level_up(self) -> None:
         self.level += 1
+        self.current_hp = self.get_hp()
+
+    @abstractmethod
+    def hp_scaler(self) -> int:
+        pass
+
+    def get_hp(self) -> int:
+        """
+        Return current hp
+        """
+        try:
+            if self.current_hp != self.max_hp:  #if health lost calculate new max health and keep same diff between current and max health
+                diff = self.max_hp - self.current_hp
+                return self.hp_scaler() - diff
+            else:   #update to be same value if no health lost (for overwriting base level by pokemon child classes)
+                self.max_hp = self.hp_scaler()
+                self.current_hp = self.hp_scaler()
+                return self.current_hp
+        except AttributeError:
+            return self.max_hp  #initiation
+
 
     def get_speed(self) -> int:
         return self.speed
@@ -64,7 +95,7 @@ class PokemonBase(ABC):
         return self.defence
 
     def lose_hp(self, lost_hp: int) -> None:
-        self.hp -= lost_hp
+        self.current_hp -= lost_hp
 
     @abstractmethod
     def defend(self, damage: int) -> None:

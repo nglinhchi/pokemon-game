@@ -7,17 +7,24 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 
 class Charizard(PokemonBase):
     def __init__(self):
-        self.level = 3
         PokemonBase.__init__(self, 12, PokeType.FIRE)
-        
-        
+        self.level = 3
     
-    def hp_scaler(self) -> int:
-        scaled_hp = self.base_hp + 1 * self.level
+    def hp_scaler(self) -> int:    
+        scaled_hp = self.base_hp + (1 * self.level)
         return scaled_hp
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 class Charmander:
-    
+    pass
 
 
 class Venusaur:
@@ -46,3 +53,4 @@ class Gastly:
 
 class Eevee:
     pass
+
