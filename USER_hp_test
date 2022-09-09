@@ -1,4 +1,6 @@
 ###Test HP mechanism###
+from pokemon import Venusaur
 
-def test_hp:
-    pass
+def test_hp():
+    c = Charizard()
+    self.assertEqual(v.get_hp(), 15)
