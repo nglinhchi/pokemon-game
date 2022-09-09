@@ -27,8 +27,23 @@ class Charmander:
     pass
 
 
-class Venusaur:
-    pass
+class Venusaur(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 20, PokeType.GRASS)
+        self.level = 2
+    
+    def hp_scaler(self) -> int:    
+        scaled_hp = self.base_hp + (self.level//2)
+        return scaled_hp
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 class Bulbasaur:
     pass

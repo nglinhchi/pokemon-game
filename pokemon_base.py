@@ -26,19 +26,24 @@ class PokeType(Enum):
     Assigns corresponding status effect and an index for each type to be used with TYPE_EFFECTIVENESS table.
     """
 
-    # TYPE_EFFECTIVENESS = [[1,     2,      0.5,    1,      1],
-    #                     [0.5,   1,      2,      1,      1],
-    #                     [2,     0.5,    1,      1,      1],
-    #                     [1.25,  1.25,   1.25,   2,      0],
-    #                     [1.25,  1.25,   1.25,   0,      1]]
-    FIRE = (0, StatusEffect.BURN)
-    GRASS = (1, StatusEffect.POISON)
-    WATER = (2, StatusEffect.PARALYSIS)
-    GHOST = (3, StatusEffect.SLEEP)
-    NORMAL = (4, StatusEffect.CONFUSION)
-    def __init__(self, type_index: int, status_effect):
+    FIRE = (0, StatusEffect.BURN, [1,     2,      0.5,    1,      1])
+    GRASS = (1, StatusEffect.POISON, [0.5,   1,      2,      1,      1])
+    WATER = (2, StatusEffect.PARALYSIS, [2,     0.5,    1,      1,      1])
+    GHOST = (3, StatusEffect.SLEEP, [1.25,  1.25,   1.25,   2,      0])
+    NORMAL = (4, StatusEffect.CONFUSION, [1.25,  1.25,   1.25,   0,      1])
+    def __init__(self, type_index, status_effect, type_effectiveness):
         self.type_index = type_index
-        self.type_status_effect = status_effect
+        self.status_effect = status_effect
+        self.type_effectiveness = type_effectiveness
+    def type_multiplier(self, PokeType):
+        """
+        Poketype is opponent poketype arg. returns effective multiplier against opponent 
+        """
+        return self.type_effectiveness[PokeType.type_index]
+
+
+
+
     
 class PokemonBase(ABC):
 
@@ -116,7 +121,7 @@ class PokemonBase(ABC):
         
         # calculate attack
         base_ad = self.get_attack_damage() 
-        multipler = PokemonBase.EFFECTIVE_ATTACK[self.poke_type.type_index][other.poke_type.type_index]
+        multipler = self.poke_type.type_multiplier(other.poke_type)
         effective_ad = int(base_ad * multipler)
 
         # defend and lose hp
@@ -128,7 +133,7 @@ class PokemonBase(ABC):
         
         # Step 4: Possibly applying status effects
         if(RandomGen.random_chance(0.2)): # True 33% of the time, False 67% of the time.
-            other.status_effect = self.poke_type.type_status_effect
+            other.status_effect = self.poke_type.status_effect
 
     def get_poke_name(self) -> str:
         return self.name
