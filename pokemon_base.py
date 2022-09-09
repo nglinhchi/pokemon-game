@@ -23,7 +23,7 @@ class StatusEffect(Enum):
 
 class PokeType(Enum):
     """
-    Assigns corresponding status effect and an index for each type to be used with TYPE_EFFECTIVENESS table.
+    Assigns corresponding status effect and an index for each type to be referenced to calculate type_multiplier value, and type_effectiveness values in a list
     """
 
     FIRE = (0, StatusEffect.BURN, [1,     2,      0.5,    1,      1])

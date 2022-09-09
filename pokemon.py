@@ -11,8 +11,8 @@ class Charizard(PokemonBase):
         self.level = 3
     
     def hp_scaler(self) -> int:    
-        scaled_hp = self.base_hp + (1 * self.level)
-        return scaled_hp
+        hp_formula = self.base_hp + (1 * self.level)
+        return hp_formula
     
     def can_evolve(self) -> bool:
         pass 
@@ -23,8 +23,23 @@ class Charizard(PokemonBase):
     def defend(self, damage: int) -> None:
         pass
 
-class Charmander:
-    pass
+class Charmander(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 8, PokeType.FIRE)
+
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (1 * self.level)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 
 class Venusaur(PokemonBase):
@@ -33,8 +48,8 @@ class Venusaur(PokemonBase):
         self.level = 2
     
     def hp_scaler(self) -> int:    
-        scaled_hp = self.base_hp + (self.level//2)
-        return scaled_hp
+        hp_formula = self.base_hp + (self.level//2)
+        return hp_formula
     
     def can_evolve(self) -> bool:
         pass 
@@ -45,27 +60,127 @@ class Venusaur(PokemonBase):
     def defend(self, damage: int) -> None:
         pass
 
-class Bulbasaur:
-    pass
+class Bulbasaur(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 12, PokeType.GRASS)
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (1 * self.level)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 
-class Blastoise:
-    pass
+class Blastoise(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 15, PokeType.WATER)
+        self.level = 3
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (2 * self.level)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
 
-class Squirtle:
-    pass
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
+
+class Squirtle(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 9, PokeType.WATER)
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (2 * self.level)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 
-class Gengar:
-    pass
+class Gengar(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 12, PokeType.GHOST)
+        self.level = 3
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (self.level//2)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
 
-class Haunter:
-    pass
+    def get_evolved_version(self) -> PokemonBase:
+        pass
 
-class Gastly:
-    pass
+    def defend(self, damage: int) -> None:
+        pass
+
+class Haunter(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 9, PokeType.GHOST)
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (self.level//2)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
+
+class Gastly(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 6, PokeType.GHOST)
+
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp + (self.level//2)
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
 
-class Eevee:
-    pass
+class Eevee(PokemonBase):
+    def __init__(self):
+        PokemonBase.__init__(self, 10, PokeType.NORMAL)
+    
+    def hp_scaler(self) -> int:    
+        hp_formula = self.base_hp
+        return hp_formula
+    
+    def can_evolve(self) -> bool:
+        pass 
+
+    def get_evolved_version(self) -> PokemonBase:
+        pass
+
+    def defend(self, damage: int) -> None:
+        pass
 
