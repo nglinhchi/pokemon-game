@@ -52,7 +52,7 @@ class PokemonBase(ABC):
     def __init__(self, hp: int, poke_type: PokeType) -> None:
         self.level = 1
         self.base_hp = hp
-        self.max_hp = self.hp_scaler()
+        self.max_hp = self.get_max_hp()
         self.current_hp= self.get_hp()
         self.poke_type = poke_type
         self.name = self.__class__.__name__
@@ -71,25 +71,29 @@ class PokemonBase(ABC):
         self.current_hp = self.get_hp()
 
     @abstractmethod
-    def hp_scaler(self) -> int:
+    def get_max_hp(self) -> int:
+        #When Max HP is called, update current hp, else only touch current hp while working.
+        #Max hp should only be touched when levelling up, and comparing to current HP.
         pass
 
     def get_hp(self) -> int:
         """
         Return current hp
         """
-        try:
+        if self.get_level() == 1:
             if self.current_hp != self.max_hp:  #if health lost calculate new max health and keep same diff between current and max health
                 diff = self.max_hp - self.current_hp
-                return self.hp_scaler() - diff
+                return self.get_max_hp() - diff
             else:   #update to be same value if no health lost (for overwriting base level by pokemon child classes)
-                self.max_hp = self.hp_scaler()
-                self.current_hp = self.hp_scaler()
+                self.max_hp = self.get_max_hp()
+                self.current_hp = self.get_max_hp()
                 return self.current_hp
-        except AttributeError:
-            return self.max_hp  #initiation
 
 
+    def get_level(self) -> int:
+        #Return current level, should call in HP calculation?
+        return self.level
+    
     def get_speed(self) -> int:
         return self.speed
 
