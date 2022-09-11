@@ -25,6 +25,7 @@ class TestStringMethods(unittest.TestCase):
         base.hp = base.max_hp - 3
         evolved = base.get_evolved_version()
         print(evolved)
+        print(evolved.max_hp)
         self.assertEqual(evolved.level, evolved_levels[evolved.name] + 1, "Level not inherited")
         self.assertEqual(evolved.status_effect, StatusEffect.BURN, "Status effect not inherited")
         self.assertEqual(evolved.hp, (evolved.max_hp - 3), "HP not inherited")
