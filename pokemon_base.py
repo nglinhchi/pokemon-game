@@ -140,8 +140,9 @@ class PokemonBase(ABC):
     def __str__(self) -> str:
         return print(f"LV.{self.level} {self.name}: {self.hp} HP")
 
-    def should_evolve(self) -> bool:\
-        return (self.can_evolve() and not self.is_fainted() and (self.level == self.get_evolved_version().level))
+    @abstractmethod
+    def should_evolve(self) -> bool:
+        pass
 
     @abstractmethod
     def can_evolve(self) -> bool:
