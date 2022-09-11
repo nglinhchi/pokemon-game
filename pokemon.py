@@ -10,9 +10,10 @@ class Charizard(PokemonBase):
         PokemonBase.__init__(self, 12, PokeType.FIRE)
         self.level = 3
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (1 * self.level)
         return hp_formula
+    
     
     def can_evolve(self) -> bool:
         pass 
@@ -28,7 +29,7 @@ class Charmander(PokemonBase):
         PokemonBase.__init__(self, 8, PokeType.FIRE)
 
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (1 * self.level)
         return hp_formula
     
@@ -47,7 +48,7 @@ class Venusaur(PokemonBase):
         PokemonBase.__init__(self, 20, PokeType.GRASS)
         self.level = 2
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (self.level//2)
         return hp_formula
     
@@ -64,7 +65,7 @@ class Bulbasaur(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 12, PokeType.GRASS)
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (1 * self.level)
         return hp_formula
     
@@ -83,7 +84,7 @@ class Blastoise(PokemonBase):
         PokemonBase.__init__(self, 15, PokeType.WATER)
         self.level = 3
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (2 * self.level)
         return hp_formula
     
@@ -100,7 +101,7 @@ class Squirtle(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 9, PokeType.WATER)
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (2 * self.level)
         return hp_formula
     
@@ -119,7 +120,7 @@ class Gengar(PokemonBase):
         PokemonBase.__init__(self, 12, PokeType.GHOST)
         self.level = 3
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (self.level//2)
         return hp_formula
     
@@ -136,7 +137,7 @@ class Haunter(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 9, PokeType.GHOST)
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (self.level//2)
         return hp_formula
     
@@ -153,7 +154,7 @@ class Gastly(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp + (self.level//2)
         return hp_formula
     
@@ -171,7 +172,7 @@ class Eevee(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
-    def hp_scaler(self) -> int:    
+    def get_max_hp(self) -> int:    
         hp_formula = self.base_hp
         return hp_formula
     
