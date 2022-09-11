@@ -6,7 +6,6 @@ from random_gen import RandomGen
 from enum import Enum, auto
 
 """
-
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
@@ -38,7 +37,7 @@ class PokeType(Enum):
         self.type_index = type_index
         self.status_effect = status_effect
         self.type_effectiveness = type_effectiveness
-        
+
     def type_multiplier(self, PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
@@ -75,7 +74,7 @@ class PokemonBase(ABC):
         return self.status_effect
 
     @abstractmethod
-    def get_max_hp(self) -> int: # only called once via update_hp()
+    def get_max_hp(self) -> int:
         pass
 
     def get_hp(self) -> int:
@@ -85,17 +84,14 @@ class PokemonBase(ABC):
 
     @abstractmethod
     def get_speed(self) -> int:
-        # return self.speed
         pass
 
     @abstractmethod
     def get_attack_damage(self) -> int:
-        # return self.attack
         pass
 
     @abstractmethod
     def get_defence(self) -> int:
-        # return self.defence
         pass
 
     # OTHER METHODS ************************************************
@@ -111,48 +107,44 @@ class PokemonBase(ABC):
         pass
 
     def attack(self, other: PokemonBase):
-        
         # >>> Step 1: Status effects on attack damage / redirecting attacks
         if self.status_effect == StatusEffect.SLEEP:
-            return # TODO stop the attack
+            return
         elif self.status_effect == StatusEffect.CONFUSION:
             if(RandomGen.random_chance(0.5)): # 50% of attacking self
                 other = self
-        # elif self.status_effect == StatusEffect.PARALYSIS:
-            # self.speed = self.speed // 2
-        # TODO commented out since there's no attribute 'speed'
-        
         # >>> Step 2: Do the attack
         base_attack = self.get_attack_damage() 
         multipler = self.poke_type.type_multiplier(other.poke_type)
         effective_attack = int(base_attack * multipler)
         other.defend(effective_attack)
-
         # >>> Step 3: Losing hp to status effects
         if (self.status_effect != None):
             self.lose_hp(self.status_effect.value)
-        
         # >>> Step 4: Possibly applying status effects
         if(RandomGen.random_chance(0.2)): # 20% of inflicting status effect
             other.status_effect = self.poke_type.status_effect
 
-
     # LEVEL UP AND EVOLUTION ************************************************
 
-    # @abstractmethod
     def should_evolve(self) -> bool:
-        return self.level >= self.get_evolved_version().get_level()
+        """
+        Check if pokemon has met level requirement to evolve
+        """
+        return self.level >= self.get_initial_evolved_version().get_level()
 
     @abstractmethod
     def can_evolve(self) -> bool:
-        # true for base pokemon
-        # false for fully evolved pokemon
+        """
+        Base pokemon returns true
+        Fully evolved pokemon returns false
+        """
         pass
 
     @abstractmethod
     def get_initial_evolved_version(self) -> PokemonBase: 
         """
-        Base pokemon return the initial evolved pokemon
+        Base pokemon return the base evolved pokemon
         Fully evolved pokemon return error
         """
         pass
@@ -161,33 +153,25 @@ class PokemonBase(ABC):
         """
         Default method to be called when attributes affecting hp change i.e. evolution/level
         """
-        # save previous values
-        previous_max_hp = self.max_hp   # taken from lower-level/pre-evolved pokemon
-        previous_hp = self.hp           # taken from lower-level/pre-evolved pokemon
-        # change max hp
-        self.max_hp = self.get_max_hp() # compute the new max HP (since the level/pokemon type changed)
-        # scale current hp
-        self.hp = self.max_hp - (previous_max_hp - previous_hp) # ensure the difference remain the same 
+        previous_max_hp = self.max_hp  
+        previous_hp = self.hp          
+        self.max_hp = self.get_max_hp()
+        self.hp = self.max_hp - (previous_max_hp - previous_hp)
 
-    # @abstractmethod
     def get_evolved_version(self) -> PokemonBase:
         """
-        Takes instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
+        Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
         """
-        
-        # get initial evolved version
         evolved = self.get_initial_evolved_version()
-
-        # inherit from base
         evolved.level = self.level
         evolved.status_effect = self.status_effect
         evolved.hp = self.hp
         evolved.max_hp = self.max_hp
-
-        # scale hp and max_hp
         evolved.update_hp()
 
     def level_up(self) -> None:
+        """
+        Increase pokemon's level, scale hp and max_hp
+        """
         self.level += 1
-        # self.hp = self.get_hp()
         self.update_hp()

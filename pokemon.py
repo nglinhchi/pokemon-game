@@ -6,10 +6,14 @@ from multiprocessing.sharedctypes import Value
 from pokemon_base import PokemonBase, StatusEffect, PokeType
 
 
-class Charizard(PokemonBase):
+# *******************************************
+
+
+# CHARMANDER >> CHARIZARD
+class Charizard(PokemonBase): 
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.FIRE) # set to -1 since doesn't matter for evolved pokemon
-        self.level = 3  # set to base level
+        PokemonBase.__init__(self, -1, PokeType.FIRE)
+        self.level = 3 # base level
     
     def get_max_hp(self) -> int:
         return 12 + 1 * self.level
@@ -36,12 +40,11 @@ class Charizard(PokemonBase):
             self.lose_hp(damage)
 
 
-    
-
+# CHARMANDER
 class Charmander(PokemonBase):
     
     def __init__(self):
-        PokemonBase.__init__(self, 9, PokeType.FIRE) # second param = max_hp at level 1
+        PokemonBase.__init__(self, 9, PokeType.FIRE)
     
     def get_max_hp(self) -> int:
         return 8 + 1 * self.level
@@ -58,18 +61,8 @@ class Charmander(PokemonBase):
     def can_evolve(self) -> bool:
         return True
 
-    # def should_evolve(self) -> bool:
-    #     if self.level >= Charizard().get_level():
-    #         return True
-    #     return False
-    
     def get_initial_evolved_version(self) -> PokemonBase:
         return Charizard()
-
-    # def get_evolved_version(self) -> PokemonBase:
-    #     evolution = Charizard()
-    #     inherited_evolution = self.inherit_traits(evolution)
-    #     return inherited_evolution
 
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
@@ -78,14 +71,18 @@ class Charmander(PokemonBase):
             self.lose_hp(damage//2)
 
 
+# *******************************************
 
+
+# BULBASAUR >> VENUSAUR
 class Venusaur(PokemonBase):
+
     def __init__(self):
-        PokemonBase.__init__(self, 20, PokeType.GRASS)
-        self.level = 2
+        PokemonBase.__init__(self, -1, PokeType.GRASS)
+        self.level = 2 # base level
     
     def get_max_hp(self) -> int:
-        return self.base_hp + self.level//2
+        return 20 + self.level//2
 
     def get_attack_damage(self) -> int:
         return 5
@@ -99,10 +96,7 @@ class Venusaur(PokemonBase):
     def can_evolve(self) -> bool:
         return False
     
-    def should_evolve(self) -> bool:
-        return False
-    
-    def get_evolved_version(self) -> PokemonBase:
+    def get_initial_evolved_version(self) -> PokemonBase:
         raise ValueError(f"{self.name} does not have evolution")
 
     def defend(self, damage: int) -> None:
@@ -112,13 +106,14 @@ class Venusaur(PokemonBase):
             self.lose_hp(damage//2)
 
 
-
+# BULBASAUR
 class Bulbasaur(PokemonBase):
+
     def __init__(self):
-        PokemonBase.__init__(self, 12, PokeType.GRASS)
+        PokemonBase.__init__(self, 13, PokeType.GRASS)
     
     def get_max_hp(self) -> int:
-        return self.base_hp + 1 * self.level
+        return 12 + 1 * self.level
 
     def get_attack_damage(self) -> int:
         return 5
@@ -131,16 +126,9 @@ class Bulbasaur(PokemonBase):
     
     def can_evolve(self) -> bool:
         return True
-
-    def should_evolve(self) -> bool:
-        if self.level >= Venusaur().get_level():
-            return True
-        return False
     
-    def get_evolved_version(self) -> PokemonBase:
-        evolution = Venusaur()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+    def get_initial_evolved_version(self) -> PokemonBase:
+        return Venusaur()
 
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() + 5):
@@ -149,16 +137,20 @@ class Bulbasaur(PokemonBase):
             self.lose_hp(damage//2)    
 
 
+# *******************************************
+
+
+# SQUIRTLE >> BLASTOISE
 class Blastoise(PokemonBase):
     def __init__(self):
-        PokemonBase.__init__(self, 15, PokeType.WATER)
-        self.level = 3
+        PokemonBase.__init__(self, -1, PokeType.WATER)
+        self.level = 3 # base level
     
     def get_max_hp(self) -> int:
-        return self.base_hp + 2 * self.level
+        return 15 + 2 * self.level
 
     def get_attack_damage(self) -> int:
-        return 8 + self.level//2
+        return 8 + self.level // 2
 
     def get_speed(self) -> int:
         return 10
@@ -169,10 +161,7 @@ class Blastoise(PokemonBase):
     def can_evolve(self) -> bool:
         return False
 
-    def should_evolve(self) -> bool:
-        return False
-    
-    def get_evolved_version(self) -> PokemonBase:
+    def get_initial_evolved_version(self) -> PokemonBase:
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
@@ -182,13 +171,14 @@ class Blastoise(PokemonBase):
             self.lose_hp(damage//2)
 
 
-
+# SQUIRTLE
 class Squirtle(PokemonBase):
+
     def __init__(self):
-        PokemonBase.__init__(self, 9, PokeType.WATER)
+        PokemonBase.__init__(self, 11, PokeType.WATER)
     
     def get_max_hp(self) -> int:
-        return self.base_hp + 2 * self.level
+        return 9 + 2 * self.level
 
     def get_attack_damage(self) -> int:
         return 4 + self.level//2
@@ -202,15 +192,8 @@ class Squirtle(PokemonBase):
     def can_evolve(self) -> bool:
         return True
 
-    def should_evolve(self) -> bool:
-        if self.level >= Blastoise().get_level():
-            return True
-        return False
-    
-    def get_evolved_version(self) -> PokemonBase:
-        evolution = Blastoise()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+    def get_initial_evolved_version(self) -> PokemonBase:
+        return Blastoise()
 
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() * 2):
@@ -219,14 +202,18 @@ class Squirtle(PokemonBase):
             self.lose_hp(damage//2)
 
 
+# *******************************************
 
+
+# GASTLY >> HAUNTER >> GENGAR
 class Gengar(PokemonBase):
+
     def __init__(self):
-        PokemonBase.__init__(self, 12, PokeType.GHOST)
-        self.level = 3
+        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        self.level = 3 # base level
     
     def get_max_hp(self) -> int:
-        return self.base_hp + self.level//2
+        return 12 + self.level//2
 
     def get_attack_damage(self) -> int:
         return 18
@@ -239,21 +226,20 @@ class Gengar(PokemonBase):
     
     def can_evolve(self) -> bool:
         return False
-
-    def should_evolve(self) -> bool:
-        return False
     
-    def get_evolved_version(self) -> PokemonBase:
+    def get_initial_evolved_version(self) -> PokemonBase:
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
 
 
-
+# GASTLY >> HAUNTER
 class Haunter(PokemonBase):
+
     def __init__(self):
-        PokemonBase.__init__(self, 9, PokeType.GHOST)
+        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        self.level = 1 # base level
     
     def get_max_hp(self) -> int:
         return 9 + self.level//2
@@ -270,28 +256,21 @@ class Haunter(PokemonBase):
     def can_evolve(self) -> bool:
         return True
 
-    def should_evolve(self) -> bool:
-        if self.level >= Gengar().get_level():
-            return True
-        return False
-    
-    def get_evolved_version(self) -> PokemonBase:
-        evolution = Gengar()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+    def get_initial_evolved_version(self) -> PokemonBase:
+        return Gengar()
 
-        
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
 
-   
-    
+
+# GASTLY
 class Gastly(PokemonBase):
+
     def __init__(self):
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
     def get_max_hp(self) -> int:
-        return self.base_hp + self.level//2
+        return 6 + self.level//2
 
     def get_attack_damage(self) -> int:
         return 4
@@ -304,28 +283,25 @@ class Gastly(PokemonBase):
     
     def can_evolve(self) -> bool:
         return True
-
-    def should_evolve(self) -> bool:
-        if self.level >= Haunter().get_level():
-            return True
-        return False
     
-    def get_evolved_version(self) -> PokemonBase:
-        evolution = Haunter()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+    def get_initial_evolved_version(self) -> PokemonBase:
+        return Haunter()
 
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
 
-    
 
+# *******************************************
+
+
+# EEVE
 class Eevee(PokemonBase):
+    
     def __init__(self):
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
     def get_max_hp(self) -> int:
-        return self.base_hp
+        return 10
 
     def get_attack_damage(self) -> int:
         return 6 + self.level
@@ -338,11 +314,8 @@ class Eevee(PokemonBase):
     
     def can_evolve(self) -> bool:
         return False
-
-    def should_evolve(self) -> bool:
-        return False
     
-    def get_evolved_version(self) -> PokemonBase:
+    def get_initial_evolved_version(self) -> PokemonBase:
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
@@ -351,4 +324,5 @@ class Eevee(PokemonBase):
         else:
             self.lose_hp(0)
 
-    
+
+# *******************************************
