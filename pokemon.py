@@ -78,6 +78,7 @@ class Charmander(PokemonBase):
             self.lose_hp(damage//2)
 
 
+
 class Venusaur(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 20, PokeType.GRASS)
@@ -109,6 +110,8 @@ class Venusaur(PokemonBase):
             self.lose_hp(damage)
         else:
             self.lose_hp(damage//2)
+
+
 
 class Bulbasaur(PokemonBase):
     def __init__(self):
@@ -178,6 +181,8 @@ class Blastoise(PokemonBase):
         else:
             self.lose_hp(damage//2)
 
+
+
 class Squirtle(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 9, PokeType.WATER)
@@ -213,6 +218,8 @@ class Squirtle(PokemonBase):
         else:
             self.lose_hp(damage//2)
 
+
+
 class Gengar(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 12, PokeType.GHOST)
@@ -241,6 +248,8 @@ class Gengar(PokemonBase):
         
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
+
+
 
 class Haunter(PokemonBase):
     def __init__(self):
@@ -274,6 +283,8 @@ class Haunter(PokemonBase):
         
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
+
+   
     
 class Gastly(PokemonBase):
     def __init__(self):
