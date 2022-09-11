@@ -8,17 +8,10 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 class Charizard(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 12, PokeType.FIRE)
-        self.level = 3
+        self.level = 3  #Default values to not break tester
     
-    def get_max_hp(self, hp) -> int:        
-        hp_formula = hp + (1 * self.level)
-        if self.current_hp == None: #initial case
-            self.current_hp = hp_formula    #set to initialise at max_hp
-        else:
-            hp_diff = self.max_hp - self.current_hp
-            self.current_hp = hp_formula - hp_diff  #update current hp to maintain same difference after max hp increase
-        return hp_formula
-    
+    def get_max_hp(self) -> int:   
+        return self.base_hp + (1 * self.level)
     
     def can_evolve(self) -> bool:
         pass 
@@ -34,15 +27,18 @@ class Charmander(PokemonBase):
         PokemonBase.__init__(self, 8, PokeType.FIRE)
 
     
-    def get_max_hp(self) -> int:    
-        hp_formula = self.base_hp + (1 * self.level)
+    def get_max_hp(self) -> int:
+        base_hp = 12    
+        hp_formula = base_hp + (1 * self.level)
         return hp_formula
     
     def can_evolve(self) -> bool:
         pass 
 
     def get_evolved_version(self) -> PokemonBase:
-        pass
+        evolution = Charizard()
+        inherited_evolution = self.inherit_traits(evolution)
+        return inherited_evolution
 
     def defend(self, damage: int) -> None:
         pass

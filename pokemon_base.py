@@ -51,31 +51,31 @@ class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
         self.level = 1
-        self.current_hp= None #Will get updated by get_max_hp
-        self.max_hp = self.get_max_hp(hp)
+        self.base_hp = hp   #Stores HP parameter in base_hp to be called during calculation of get_max_hp(). Allows for easy change of initial value of HP without level scaling.
+        self.max_hp = self.get_max_hp()
+        self.hp = self.max_hp
         self.poke_type = poke_type
         self.name = self.__class__.__name__
         self.status_effect = None
-        self.attack_damage = None
-        self.speed = None
-        self.defence = None
 
-        self.evolve = False
 
     def is_fainted(self) -> bool:
         return self.hp <= 0
 
     def level_up(self) -> None:
         self.level += 1
-        self.current_hp = self.get_hp()
+        self.hp = self.get_hp()
 
     @abstractmethod
-    def get_max_hp(self, base_hp) -> int:
+    def get_max_hp(self) -> int:
         #When Max HP is called, update current hp, else only touch current hp while working.
         #Max hp should only be touched when levelling up, and comparing to current HP.
         pass
 
-    def get_hp(self) -> None:
+    def update_hp(self) -> None:
+        """
+        Default method to be called when attributes affecting hp change i.e. evolution/level
+        """
         # save previous values
         previous_max_hp = self.max_hp   # taken from lower-level/pre-evolved pokemon
         previous_hp = self.hp           # taken from lower-level/pre-evolved pokemon
@@ -83,10 +83,10 @@ class PokemonBase(ABC):
         self.max_hp = self.get_max_hp() # compute the new max HP (since the level/pokemon type changed)
         # scale current hp
         self.hp = self.max_hp - (previous_max_hp - previous_hp) # ensure the difference remain the same 
-
-
+        
+    def get_hp(self) -> int:
+        return self.hp
     def get_level(self) -> int:
-        #Return current level, should call in HP calculation?
         return self.level
     
     def get_speed(self) -> int:
@@ -99,7 +99,7 @@ class PokemonBase(ABC):
         return self.defence
 
     def lose_hp(self, lost_hp: int) -> None:
-        self.current_hp -= lost_hp
+        self.hp -= lost_hp
 
     @abstractmethod
     def defend(self, damage: int) -> None:
@@ -150,3 +150,10 @@ class PokemonBase(ABC):
     @abstractmethod
     def get_evolved_version(self) -> PokemonBase:
         pass
+
+    def inherit_traits(self, evolved: PokemonBase) -> None:
+        """
+        Takes instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
+        """
+        evolved.level, evolved.status_effect, evolved.hp, evolved.max_hp = self.level, self.status_effect, self.hp, self.max_hp #passes attributes that need to be inherited by evolved Pokemon
+        evolved.get_hp() #updates HP using pre-evolution Pokemon's HP difference
