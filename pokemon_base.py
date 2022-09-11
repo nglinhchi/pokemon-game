@@ -86,6 +86,7 @@ class PokemonBase(ABC):
         
     def get_hp(self) -> int:
         return self.hp
+
     def get_level(self) -> int:
         return self.level
     
@@ -138,7 +139,7 @@ class PokemonBase(ABC):
         return self.name
 
     def __str__(self) -> str:
-        return print(f"LV.{self.level} {self.name}: {self.hp} HP")
+        return f"LV.{self.level} {self.name}: {self.hp} HP"
 
     @abstractmethod
     def should_evolve(self) -> bool:
@@ -157,4 +158,5 @@ class PokemonBase(ABC):
         Takes instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
         """
         evolved.level, evolved.status_effect, evolved.hp, evolved.max_hp = self.level, self.status_effect, self.hp, self.max_hp #passes attributes that need to be inherited by evolved Pokemon
-        evolved.get_hp() #updates HP using pre-evolution Pokemon's HP difference
+        evolved.update_hp() #updates HP using pre-evolution Pokemon's HP difference
+        # return evolved

@@ -9,7 +9,7 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 class Charizard(PokemonBase):
     def __init__(self):
         PokemonBase.__init__(self, 12, PokeType.FIRE)
-        self.level = 3  #Default values to not break tester
+        self.level = 3  #Default base level
     
     def get_max_hp(self) -> int:
         return self.base_hp + 1 * self.level
@@ -68,8 +68,8 @@ class Charmander(PokemonBase):
     
     def get_evolved_version(self) -> PokemonBase:
         evolution = Charizard()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+        self.inherit_traits(evolution)
+        return evolution
 
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
@@ -136,8 +136,9 @@ class Bulbasaur(PokemonBase):
     
     def get_evolved_version(self) -> PokemonBase:
         evolution = Venusaur()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+        self.inherit_traits(evolution)
+        return evolution
+
 
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() + 5):
@@ -204,8 +205,9 @@ class Squirtle(PokemonBase):
     
     def get_evolved_version(self) -> PokemonBase:
         evolution = Blastoise()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+        self.inherit_traits(evolution)
+        return evolution
+
 
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() * 2):
@@ -268,8 +270,8 @@ class Haunter(PokemonBase):
     
     def get_evolved_version(self) -> PokemonBase:
         evolution = Gengar()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+        self.inherit_traits(evolution)
+        return evolution
 
         
     def defend(self, damage: int) -> None:
@@ -301,8 +303,9 @@ class Gastly(PokemonBase):
     
     def get_evolved_version(self) -> PokemonBase:
         evolution = Haunter()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+        self.inherit_traits(evolution)
+        return evolution
+
 
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)

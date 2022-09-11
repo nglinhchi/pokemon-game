@@ -1,0 +1,35 @@
+from pokemon import Bulbasaur, Charizard, Charmander, Gengar, Haunter, StatusEffect, PokeType
+import unittest
+test_base = Charmander()
+evolved_levels = {
+    "Charizard" : 3, "Venusaur" : 2, "Blastoise": 3, "Gengar": 3, "Haunter": 1,
+}
+def should_evolve(test_base, test_evolved):
+    assert test_base.get_level() == 1, "Level should be 1"
+    assert test_evolved.get_level() == evolved_levels[test_evolved.name], "Level not correct"
+    test_base.level_up()
+    test_base.level_up()
+    assert test_base.get_level() == 3, "Level should be 3"
+    assert test_base.should_evolve() == True, "Should be True, Pokemon level is > = Evolved Pokemon"
+    assert test_evolved.should_evolve() == False, "Should be False"
+
+def can_evolve(pokemon_with_evolve, pokemon_no_evolve):
+    assert pokemon_with_evolve.can_evolve() == True, "Should be True, Pokemon has evolution"
+    assert pokemon_no_evolve.can_evolve() == False, "Should be False, Pokemon has no evolution"
+class TestStringMethods(unittest.TestCase):
+    def test_evolved_attributes(self):
+        base = Charmander()
+        evolution = Charizard()
+        base.level = evolution.level + 1
+        base.status_effect = StatusEffect.BURN
+        base.hp = base.max_hp - 3
+        evolved = base.get_evolved_version()
+        print(evolved)
+        self.assertEqual(evolved.level, evolved_levels[evolved.name] + 1, "Level not inherited")
+        self.assertEqual(evolved.status_effect, StatusEffect.BURN, "Status effect not inherited")
+        self.assertEqual(evolved.hp, (evolved.max_hp - 3), "HP not inherited")
+
+unittest.main()
+
+
+
