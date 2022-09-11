@@ -51,8 +51,8 @@ class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
         self.level = 1
-        self.current_hp= None #Will get updated by update_max_hp
-        self.max_hp = self.update_max_hp(hp)
+        self.current_hp= None #Will get updated by get_max_hp
+        self.max_hp = self.get_max_hp(hp)
         self.poke_type = poke_type
         self.name = self.__class__.__name__
         self.status_effect = None
@@ -70,23 +70,19 @@ class PokemonBase(ABC):
         self.current_hp = self.get_hp()
 
     @abstractmethod
-    def update_max_hp(self, base_hp) -> int:
+    def get_max_hp(self, base_hp) -> int:
         #When Max HP is called, update current hp, else only touch current hp while working.
         #Max hp should only be touched when levelling up, and comparing to current HP.
         pass
 
-    def get_hp(self) -> int:
-        """
-        Return current hp
-        """
-        if self.get_level() == 1:
-            if self.current_hp != self.max_hp:  #if health lost calculate new max health and keep same diff between current and max health
-                diff = self.max_hp - self.current_hp
-                return self.update_max_hp() - diff
-            else:   #update to be same value if no health lost (for overwriting base level by pokemon child classes)
-                self.max_hp = self.update_max_hp()
-                self.current_hp = self.update_max_hp()
-                return self.current_hp
+    def get_hp(self) -> None:
+        # save previous values
+        previous_max_hp = self.max_hp   # taken from lower-level/pre-evolved pokemon
+        previous_hp = self.hp           # taken from lower-level/pre-evolved pokemon
+        # change max hp
+        self.max_hp = self.get_max_hp() # compute the new max HP (since the level/pokemon type changed)
+        # scale current hp
+        self.hp = self.max_hp - (previous_max_hp - previous_hp) # ensure the difference remain the same 
 
 
     def get_level(self) -> int:
