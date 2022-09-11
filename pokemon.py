@@ -8,11 +8,11 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 
 class Charizard(PokemonBase):
     def __init__(self):
-        PokemonBase.__init__(self, 12, PokeType.FIRE)
-        self.level = 3  #Default values to not break tester
+        PokemonBase.__init__(self, -1, PokeType.FIRE) # set to -1 since doesn't matter for evolved pokemon
+        self.level = 3  # set to base level
     
     def get_max_hp(self) -> int:
-        return self.base_hp + 1 * self.level
+        return 12 + 1 * self.level
 
     def get_attack_damage(self) -> int:
         return 10 + 2 * self.level
@@ -26,10 +26,7 @@ class Charizard(PokemonBase):
     def can_evolve(self) -> bool:
         return False
 
-    def should_evolve(self) -> bool:
-        return False
-    
-    def get_evolved_version(self) -> PokemonBase:
+    def get_initial_evolved_version(self) -> PokemonBase:
         raise ValueError(f"{self.name} does not have evolution")
 
     def defend(self, damage: int) -> None:
@@ -42,12 +39,12 @@ class Charizard(PokemonBase):
     
 
 class Charmander(PokemonBase):
+    
     def __init__(self):
-        PokemonBase.__init__(self, 8, PokeType.FIRE)
-
+        PokemonBase.__init__(self, 9, PokeType.FIRE) # second param = max_hp at level 1
     
     def get_max_hp(self) -> int:
-        return self.base_hp + 1 * self.level
+        return 8 + 1 * self.level
 
     def get_attack_damage(self) -> int:
         return 6 + 1 * self.level
@@ -61,15 +58,18 @@ class Charmander(PokemonBase):
     def can_evolve(self) -> bool:
         return True
 
-    def should_evolve(self) -> bool:
-        if self.level >= Charizard().get_level():
-            return True
-        return False
+    # def should_evolve(self) -> bool:
+    #     if self.level >= Charizard().get_level():
+    #         return True
+    #     return False
     
-    def get_evolved_version(self) -> PokemonBase:
-        evolution = Charizard()
-        inherited_evolution = self.inherit_traits(evolution)
-        return inherited_evolution
+    def get_initial_evolved_version(self) -> PokemonBase:
+        return Charizard()
+
+    # def get_evolved_version(self) -> PokemonBase:
+    #     evolution = Charizard()
+    #     inherited_evolution = self.inherit_traits(evolution)
+    #     return inherited_evolution
 
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
