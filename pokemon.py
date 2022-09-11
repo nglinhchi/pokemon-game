@@ -10,8 +10,13 @@ class Charizard(PokemonBase):
         PokemonBase.__init__(self, 12, PokeType.FIRE)
         self.level = 3
     
-    def get_max_hp(self) -> int:    
-        hp_formula = self.base_hp + (1 * self.level)
+    def update_max_hp(self, hp) -> int:        
+        hp_formula = hp + (1 * self.level)
+        if self.current_hp == None: #initial case
+            self.current_hp = hp_formula    #set to initialise at max_hp
+        else:
+            hp_diff = self.max_hp - self.current_hp
+            self.current_hp = hp_formula - hp_diff  #update current hp to maintain same difference after max hp increase
         return hp_formula
     
     
