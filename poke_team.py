@@ -1,4 +1,5 @@
 from __future__ import annotations
+from multiprocessing.sharedctypes import Value
 
 """
 """
@@ -32,32 +33,31 @@ class PokeTeam:
         """
         Creates user-specified Poketeam
         """ 
-        ### User argument validation ###
 
         #Check type(team_name) == str
         if not type(team_name) == str:
             raise TypeError("Team name must be string")
 
-        #Check team_numbers: len == 6, team_numbers[0] == 0, team_numbers[5] <= MAX_TEAM_SIZE, 0 <= team_numbers[1->4] <= team_numbers[5], check sorted == True
+        #Check team_numbers: len == number of base pokemon (5), team_numbers[0] == 0, team_numbers[5] <= MAX_TEAM_SIZE, 0 <= team_numbers[1->4] <= team_numbers[5], check sorted == True
 
-        if not len(team_numbers) == PokeTeam.NUM_BASE_POKEMON + 1:  #Number of elements in list must equal number of base Pokemon + 1 for assignment of Pokemon to work
-            raise ValueError(f"Team number length is not valid. List must be of length: {PokeTeam.NUM_BASE_POKEMON + 1}")
+        if not len(team_numbers) == PokeTeam.NUM_BASE_POKEMON :  #Number of elements in list must equal number of base Pokemon
+            raise ValueError(f"Team number length is not valid. The each base Pokemon must correspond to an element in list")
 
         for num in team_numbers:
             if type(num) != int:
                 raise ValueError("Elements in list must be integers")
         
-        if not team_numbers == sorted(team_numbers):
-            raise ValueError("Numbers must be sorted order (ascending)")
+        # if not team_numbers == sorted(team_numbers):
+        #     raise ValueError("Numbers must be sorted order (ascending)")
 
-        if team_numbers[0] != 0:
-            raise ValueError("First element in team numbers list must be 0")
-
-        elif team_numbers[-1] <= PokeTeam.MAX_TEAM_SIZE:
-            raise ValueError(f"Last element in team numbers list must be <= max team size: {PokeTeam.MAX_TEAM_SIZE}")
+        if not sum(team_numbers) <= PokeTeam.MAX_TEAM_SIZE:
+            raise ValueError("Number of Pokemon exceeds max team size")
+    
+        # elif team_numbers[-1] <= PokeTeam.MAX_TEAM_SIZE:
+        #     raise ValueError(f"Last element in team numbers list must be <= max team size: {PokeTeam.MAX_TEAM_SIZE}")
         
-        if not (team_numbers[1] >= 0 and team_numbers[-2] <= team_numbers[-1]):   #Since we know from earlier check that list is sorted, only need to check second and second last element is valid as other element will be within that range.
-            raise ValueError(f"Numbers in list not within valid range: 0:{PokeTeam.MAX_TEAM_SIZE}")
+        # if not (team_numbers[1] >= 0 and team_numbers[-2] <= team_numbers[-1]):   #Since we know from earlier check that list is sorted, only need to check second and second last element is valid as other element will be within that range.
+        #     raise ValueError(f"Numbers in list not within valid range: 0:{PokeTeam.MAX_TEAM_SIZE}")
         
         #Check battle_mode in [0,1,2]
         if battle_mode not in [0,1,2]:
@@ -70,11 +70,9 @@ class PokeTeam:
             assert criterion != None, "Criterion for sorting must be provided for Battle Mode 2"
             assert criterion in Criterion, f"{criterion} is not a valid criterion"
             
-        ### End Checks ###
-
-        team_numbers 
-
     
+
+
 
     
     @classmethod
