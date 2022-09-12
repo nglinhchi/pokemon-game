@@ -35,20 +35,12 @@ class PokeTeam:
         """
         Creates user-specified Poketeam
         """ 
-        self.team_name = team_name
-        self.team_numbers = team_numbers
-        self.battle_mode = battle_mode
-        self.ai_type =  ai_type
-        self.criterion = criterion
-        # self.criterion_value = criterion_value
-    
 
         #Check type(team_name) == str
         if not type(team_name) == str:
             raise TypeError("Team name must be string")
 
         #Check team_numbers: len == number of base pokemon (5), team_numbers[0] == 0, team_numbers[5] <= MAX_TEAM_SIZE, 0 <= team_numbers[1->4] <= team_numbers[5], check sorted == True
-
         if not len(team_numbers) == PokeTeam.NUM_BASE_POKEMON :  #Number of elements in list must equal number of base Pokemon
             raise ValueError(f"Team number length is not valid. The each base Pokemon must correspond to an element in list")
 
@@ -79,7 +71,13 @@ class PokeTeam:
             assert criterion != None, "Criterion for sorting must be provided for Battle Mode 2"
             assert criterion in Criterion, f"{criterion} is not a valid criterion"
             
-    
+        # initialise
+        self.team_name = team_name
+        self.team_numbers = team_numbers
+        self.battle_mode = battle_mode
+        self.ai_type =  ai_type
+        self.criterion = criterion
+        # self.criterion_value = criterion_value 
 
 
 
