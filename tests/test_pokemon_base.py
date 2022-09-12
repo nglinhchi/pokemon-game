@@ -39,3 +39,6 @@ class TestPokemonBase(BaseTest):
         self.assertEqual(g.should_evolve(), True)
         new_g = g.get_evolved_version()
         self.assertIsInstance(new_g, Haunter)
+
+
+

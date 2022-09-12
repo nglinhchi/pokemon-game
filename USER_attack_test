@@ -1,0 +1,8 @@
+from pokemon import Charizard, Venusaur
+
+PokeType = Venusaur().poke_type
+def test_multiplier(PokeType):
+    c = Charizard()
+    print(c.poke_type.type_multiplier(PokeType))
+
+test_multiplier(PokeType)
