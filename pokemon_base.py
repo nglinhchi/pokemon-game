@@ -58,7 +58,7 @@ class PokemonBase(ABC):
         self.hp = hp
 
     def __str__(self) -> str:
-        return print(f"LV.{self.level} {self.name}: {self.hp} HP")
+        return f"LV.{self.level} {self.name}: {self.hp} HP"
 
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
 
