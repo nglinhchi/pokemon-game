@@ -68,6 +68,9 @@ class PokemonBase(ABC):
         return self.poke_type
 
     def get_level(self) -> int:
+        """
+        Getter method returning current Level
+        """
         return self.level
 
     def get_status_effect(self) -> StatusEffect:
@@ -75,23 +78,40 @@ class PokemonBase(ABC):
 
     @abstractmethod
     def get_max_hp(self) -> int:
+        """
+        Abstract method containing HP scaling formula for individual pokemon. Calculates 
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        """
         pass
 
     def get_hp(self) -> int:
+        """
+        Getter method returning current HP
+        """
         return self.hp
 
     # GETTERS FOR 'DYNAMIC' ATTRIBUTES ************************************************
 
     @abstractmethod
     def get_speed(self) -> int:
+        """
+        Abstract getter method returning current Speed stat calculated for individual Pokemon
+        """
         pass
 
     @abstractmethod
     def get_attack_damage(self) -> int:
+        """
+        Abstract getter method returning current Attack stat calculated for individual Pokemon
+        """
         pass
 
     @abstractmethod
     def get_defence(self) -> int:
+        """
+        Abstract getter method returning current Defence stat calculated for individual Pokemon
+        """
         pass
 
     # OTHER METHODS ************************************************
@@ -100,13 +120,37 @@ class PokemonBase(ABC):
         return self.hp <= 0
 
     def lose_hp(self, lost_hp: int) -> None:
+        """
+        Lose hp equal to amount passed as arg. Subtract this amount from current HP (stored in hp)
+        and set as current HP
+        """
         self.hp -= lost_hp
+
+    def heal(self) -> None:
+        """
+        Restores current HP to full and removes any status effects
+        """
+        self.hp = self.max_hp
+        self.status_effect = None
 
     @abstractmethod
     def defend(self, damage: int) -> None:
+        """
+        Abstract method that calculates damage mitigation/damage to take depending on 
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect 
+        damage amount onto Pokemon's health.
+        """
         pass
 
     def attack(self, other: PokemonBase):
+        """
+        Attack handler that takes another Pokemon as arg and checks if attacking 
+        Pokemon is capable of attacking, applying relevant (changes) due to status
+        effects. Calculates effective attack amount based on attack stat and types
+        of the Pokemon, and applies defending Pokemon's defence calc to this amount.
+        Then takes any relevant damage due to status effects and has chance of inflicting
+        own status effect onto defending Pokemon
+        """
         # >>> Step 1: Status effects on attack damage / redirecting attacks
         if self.status_effect == StatusEffect.SLEEP:
             return
@@ -152,6 +196,9 @@ class PokemonBase(ABC):
     def update_hp(self) -> None:
         """
         Default method to be called when attributes affecting hp change i.e. evolution/level
+        Scales max HP by calling get_max_hp(), and calculates HP lost prior to HP modification, 
+        updating current HP by subtracting from new max HP.
+        :pre: max_hp and hp must be defined
         """
         previous_max_hp = self.max_hp  
         previous_hp = self.hp          
