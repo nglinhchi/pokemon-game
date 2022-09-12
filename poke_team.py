@@ -28,10 +28,15 @@ class PokeTeam:
         USER_INPUT = auto()
 
     def __init__(self, team_name: str, team_numbers: list[int], battle_mode: int, ai_type: PokeTeam.AI, criterion=None, criterion_value=None) -> None:
-        raise NotImplementedError()
+        """
+        Creates user-specified Poketeam
+        """
     
     @classmethod
     def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
+        """
+        Creates random generated Poketeam
+        """
         raise NotImplementedError()
 
     def return_pokemon(self, poke: PokemonBase) -> None:
