@@ -79,6 +79,7 @@ class PokeTeam:
         self.battle_mode = battle_mode
         self.ai_type =  ai_type
         self.criterion = criterion
+        self.healh_count = 3
 
 
 
@@ -161,24 +162,28 @@ class PokeTeam:
                 return Action.ATTACK
         
         elif self.battle_mode == PokeTeam.AI.RANDOM:
-            return Action(Random.randint(1,4))
+            actions = list(Action)
+            if self.healh_count == 0:
+                actions.remove(Action.HEAL)
+            return Action(RandomGen.randint(len(actions)))
         
         elif self.battle_mode == PokeTeam.AI.USER_INPUT:
-            prompt = "Select an action: \n"
-            prompt += "1 - ATTACK \n"
-            prompt += "2 - SWAP \n"
-            prompt += "3 - HEAL \n"
-            prompt += "4 - SPECIAL \n"
-            prompt += "-----------------"
+            prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
+            actions = list("A", "P", "H", "S")
             while True:
-                try:
-                    action = int(input(prompt))
-                    if not (action >=1 and action <= 4):
-                        raise ValueError("Invalid input. Please enter a number from 1 to 4.")
-                    break
-                except TypeError:
-                    print("Invalid input. Please enter a number")
-            return Action(action)
+                print(prompt)
+                action = input("   Your Move: ")
+                if action not in actions:
+                    raise ValueError("Invalid action. Please try again.")
+                break
+            if action == "A":
+                return Action.ATTACK
+            elif action == "P":
+                return Action.SWAP
+            elif action == "H":
+                return Action.HEAL
+            elif action == "S":
+                return Action.SPECIAL
 
     @classmethod
     def leaderboard_team(cls):
