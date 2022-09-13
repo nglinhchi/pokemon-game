@@ -54,8 +54,8 @@ class PokemonBase(ABC):
         self.poke_type = poke_type
         self.level = 1
         self.status_effect = None
-        self.max_hp = hp
-        self.hp = hp
+        self.max_hp = self.get_max_hp()
+        self.hp = self.max_hp
 
     def __str__(self) -> str:
         return f"LV.{self.level} {self.name}: {self.hp} HP"
@@ -206,7 +206,7 @@ class PokemonBase(ABC):
         self.max_hp = self.get_max_hp()
         self.hp = self.max_hp - (previous_max_hp - previous_hp)
 
-    @abstractmethod
+    
     def get_evolved_version(self) -> PokemonBase:
         """
         Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
@@ -217,6 +217,7 @@ class PokemonBase(ABC):
         evolved.hp = self.hp
         evolved.max_hp = self.max_hp
         evolved.update_hp()
+        return evolved
 
     def level_up(self) -> None:
         """

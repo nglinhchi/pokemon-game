@@ -1,6 +1,7 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
+from sorted_list import ListItem, SortedList
 
 """
 """
@@ -90,12 +91,13 @@ class PokeTeam:
         Creates random generated Poketeam
         """
         # assign team_size
-        if PokeTeam.MAX_TEAM_SIZE % 2 != 0:
-            half_team_max = PokeTeam.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
-        else:
-            half_team_max = PokeTeam.MAX_TEAM_SIZE//2
+        
 
         if team_size == None:
+            if PokeTeam.MAX_TEAM_SIZE % 2 != 0:
+                half_team_max = PokeTeam.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
+            else:
+                half_team_max = PokeTeam.MAX_TEAM_SIZE//2
             team_size = RandomGen.randint(half_team_max, PokeTeam.MAX_TEAM_SIZE)
 
         # create team_numbers TODO ADT and sort --------------------------------
