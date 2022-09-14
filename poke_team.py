@@ -242,11 +242,11 @@ class PokeTeam:
         raise NotImplementedError()
 
     def pokemonsStack(self, team_numbers) -> ArrayStack: # TODO convert team_members to a reversed stack
-        team_queue = ArrayStack(sum(team_numbers)).reverse()
+        team_stack = ArrayStack(sum(team_numbers))
         for count, num_of_poke in enumerate(team_numbers):
             for _ in range(1, num_of_poke+1):
-                team_queue.push(PokeTeam.BASE_ORDER[count])
-        return team_queue
+                team_stack.push(PokeTeam.BASE_ORDER[count])
+        return team_stack
         
 
     def pokemonsCircularQueue(self, team_numbers) -> CircularQueue: # TODO convert team_members to a circular queue
