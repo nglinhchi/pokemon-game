@@ -50,29 +50,29 @@ class PokeType(Enum):
 class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
-        self.name = self.__class__.__name__
+        ###TODO MAKE USER FACING: HP and POKE_TYPE ###
+        self.name = self.get_name() #Ensures Pokemon Name is defined.
         self.poke_type = poke_type
-        self.level = 1
+        self.level = self.get_level()
+        ### Deleted level - make abstract to provide base level for individual pokemon- return accurate level on initialisation###
         self.status_effect = None
         self.max_hp = self.get_max_hp()
-        self.hp = self.max_hp
+        self.hp = self.get_max_hp()
 
     def __str__(self) -> str:
-        return f"LV.{self.level} {self.name}: {self.hp} HP"
+        return f"LV. {self.get_level()} {self.get_name()}: {self.hp} HP"
 
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
-
+    @abstractmethod
     def get_name(self) -> str:
-        return self.name
-
+        pass  
+    
     def get_type(self) -> PokeType:
         return self.poke_type
-
+    
+    @abstractmethod
     def get_level(self) -> int:
-        """
-        Getter method returning current Level
-        """
-        return self.level
+        pass #Ensures classes include base level.
 
     def get_status_effect(self) -> StatusEffect:
         return self.status_effect
