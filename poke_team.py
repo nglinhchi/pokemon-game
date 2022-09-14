@@ -1,8 +1,6 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
-from tracemalloc import start
-from array_sorted_list import ArraySortedList
 from sorted_list import ListItem
 from pokemon import *
 from array_sorted_list import ArraySortedList
@@ -94,31 +92,52 @@ class PokeTeam:
 
 
     # TODO
+    # TODO
     @classmethod
     def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
         """
         Creates random generated Poketeam
         """
         # assign team_size
-        if PokeTeam.MAX_TEAM_SIZE % 2 != 0:
-            half_team_max = PokeTeam.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
-        else:
-            half_team_max = PokeTeam.MAX_TEAM_SIZE//2
-
+        
         if team_size == None:
-            team_size = RandomGen.randint(half_team_max, PokeTeam.MAX_TEAM_SIZE)
+            if cls.MAX_TEAM_SIZE % 2 != 0:
+                half_team_max = cls.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
+            else:
+                half_team_max = cls.MAX_TEAM_SIZE//2
+            team_size = RandomGen.randint(half_team_max, cls.MAX_TEAM_SIZE)
 
-        # create team_numbers TODO ADT and sort --------------------------------
-        team_numbers = []
-        team_numbers.append(0)
-        team_numbers.append(team_size)
-        for i in range(PokeTeam.NUM_BASE_POKEMON-2): 
-            team_numbers.append(RandomGen.randint(0,team_size))
+        #sorted list
+        #add 0 and team size
+        start_val = ListItem(0, 0) #value and key to sort by are same
+        end_val = ListItem(team_size, team_size)
+        team_sorted_list = ArraySortedList()
+        team_sorted_list.add(start_val) #add 0
+        team_sorted_list.add(end_val)   #add team size
+        
+        #TODO fix wording: 
+        # Algorithm is calculated by getting difference of adjacent value in list (ascending),
+        #therefore requires number of base pokemon + 1 to assign to every base. First and 
+        #last numbers are 0 and team size, therefore need to generate number of base 
+        #pokemon - 1 random numbers
+
+        for _ in range(1, cls.NUM_BASE_POKEMON):   
+            rand_num = RandomGen.randint(0,team_size)
+            team_sorted_list.add(ListItem(rand_num, rand_num))  #add to team_numbers
+            
+        #Store calculated number of base pokemon in team_numbers list to be initialised
+        team_numbers = []   #list for storing output of random team gen
+        for i in range(1, len(team_sorted_list)):  #access index of list for pokemon calc 1-last index
+            team_numbers[i-1]= team_sorted_list[i].value - team_sorted_list[i-1].value  
+
+        
         if ai_mode == None:
             ai_mode = PokeTeam.AI.RANDOM
-        # ----------------------------------------------------------------------
 
         return PokeTeam(team_name, team_numbers, battle_mode, ai_mode)
+        # ----------------------------------------------------------------------
+
+     
         
 
     # TODO
