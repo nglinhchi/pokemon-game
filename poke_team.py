@@ -82,7 +82,7 @@ class PokeTeam:
         self.battle_mode = battle_mode
         self.ai_type =  ai_type
         self.criterion = criterion
-        self.healh_count = 3
+        self.heal_count = 3
 
 
 
@@ -120,7 +120,7 @@ class PokeTeam:
             pokemons.push(poke)
         elif self.battle_mode == 1:
             pokemons = self.pokemonsCircularQueue()
-            pokemons.
+            pokemons.append(poke)
         elif self.battle_mode == 2:
             pass
 
@@ -184,7 +184,7 @@ class PokeTeam:
         
         elif self.battle_mode == PokeTeam.AI.RANDOM:
             actions = list(Action)
-            if self.healh_count == 0:
+            if self.heal_count == 0:
                 actions.remove(Action.HEAL)
             return Action(RandomGen.randint(len(actions)))
         
@@ -212,6 +212,9 @@ class PokeTeam:
 
     def pokemonsReversedStack(self) -> ArrayReversedStack: # TODO convert team_members to a reversed stack
         pass
+        
 
     def pokemonsCircularQueue(self) -> CircularQueue: # TODO convert team_members to a circular queue
         pass
+
+
