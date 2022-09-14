@@ -1,6 +1,10 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
+from tracemalloc import start
+from array_sorted_list import ArraySortedList
+from sorted_list import ListItem
+from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from reverse_stack import ArrayReversedStack
@@ -26,6 +30,9 @@ class Criterion(Enum):
     DEF = auto()
 
 class PokeTeam:
+    POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, 
+    Blastoise, Gastly, Haunter, Gengar, Eevee]
+    BASE_ORDER = [Charmander, ]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
     
@@ -43,7 +50,7 @@ class PokeTeam:
 
         #Check type(team_name) == str
         if not type(team_name) == str:
-            raise TypeError("Team name must be string")
+            raise ValueError("Team name must be string")
 
         #Check team_numbers: len == number of base pokemon (5), team_numbers[0] == 0, team_numbers[5] <= MAX_TEAM_SIZE, 0 <= team_numbers[1->4] <= team_numbers[5], check sorted == True
         if not len(team_numbers) == PokeTeam.NUM_BASE_POKEMON :  #Number of elements in list must equal number of base Pokemon
@@ -93,24 +100,25 @@ class PokeTeam:
         Creates random generated Poketeam
         """
         # assign team_size
+        if PokeTeam.MAX_TEAM_SIZE % 2 != 0:
+            half_team_max = PokeTeam.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
+        else:
+            half_team_max = PokeTeam.MAX_TEAM_SIZE//2
+
         if team_size == None:
-            if PokeTeam.MAX_TEAM_SIZE % 2 != 0:
-                half_team_max = PokeTeam.MAX_TEAM_SIZE // 2 + 1 #Between half of Pokemon limit and Pokemon limit- can't be less than half (floor division)
-            else:
-                half_team_max = PokeTeam.MAX_TEAM_SIZE//2
             team_size = RandomGen.randint(half_team_max, PokeTeam.MAX_TEAM_SIZE)
 
-        sorted_team_numbers = ArraySortedList(PokeTeam.NUM_BASE_POKEMON)
-        sorted_team_numbers.add(0)
-        sorted_team_numbers.add(team_size)
+        # create team_numbers TODO ADT and sort --------------------------------
+        team_numbers = []
+        team_numbers.append(0)
+        team_numbers.append(team_size)
         for i in range(PokeTeam.NUM_BASE_POKEMON-2): 
-            sorted_team_numbers.add(RandomGen.randint(0,team_size))
-        team_numbers = sorted_team_numbers.array
-
+            team_numbers.append(RandomGen.randint(0,team_size))
         if ai_mode == None:
             ai_mode = PokeTeam.AI.RANDOM
+        # ----------------------------------------------------------------------
 
-        PokeTeam.__init__(team_name, team_numbers, battle_mode, ai_mode)
+        return PokeTeam(team_name, team_numbers, battle_mode, ai_mode)
         
 
     # TODO
