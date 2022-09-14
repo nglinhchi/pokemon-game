@@ -5,7 +5,13 @@ from sorted_list import ListItem
 from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
+<<<<<<< HEAD
 from stack_adt import ArrayStack
+=======
+from reverse_stack import ArrayReversedStack
+from stack_adt import ArrayStack
+
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
 """
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
@@ -29,7 +35,7 @@ class Criterion(Enum):
 class PokeTeam:
     POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, 
     Blastoise, Gastly, Haunter, Gengar, Eevee]
-    BASE_ORDER = [Charmander, ]
+    BASE_ORDER = [Charmander, Bulbasaur, Squirtle, Gastly, Eevee]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
     
@@ -88,6 +94,7 @@ class PokeTeam:
         self.criterion = criterion
         self.heal_count = 3
 
+<<<<<<< HEAD
         if self.battle_mode == 0:
             self.team = self.pokemonsStack()
         elif self.battle_mode == 1:
@@ -96,6 +103,11 @@ class PokeTeam:
             pass
 
 
+=======
+        #Implement battle mode
+        if battle_mode == 1:
+            self.team = self.self.teamCircularQueue(team_numbers)
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
 
     # TODO
     # TODO
@@ -148,10 +160,17 @@ class PokeTeam:
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
         if self.battle_mode == 0:
+<<<<<<< HEAD
             self.team.reverse()
             self.team.push(poke)
             self.team.reverse()
         elif self.battle_mode == 1:
+=======
+             # TODO not too sure how to make the list of self.team to be a reversed stack
+            self.team.push(poke)
+        elif self.battle_mode == 1:
+            
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
             self.team.append(poke)
         elif self.battle_mode == 2:
             pass
@@ -159,11 +178,18 @@ class PokeTeam:
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
+<<<<<<< HEAD
             self.team.reverse()
             item = self.team.pop()
             self.team.reverse()
             return item
         elif self.battle_mode == 1:
+=======
+             # TODO not too sure how to make the list of self.team to be a reversed stack
+            return self.team.pop()
+        elif self.battle_mode == 1:
+             
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
             return self.team.serve()
         elif self.battle_mode == 2:
             pass
@@ -171,12 +197,26 @@ class PokeTeam:
     # TODO
     def special(self):
         if self.battle_mode == 0:
+<<<<<<< HEAD
             last = self.team.pop()
             self.team.reverse()
             first = self.team.pop()
             self.team.push(last)
             self.team.reverse()
             self.team.push(first)
+=======
+             # TODO not too sure how to make the list of self.team to be a reversed stack
+            final = ArrayReversedStack(len(self.team))
+            temp = ArrayReversedStack(len(self.team)-2) # to store middle self.team
+            final.push(self.team.pop) # top-stack pokemon is now bottom-stack
+            while len(self.team) > 1:
+                temp.push(self.team.pop()) # store middle self.team but in reversed order
+            while not temp.is_empty():
+                final.push(temp.pop()) # push middle self.team in correct order
+            final.push(self.team.pop()) # previously bottom-stack pokemon now top-stack
+            # final stores the pokemon in the desired order
+
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
         elif self.battle_mode == 1:
             count_first_half = len(self.team)//2
             temp_stack = ArrayStack(count_first_half)
@@ -241,10 +281,24 @@ class PokeTeam:
     def leaderboard_team(cls):
         raise NotImplementedError()
 
+<<<<<<< HEAD
     def pokemonsStack(self) -> ArrayStack: # TODO convert team_members to a reversed stack
         pass
+=======
+    def pokemonsStack(self, team_numbers) -> ArrayReversedStack: # TODO convert team_members to a reversed stack
+        team_queue = ArrayStack(sum(team_numbers)).reverse()
+        for count, num_of_poke in enumerate(team_numbers):
+            for _ in range(1, num_of_poke+1):
+                team_queue.push(PokeTeam.BASE_ORDER[count])
+        return team_queue
+        
+>>>>>>> 0760182e9f69eb346337bcd6fc39813317681da9
 
-    def pokemonsCircularQueue(self) -> CircularQueue: # TODO convert team_members to a circular queue
-        pass
+    def pokemonsCircularQueue(self, team_numbers) -> CircularQueue: # TODO convert team_members to a circular queue
+        team_queue = CircularQueue(sum(team_numbers))
+        for count, num_of_poke in enumerate(team_numbers):
+            for _ in range(1, num_of_poke+1):
+                team_queue.append(PokeTeam.BASE_ORDER[count])
+        return team_queue
 
 
