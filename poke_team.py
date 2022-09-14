@@ -1,6 +1,7 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
+from array_sorted_list import ArraySortedList
 
 """
 """
@@ -97,15 +98,15 @@ class PokeTeam:
                 half_team_max = PokeTeam.MAX_TEAM_SIZE//2
             team_size = RandomGen.randint(half_team_max, PokeTeam.MAX_TEAM_SIZE)
 
-        # create team_numbers TODO ADT and sort --------------------------------
-        team_numbers = []
-        team_numbers.append(0)
-        team_numbers.append(team_size)
+        sorted_team_numbers = ArraySortedList(PokeTeam.NUM_BASE_POKEMON)
+        sorted_team_numbers.add(0)
+        sorted_team_numbers.add(team_size)
         for i in range(PokeTeam.NUM_BASE_POKEMON-2): 
-            team_numbers.append(RandomGen.randint(0,team_size))
+            sorted_team_numbers.add(RandomGen.randint(0,team_size))
+        team_numbers = sorted_team_numbers.array
+
         if ai_mode == None:
             ai_mode = PokeTeam.AI.RANDOM
-        # ----------------------------------------------------------------------
 
         PokeTeam.__init__(team_name, team_numbers, battle_mode, ai_mode)
         
