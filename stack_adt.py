@@ -6,6 +6,7 @@ a stack using arrays. Also defines UnitTests for the class.
 __author__ = "Maria Garcia de la Banda for the base"+"XXXXX student for"
 __docformat__ = 'reStructuredText'
 
+from audioop import reverse
 import unittest
 from abc import ABC, abstractmethod 
 from typing import TypeVar, Generic
@@ -98,6 +99,12 @@ class ArrayStack(Stack[T]):
         if self.is_empty():
             raise Exception("Stack is empty")
         return self.array[self.length-1]
+
+    def reverse(self):
+        reversed = ArrayStack(len(self))
+        for _ in range(len(self)):
+            reversed.push(self.pop())
+        self = reversed
 
 class TestStack(unittest.TestCase):
     """ Tests for the above class."""

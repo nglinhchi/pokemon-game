@@ -5,8 +5,7 @@ from sorted_list import ListItem
 from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
-from reverse_stack import ArrayReversedStack
-
+from stack_adt import ArrayStack
 """
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
@@ -89,6 +88,13 @@ class PokeTeam:
         self.criterion = criterion
         self.heal_count = 3
 
+        if self.battle_mode == 0:
+            self.team = self.pokemonsStack()
+        elif self.battle_mode == 1:
+            self.team = self.pokemonsCircularQueue()
+        elif self.battle_mode == 2:
+            pass
+
 
 
     # TODO
@@ -130,7 +136,6 @@ class PokeTeam:
         for i in range(1, len(team_sorted_list)):  #access index of list for pokemon calc 1-last index
             team_numbers[i-1]= team_sorted_list[i].value - team_sorted_list[i-1].value  
 
-        
         if ai_mode == None:
             ai_mode = PokeTeam.AI.RANDOM
 
@@ -143,43 +148,42 @@ class PokeTeam:
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
         if self.battle_mode == 0:
-            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
-            pokemons.push(poke)
+            self.team.reverse()
+            self.team.push(poke)
+            self.team.reverse()
         elif self.battle_mode == 1:
-            pokemons = self.pokemonsCircularQueue()
-            pokemons.append(poke)
+            self.team.append(poke)
         elif self.battle_mode == 2:
             pass
-
 
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
-            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
-            return pokemons.pop()
+            self.team.reverse()
+            item = self.team.pop()
+            self.team.reverse()
+            return item
         elif self.battle_mode == 1:
-            pokemons = self.pokemonsCircularQueue() 
-            return pokemons.serve()
+            return self.team.serve()
         elif self.battle_mode == 2:
             pass
-
 
     # TODO
     def special(self):
         if self.battle_mode == 0:
-            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
-            final = ArrayReversedStack(len(pokemons))
-            temp = ArrayReversedStack(len(pokemons)-2) # to store middle pokemons
-            final.push(pokemons.pop) # top-stack pokemon is now bottom-stack
-            while len(pokemons) > 1:
-                temp.push(pokemons.pop()) # store middle pokemons but in reversed order
-            while not temp.is_empty():
-                final.push(temp.pop()) # push middle pokemons in correct order
-            final.push(pokemons.pop()) # previously bottom-stack pokemon now top-stack
-            # final stores the pokemon in the desired order
-
+            last = self.team.pop()
+            self.team.reverse()
+            first = self.team.pop()
+            self.team.push(last)
+            self.team.reverse()
+            self.team.push(first)
         elif self.battle_mode == 1:
-            pass
+            count_first_half = len(self.team)//2
+            temp_stack = ArrayStack(count_first_half)
+            for _ in range(count_first_half):
+                temp_stack.push(self.team.serve())
+            for _ in range(count_first_half):
+                self.team.append(temp_stack.pop())
         elif self.battle_mode == 2:
             pass
 
@@ -237,9 +241,8 @@ class PokeTeam:
     def leaderboard_team(cls):
         raise NotImplementedError()
 
-    def pokemonsReversedStack(self) -> ArrayReversedStack: # TODO convert team_members to a reversed stack
+    def pokemonsStack(self) -> ArrayStack: # TODO convert team_members to a reversed stack
         pass
-        
 
     def pokemonsCircularQueue(self) -> CircularQueue: # TODO convert team_members to a circular queue
         pass
