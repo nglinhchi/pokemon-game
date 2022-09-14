@@ -2,6 +2,7 @@ from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
 from array_sorted_list import ArraySortedList
+from reverse_stack import ArrayReversedStack
 
 """
 """
@@ -114,7 +115,8 @@ class PokeTeam:
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
         if self.battle_mode == 0:
-            pass
+            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
+            pokemons.push(poke)
         elif self.battle_mode == 1:
             pass
         elif self.battle_mode == 2:
@@ -124,7 +126,8 @@ class PokeTeam:
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
-            pass
+            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
+            pokemons.pop()
         elif self.battle_mode == 1:
             pass
         elif self.battle_mode == 2:
@@ -134,7 +137,17 @@ class PokeTeam:
     # TODO
     def special(self):
         if self.battle_mode == 0:
-            pass
+            pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
+            final = ArrayReversedStack(len(pokemons))
+            temp = ArrayReversedStack(len(pokemons)-2) # to store middle pokemons
+            final.push(pokemons.pop) # top-stack pokemon is now bottom-stack
+            while len(pokemons) > 1:
+                temp.push(pokemons.pop()) # store middle pokemons but in reversed order
+            while not temp.is_empty():
+                final.push(temp.pop()) # push middle pokemons in correct order
+            final.push(pokemons.pop()) # previously bottom-stack pokemon now top-stack
+            # final stores the pokemon in the desired order
+
         elif self.battle_mode == 1:
             pass
         elif self.battle_mode == 2:
@@ -193,3 +206,7 @@ class PokeTeam:
     @classmethod
     def leaderboard_team(cls):
         raise NotImplementedError()
+
+
+    def pokemonsReversedStack(self) -> ArrayReversedStack: # TODO convert team_members to a reversed stack
+        pass
