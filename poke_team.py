@@ -119,7 +119,7 @@ class PokeTeam:
         #last numbers are 0 and team size, therefore need to generate number of base 
         #pokemon - 1 random numbers
 
-        for _ in range(0, cls.NUM_BASE_POKEMON):   
+        for _ in range(1, cls.NUM_BASE_POKEMON):   
             rand_num = RandomGen.randint(0,team_size)
             team_sorted_list.add(ListItem(rand_num, rand_num))  #add to team_numbers
             
