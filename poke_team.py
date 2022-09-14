@@ -86,7 +86,9 @@ class PokeTeam:
         self.battle_mode = battle_mode
         self.ai_type =  ai_type
         self.criterion = criterion
-        self.healh_count = 3
+        self.health_count = 3
+
+        #Implement battle mode 
 
 
 
@@ -188,7 +190,7 @@ class PokeTeam:
         
         elif self.battle_mode == PokeTeam.AI.RANDOM:
             actions = list(Action)
-            if self.healh_count == 0:
+            if self.health_count == 0:
                 actions.remove(Action.HEAL)
             return Action(RandomGen.randint(len(actions)))
         
@@ -213,3 +215,5 @@ class PokeTeam:
     @classmethod
     def leaderboard_team(cls):
         raise NotImplementedError()
+
+    
