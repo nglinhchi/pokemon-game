@@ -2,6 +2,7 @@ from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
 from array_sorted_list import ArraySortedList
+from queue_adt import CircularQueue
 from reverse_stack import ArrayReversedStack
 
 """
@@ -118,7 +119,8 @@ class PokeTeam:
             pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
             pokemons.push(poke)
         elif self.battle_mode == 1:
-            pass
+            pokemons = self.pokemonsCircularQueue()
+            pokemons.
         elif self.battle_mode == 2:
             pass
 
@@ -127,9 +129,10 @@ class PokeTeam:
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
             pokemons = self.pokemonsReversedStack() # TODO not too sure how to make the list of pokemons to be a reversed stack
-            pokemons.pop()
+            return pokemons.pop()
         elif self.battle_mode == 1:
-            pass
+            pokemons = self.pokemonsCircularQueue() 
+            return pokemons.serve()
         elif self.battle_mode == 2:
             pass
 
@@ -175,7 +178,7 @@ class PokeTeam:
         
         elif self.battle_mode == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
             if their_pokemon.poke_type.type_multiplier(my_pokemon.poke_type) >= 1.5:
-                return Action.SWAP
+                return Action.SWAP 
             else:
                 return Action.ATTACK
         
@@ -207,6 +210,8 @@ class PokeTeam:
     def leaderboard_team(cls):
         raise NotImplementedError()
 
-
     def pokemonsReversedStack(self) -> ArrayReversedStack: # TODO convert team_members to a reversed stack
+        pass
+
+    def pokemonsCircularQueue(self) -> CircularQueue: # TODO convert team_members to a circular queue
         pass
