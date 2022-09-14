@@ -6,7 +6,6 @@ a stack using arrays. Also defines UnitTests for the class.
 __author__ = "Maria Garcia de la Banda for the base"+"XXXXX student for"
 __docformat__ = 'reStructuredText'
 
-from audioop import reverse
 import unittest
 from abc import ABC, abstractmethod 
 from typing import TypeVar, Generic
