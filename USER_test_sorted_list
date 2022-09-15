@@ -1,0 +1,107 @@
+from array_sorted_list import ArraySortedList
+from sorted_list import *
+#Test normal
+
+
+def test_normal():
+    test_arr = ArraySortedList(6)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 2)
+    d = ListItem('four', 4)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4)
+
+    list_items = [a,b,c,d,e,f]
+
+    for item in list_items:
+        # print("This item: ",item)
+        test_arr.add_stable(item)
+
+
+    # for _ in test_arr:
+    #     print(_)
+    return test_arr
+
+def test_stable():
+    test_arr = ArraySortedList(6)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 3)
+    d = ListItem('four', 4)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4) #test stable
+
+
+    list_items = [d,c,e, b,a,f]
+
+    for item in list_items:
+        print("This item: ",item)
+        test_arr.add_stable(item)
+
+
+    for _ in test_arr:
+        print(_)
+
+
+    # elif mid == 0 or self[mid-1].key != item.key: #change to stable. Make sure it's the first occurrence
+    #             print("mid")
+    #             return mid
+
+        # def find_last_index(self, low, high, item: ListItem) -> int:
+        # mid = low + (high - low)//2
+# test_normal()
+
+# test_stable()
+
+###Test if order is maintained
+def second_sort_test():
+    test_arr = ArraySortedList(6)
+    second_arr = ArraySortedList(3)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 2)
+    d = ListItem('four', 4)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4)
+
+    list_items = [a,b,c,d,e,f]
+
+    for item in list_items:
+        print("This item: ",item)
+        test_arr.add_stable(item)
+    d.key = 5
+    e.key = 6
+    f.key = 5
+    # print("1st sort", test_arr)
+
+    for item in [d,e,f]:
+        second_arr.add_stable(item)
+    return second_arr
+    # print(second_arr)
+
+# new_test_normal()
+
+def test_deletion():
+    test_arr = test_normal()
+    for _ in range(1,4):    #run loop 3 times
+        test_arr.delete_at_index(3)
+        print(test_arr)
+    return test_arr
+
+def test_deletion_reinsertion():
+    test_arr = test_deletion()
+    second_arr = second_sort_test()
+    for item in second_arr:
+        test_arr.add_stable(item)
+    print(test_arr)
+
+# test_deletion_reinsertion()
+
+test_arr = test_normal()
+print(test_arr)
+print(test_arr.get_last_index(0,6,4))
+#start, end (length of array), key to search

@@ -124,3 +124,81 @@ class ArraySortedList(SortedList[T]):
                 return mid
 
         return low
+    
+    # def stable_index_to_add(self,item) -> int:
+        
+    #     low = self._index_to_add(self,item)
+    #     high = len(self)-1
+    #     mid = (low + high) // 2
+
+    #     if(mid == high or item.key < self[mid+1]) and self[mid] == item.key:
+    #         return mid
+    #     elif item.key < self[mid]:
+
+    
+    def add_stable(self, item: ListItem) -> None:
+        """ 
+        Add new element to the list. Replaces the default add method when
+        array is meant to be kept stable.
+        """
+        if self.is_full():
+            self._resize()
+
+        # find where to place it
+        position = self.stable_index_to_add(item)
+
+        self[position] = item
+        self.length += 1
+    
+    def stable_index_to_add(self, item: ListItem) -> int:
+        """ 
+        Find the position where the new item should be placed. Makes
+        sure index is the last occurrence of item.
+        """
+        low = 0
+        high = len(self) - 1
+        
+        while low <= high:
+            
+            mid = (low + high) // 2
+            # print(low, mid, high)
+            if self[mid].key < item.key:
+                # print("low")
+                low = mid + 1
+            elif self[mid].key > item.key:
+                # print("high")
+                high = mid - 1
+            
+            elif (mid == high or self[mid+1].key != item.key):
+                # print("mid")
+                return mid + 1
+            elif self[mid+1].key == item.key:
+                # print("new cond")
+                low = mid + 1
+                
+
+        # print("low")
+        return low
+
+    def get_last_index(self, low, high, searchkey):
+        """
+        Returns index of last occurrence of searchkey. If invalid returns -1.
+        TODO user facing check of low high inputs.
+        :param low: the index to search from
+        :param high: the end index (length of array)
+        :param searchkey: the key to search for
+        """
+        n = len(self)
+        #n = length of array
+        if high >= low:
+ 
+        # low + (high - low)/2
+            mid = (low + high)//2
+    
+            if(mid == len(self) - 1 or searchkey < self[mid+1].key) and self[mid].key == searchkey :
+                return mid
+            elif searchkey < self[mid].key:
+                return self.get_last_index(low, (mid -1), searchkey)
+            else:
+                return self.get_last_index((mid + 1), high, searchkey)    
+        return -1
