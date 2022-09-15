@@ -1,11 +1,13 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
+from typing import List
 from sorted_list import ListItem
 from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack
+from bset import BSet
 """
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
@@ -29,7 +31,7 @@ class Criterion(Enum):
 class PokeTeam:
     POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, 
     Blastoise, Gastly, Haunter, Gengar, Eevee]
-    BASE_ORDER = [Charmander, Bulbasaur, Squirtle, Gastly, Eevee]
+    BASE_ORDER = [Charmander(), Bulbasaur(), Squirtle(), Gastly(), Eevee()]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
     
@@ -190,6 +192,7 @@ class PokeTeam:
     
     # TODO
     def regenerate_team(self):
+        ###Create new instance with same team_numbers. Evolved should go back to base level etc etc.###
         raise NotImplementedError()
 
 
@@ -241,19 +244,58 @@ class PokeTeam:
     def leaderboard_team(cls):
         raise NotImplementedError()
 
-    def pokemonsStack(self, team_numbers) -> ArrayStack: # TODO convert team_members to a reversed stack
-        team_stack = ArrayStack(sum(team_numbers))
-        for count, num_of_poke in enumerate(team_numbers):
+    def pokemonsStack(self) -> ArrayStack: # TODO convert team_members to a reversed stack
+        team_stack = ArrayStack(sum(self.team_numbers))
+        for count, num_of_poke in enumerate(self.team_numbers):
             for _ in range(1, num_of_poke+1):
                 team_stack.push(PokeTeam.BASE_ORDER[count])
         return team_stack
         
 
-    def pokemonsCircularQueue(self, team_numbers) -> CircularQueue: # TODO convert team_members to a circular queue
-        team_queue = CircularQueue(sum(team_numbers))
-        for count, num_of_poke in enumerate(team_numbers):
+    def pokemonsCircularQueue(self) -> CircularQueue: # TODO convert team_members to a circular queue
+        team_queue = CircularQueue(sum(self.team_numbers))
+        for count, num_of_poke in enumerate(self.team_numbers):
             for _ in range(1, num_of_poke+1):
                 team_queue.append(PokeTeam.BASE_ORDER[count])
         return team_queue
 
 
+    def pokemonsArraySortedList(self):
+        unique_poke_keys = BSet()   #initialise set for comparison
+        pokeorder_break = ArraySortedList()    #Empty sorted list to store ties in Pokemon criterion sort
+
+
+        sort_by = self.criterion.value
+             
+        team_list = ArraySortedList(sum(self.team_numbers))
+        
+        for count, num_of_poke in enumerate(self.team_numbers):
+            poke_to_add = PokeTeam.BASE_ORDER[count]
+            for _ in range(1, num_of_poke+1):
+                if sort_by == Criterion.DEF:
+                    key = poke_to_add.get_defence()
+                elif sort_by == Criterion.HP:
+                    key = poke_to_add.get_hp()
+                elif sort_by == Criterion.LV:
+                    key = poke_to_add.get_level()
+                elif sort_by == Criterion.SPD:
+                    key = poke_to_add.get_speed()
+
+                team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+
+                # unique_poke_keys.add(key)   #add key to set of keys
+
+                # #If there is new element added to set, remove 
+                # if key in unique_poke_keys: #Case where there is a tie
+                #     new_key = poke_to_add.POKE_NO
+                #     pokeorder_break.add
+                #     pokeorder_break.add(poke_to_add, new_key)
+                
+                # else:
+                #     pokeorder_break.add(poke_to_add, poke_to_add.POKE_NO)  #sort by pokedex ordering
+
+            
+                
+
+        
+                

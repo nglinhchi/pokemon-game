@@ -14,6 +14,7 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 class Charizard(PokemonBase): 
     NAME = "Charizard"
     BASE_LEVEL = 3
+    POKE_NO = 2 
     def __init__(self):
         PokemonBase.__init__(self, -1, PokeType.FIRE)
     
@@ -55,6 +56,7 @@ class Charizard(PokemonBase):
 class Charmander(PokemonBase):
     NAME = "Charmander"
     BASE_LEVEL = 1
+    POKE_NO = 1
     def __init__(self):
         PokemonBase.__init__(self, 9, PokeType.FIRE)
     
@@ -99,6 +101,7 @@ class Charmander(PokemonBase):
 class Venusaur(PokemonBase):
     NAME = "Venusaur"
     BASE_LEVEL = 2
+    POKE_NO = 4
     def __init__(self):
         PokemonBase.__init__(self, -1, PokeType.GRASS)
 
@@ -140,6 +143,7 @@ class Venusaur(PokemonBase):
 class Bulbasaur(PokemonBase):
     NAME = "Bulbasaur"
     BASE_LEVEL = 1
+    POKE_NO = 3
     def __init__(self):
         PokemonBase.__init__(self, 13, PokeType.GRASS)
     
@@ -184,6 +188,7 @@ class Bulbasaur(PokemonBase):
 class Blastoise(PokemonBase):
     NAME = "Blastoise"
     BASE_LEVEL = 3
+    POKE_NO = 6
     def __init__(self):
         PokemonBase.__init__(self, -1, PokeType.WATER)
         self.level = 3 # base level
@@ -226,6 +231,7 @@ class Blastoise(PokemonBase):
 class Squirtle(PokemonBase):
     NAME = "Squirtle"
     BASE_LEVEL = 1
+    POKE_NO = 5
     def __init__(self):
         PokemonBase.__init__(self, 11, PokeType.WATER)
     
@@ -264,6 +270,7 @@ class Squirtle(PokemonBase):
 class Gengar(PokemonBase):
     NAME = "Gengar"
     BASE_LEVEL = 3
+    POKE_NO = 9
     def __init__(self):
         PokemonBase.__init__(self, -1, PokeType.GHOST)
         self.level = 3 # base level
@@ -303,7 +310,7 @@ class Gengar(PokemonBase):
 class Haunter(PokemonBase):
     NAME = "Haunter"
     BASE_LEVEL = 1
-    
+    POKE_NO = 8
     def __init__(self):
         PokemonBase.__init__(self, -1, PokeType.GHOST)
         self.level = 1 # base level
@@ -343,6 +350,7 @@ class Haunter(PokemonBase):
 class Gastly(PokemonBase):
     NAME = "Gastly"
     BASE_LEVEL = 1
+    POKE_NO = 7
     def __init__(self):
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
@@ -384,7 +392,7 @@ class Gastly(PokemonBase):
 class Eevee(PokemonBase):
     NAME = "Eevee"
     BASE_LEVEL = 1
-    
+    POKE_NO = 10
     def __init__(self):
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
