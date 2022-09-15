@@ -1,3 +1,8 @@
+"""
+Tests the methods used in pokemon_base and pokemon files
+"""
+__author__ = "Jane Butcher"
+
 import unittest
 from pokemon_base import *
 from pokemon import *
@@ -174,7 +179,7 @@ class Testpokemonbase(BaseTest):
         self.assertEqual(g.get_hp, 8)
 
     def test_update_hp(self):
-        
+
         # not sure how to test update_hp on its own as it relies on levelling up or evolving which call update_hp
 
 

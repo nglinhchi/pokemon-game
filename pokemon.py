@@ -1,6 +1,6 @@
 """
 """
-__author__ = "Scaffold by Jackson Goerner, Code by ______________"
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen"
 
 from multiprocessing.sharedctypes import Value
 from pokemon_base import PokemonBase, StatusEffect, PokeType
@@ -16,6 +16,11 @@ class Charizard(PokemonBase):
         self.level = 3 # base level
     
     def get_max_hp(self) -> int:
+        """
+        Abstract method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        """
         return 12 + 1 * self.level
 
     def get_attack_damage(self) -> int:

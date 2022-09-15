@@ -8,7 +8,7 @@ from enum import Enum, auto
 """
 
 """
-__author__ = "Scaffold by Jackson Goerner, Code by ______________"
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
 
 
 
@@ -63,18 +63,31 @@ class PokemonBase(ABC):
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
 
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :complexity: O(1)
+        """
         return self.name
 
     def get_type(self) -> PokeType:
+        """
+        Getter method returning the type of the pokemon
+        :complexity: O(1)
+        """
         return self.poke_type
 
     def get_level(self) -> int:
         """
         Getter method returning current Level
+        :complexity: O(1)
         """
         return self.level
 
     def get_status_effect(self) -> StatusEffect:
+        """
+        Getter method returning the status effects currently inflicted on a pokemon
+        :complexity: O(1)
+        """
         return self.status_effect
 
     @abstractmethod
@@ -118,6 +131,10 @@ class PokemonBase(ABC):
     # OTHER METHODS ************************************************
 
     def is_fainted(self) -> bool:
+        """
+        Returns either true or false depending on whether the pokemon has fainted
+        :complexity: O(1)
+        """
         return self.hp <= 0
 
     def lose_hp(self, lost_hp: int) -> None:
@@ -130,6 +147,7 @@ class PokemonBase(ABC):
     def heal(self) -> None:
         """
         Restores current HP to full and removes any status effects
+        :complexity: O(1)
         """
         self.hp = self.max_hp
         self.status_effect = None
