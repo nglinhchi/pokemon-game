@@ -137,7 +137,10 @@ class ArraySortedList(SortedList[T]):
 
     
     def add_stable(self, item: ListItem) -> None:
-        """ Add new element to the list. Keep stable."""
+        """ 
+        Add new element to the list. Replaces the default add method when
+        array is meant to be kept stable.
+        """
         if self.is_full():
             self._resize()
 
@@ -148,7 +151,8 @@ class ArraySortedList(SortedList[T]):
         self.length += 1
     
     def stable_index_to_add(self, item: ListItem) -> int:
-        """ Find the position where the new item should be placed. Makes
+        """ 
+        Find the position where the new item should be placed. Makes
         sure index is the last occurrence of item.
         """
         low = 0
