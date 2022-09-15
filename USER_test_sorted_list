@@ -2,7 +2,6 @@ from array_sorted_list import ArraySortedList
 from sorted_list import *
 #Test normal
 
-test_arr = ArraySortedList(5)
 
 def test_normal():
     test_arr = ArraySortedList(6)
@@ -17,7 +16,7 @@ def test_normal():
     list_items = [a,b,c,d,e,f]
 
     for item in list_items:
-        print("This item: ",item)
+        # print("This item: ",item)
         test_arr.add_stable(item)
 
 
@@ -53,7 +52,7 @@ def test_stable():
 
         # def find_last_index(self, low, high, item: ListItem) -> int:
         # mid = low + (high - low)//2
-test_normal()
+# test_normal()
 
 # test_stable()
 
@@ -100,4 +99,9 @@ def test_deletion_reinsertion():
         test_arr.add_stable(item)
     print(test_arr)
 
-test_deletion_reinsertion()
+# test_deletion_reinsertion()
+
+test_arr = test_normal()
+print(test_arr)
+print(test_arr.get_last_index(0,6,4))
+#start, end (length of array), key to search

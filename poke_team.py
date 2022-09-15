@@ -280,8 +280,11 @@ class PokeTeam:
                     key = poke_to_add.get_level()
                 elif sort_by == Criterion.SPD:
                     key = poke_to_add.get_speed()
-
+                
                 team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+
+                
+            
 
                 # unique_poke_keys.add(key)   #add key to set of keys
 
@@ -294,7 +297,7 @@ class PokeTeam:
                 # else:
                 #     pokeorder_break.add(poke_to_add, poke_to_add.POKE_NO)  #sort by pokedex ordering
 
-            
+
                 
 
         
