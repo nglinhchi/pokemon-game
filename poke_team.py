@@ -1,11 +1,11 @@
 from __future__ import annotations
 from multiprocessing.sharedctypes import Value
 from random import Random
-from sorted_list import ListItem
+from sorted_list import ListItem, SortedList
 from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
-from stack_adt import ArrayStack
+from stack_adt import ArrayStack, Stack
 """
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
@@ -27,9 +27,8 @@ class Criterion(Enum):
     DEF = auto()
 
 class PokeTeam:
-    POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, 
-    Blastoise, Gastly, Haunter, Gengar, Eevee]
-    BASE_ORDER = [Charmander, Bulbasaur, Squirtle, Gastly, Eevee]
+    POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, Blastoise, Gastly, Haunter, Gengar, Eevee]
+    BASE_ORDER = [Charmander(), Bulbasaur(), Squirtle(), Gastly(), Eevee()]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
     
@@ -88,16 +87,9 @@ class PokeTeam:
         self.criterion = criterion
         self.heal_count = 3
 
-        if self.battle_mode == 0:
-            self.team = self.pokemonsStack()
-        elif self.battle_mode == 1:
-            self.team = self.pokemonsCircularQueue()
-        elif self.battle_mode == 2:
-            pass
+        self.regenerate_team()
 
 
-
-    # TODO
     # TODO
     @classmethod
     def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
@@ -141,9 +133,6 @@ class PokeTeam:
 
         return PokeTeam(team_name, team_numbers, battle_mode, ai_mode)
         # ----------------------------------------------------------------------
-
-     
-        
 
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
@@ -190,16 +179,32 @@ class PokeTeam:
     
     # TODO
     def regenerate_team(self):
-        raise NotImplementedError()
+        if self.battle_mode == 0:
+            self.team = self.pokemonsStack()
+        elif self.battle_mode == 1:
+            self.team = self.pokemonsCircularQueue()
+        elif self.battle_mode == 2:
+            pass
 
 
     # TODO
     def __str__(self):
-        raise NotImplementedError()
+        # Dawn (2): [LV. 1 Gastly: 6 HP, LV. 1 Squirtle: 11 HP, LV. 1 Eevee: 10 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Charmander: 9 HP]"
+        # "LV. 5 Venusaur: 17 HP"
+        str = f"{self.team_name} ({self.battle_mode}): ["
+        if self.battle_mode == 0:
+            pass # print pokemon from stack
+        if self.battle_mode == 1:
+            pass # print pokemon from queue
+        if self.battle_mode == 2:
+            pass # print pokemon from ordered list
+        str += "]"
+        return str
+
 
     # TODO
     def is_empty(self):
-        raise NotImplementedError()
+        return self.team.is_empty()
 
 
     def choose_battle_option(self, my_pokemon: PokemonBase, their_pokemon: PokemonBase) -> Action:
@@ -248,7 +253,6 @@ class PokeTeam:
                 team_stack.push(PokeTeam.BASE_ORDER[count])
         return team_stack
         
-
     def pokemonsCircularQueue(self, team_numbers) -> CircularQueue: # TODO convert team_members to a circular queue
         team_queue = CircularQueue(sum(team_numbers))
         for count, num_of_poke in enumerate(team_numbers):
@@ -257,3 +261,28 @@ class PokeTeam:
         return team_queue
 
 
+    # ADDED BY CHLOE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    def pokemonsStack(self) -> ArrayStack:
+        team_stack = Stack(sum(self.team_numbers))
+        for i, num_pokemon in enumerate(self.team_numbers):
+            for _ in range(num_pokemon):
+                pokemon = self.getBasePokemon(i)
+                team_stack.append(pokemon)
+
+    def pokemonsCircularQueue(self) -> CircularQueue:
+        team_queue = CircularQueue(sum(self.team_numbers))
+        for i, num_pokemon in enumerate(self.team_numbers):
+            for _ in range(num_pokemon):
+                pokemon = self.getBasePokemon(i)
+                team_queue.append(pokemon)
+
+    def getBasePokemon(self, i: int) -> PokemonBase:
+        return PokeTeam.BASE_ORDER[i]
+
+    # def mode3(self):
+    #     new_list = ArraySortedList(sum(self.team_numbers))
+    #     for i in range(self.team_numbers):
+    #         pass 
+        
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
