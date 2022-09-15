@@ -1,3 +1,4 @@
+from audioop import reverse
 from array_sorted_list import ArraySortedList
 from sorted_list import *
 #Test normal
@@ -103,5 +104,32 @@ def test_deletion_reinsertion():
 
 test_arr = test_normal()
 print(test_arr)
-print(test_arr.get_last_index(0,6,4))
+# print(test_arr.get_last_index(0,6,4))
 #start, end (length of array), key to search
+def test_stable_index_to_add():
+    #This method should return the index to add to, so the occurrence of last
+    #index is the result of this function - 1
+    test_arr = test_normal()
+    test_arr.delete_at_index(5) #remove last element to make room
+    print(test_arr)
+    #[(one, 1), (two, 2), (three, 2), (four, 4), (five, 4)]
+
+    assert test_arr.stable_index_to_add(ListItem("seven", 2)) - 1 == 2  #will return index 3 - 1 = 2
+    assert test_arr.stable_index_to_add(ListItem("seven", 2)) -1 == test_arr.get_last_index(2)
+# test_stable_index_to_add()
+
+def test_reverse():
+    test_arr = test_normal()
+    reverse_arr = ArraySortedList(len(test_arr))
+   
+    for item in test_arr:
+        reverse_arr.add(ListItem(item.value, (item.key * -1)))
+    
+    reverse_arr_list = [x.value for x in reverse_arr]
+    
+    test_arr_list = [x.value for x in test_arr]
+    
+    
+  
+    assert reverse_arr_list == test_arr_list
+test_reverse()

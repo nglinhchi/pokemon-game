@@ -154,7 +154,10 @@ class ArraySortedList(SortedList[T]):
         """ 
         Find the position where the new item should be placed. Makes
         sure index is the last occurrence of item.
+        :pre: array is not full
         """
+        if self.is_full() == True:
+            raise ValueError("Array is full")
         low = 0
         high = len(self) - 1
         
@@ -174,31 +177,61 @@ class ArraySortedList(SortedList[T]):
                 return mid + 1
             elif self[mid+1].key == item.key:
                 # print("new cond")
-                low = mid + 1
+                low = mid + 15
                 
 
         # print("low")
         return low
 
-    def get_last_index(self, low, high, searchkey):
-        """
-        Returns index of last occurrence of searchkey. If invalid returns -1.
-        TODO user facing check of low high inputs.
-        :param low: the index to search from
-        :param high: the end index (length of array)
-        :param searchkey: the key to search for
-        """
-        n = len(self)
-        #n = length of array
-        if high >= low:
+    # def get_last_index(self, low, high, searchkey):
+
+        # """
+        # Returns index of last occurrence of searchkey. If invalid returns -1.
+        # TODO user facing check of low high inputs.
+        # :param low: the index to search from
+        # :param high: the end index (length of array)
+        # :param searchkey: the key to search for
+        # """
+        # n = len(self)
+        # #n = length of array
+        # if high >= low:
  
-        # low + (high - low)/2
-            mid = (low + high)//2
+        # # low + (high - low)/2
+        #     mid = (low + high)//2
     
-            if(mid == len(self) - 1 or searchkey < self[mid+1].key) and self[mid].key == searchkey :
-                return mid
-            elif searchkey < self[mid].key:
-                return self.get_last_index(low, (mid -1), searchkey)
-            else:
-                return self.get_last_index((mid + 1), high, searchkey)    
-        return -1
+        #     if(mid == len(self) - 1 or searchkey < self[mid+1].key) and self[mid].key == searchkey :
+        #         return mid
+        #     elif searchkey < self[mid].key:
+        #         return self.get_last_index(low, (mid -1), searchkey)
+        #     else:
+        #         return self.get_last_index((mid + 1), high, searchkey)    
+        # return -1
+    def get_last_index(self, key: int):
+        return self.stable_index_to_add(ListItem(None, key)) - 1  #returns index of last occurence of item with same key. Value set to none as does not matter
+
+    def reverse_order(self):
+        """
+        Takes input array sorted in ascending order and reverses it using the same key
+        so that the array is descending.
+        :out: descending sorted array
+        """
+        reverse_arr = ArraySortedList(len(self))
+        for item in self:
+            reverse_arr.add(ListItem(item.value, (item.key * -1)))
+        return reverse_arr
+
+
+    def tiebreak(self, start_idx,last_idx):
+        """
+        Breaks ties by pokemon order for specified instance of tie
+        :param start_idx: start of tie
+        :param last_idx: end of tie
+        """
+        if not (last_idx - start_idx) + 1 > 1:  #check if start and end index contain items (add 1 to include start index)
+            raise ValueError("Invalid range for tiebreak")
+        pokeorder_list = ArraySortedList((last_idx-start_idx)+1)
+        while start_idx <= last_idx:
+            pokemon = self[start_idx].value
+            key = pokemon.POKE_NO
+            pokeorder_list.add(ListItem(pokemon,key))
+

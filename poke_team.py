@@ -261,29 +261,38 @@ class PokeTeam:
 
 
     def pokemonsArraySortedList(self):
-        unique_poke_keys = BSet()   #initialise set for comparison
+        unique_keys = BSet()   #initialise empty set for tiebreaker comparison
         pokeorder_break = ArraySortedList()    #Empty sorted list to store ties in Pokemon criterion sort
 
 
         sort_by = self.criterion.value
              
         team_list = ArraySortedList(sum(self.team_numbers))
-        
+
         for count, num_of_poke in enumerate(self.team_numbers):
             poke_to_add = PokeTeam.BASE_ORDER[count]
+            if sort_by == Criterion.DEF:
+                key = poke_to_add.get_defence()
+            elif sort_by == Criterion.HP:
+                key = poke_to_add.get_hp()
+            elif sort_by == Criterion.LV:
+                key = poke_to_add.get_level()
+            elif sort_by == Criterion.SPD:
+                key = poke_to_add.get_speed()
             for _ in range(1, num_of_poke+1):
-                if sort_by == Criterion.DEF:
-                    key = poke_to_add.get_defence()
-                elif sort_by == Criterion.HP:
-                    key = poke_to_add.get_hp()
-                elif sort_by == Criterion.LV:
-                    key = poke_to_add.get_level()
-                elif sort_by == Criterion.SPD:
-                    key = poke_to_add.get_speed()
-                
                 team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+            
+            criterion_list = team_list.reverse_order()
+            for idx, item in enumerate(criterion_list):
+                if not item.key in unique_keys:
+                    unique_keys.add(item.key)
+                else:
+                    tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                    tie_last_idx = criterion_list.get_last_index(item.key)
+                    criterion_list.tiebreak(tie_start_idx, tie_last_idx)
 
-                
+
+
             
 
                 # unique_poke_keys.add(key)   #add key to set of keys
