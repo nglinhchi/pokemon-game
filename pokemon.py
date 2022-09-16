@@ -1,4 +1,5 @@
 """
+Implements the different pokemons (both base and evolved) and their characteristics
 """
 __author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen"
 
@@ -17,28 +18,58 @@ class Charizard(PokemonBase):
     
     def get_max_hp(self) -> int:
         """
-        Abstract method containing HP scaling formula for individual pokemon. Calculates
+        Method containing HP scaling formula for individual pokemon. Calculates
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
+        :complexity: O(1)
         """
         return 12 + 1 * self.level
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :complexity: O(1)
+        """
         return 10 + 2 * self.level
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :complexity: O(1)
+        """
         return 9 + 1 * self.level
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :complexity: O(1)
+        """
         return 4
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        Base pokemon returns true
+        Fully evolved pokemon returns false
+        :complexity: O(1)
+        """
         return False
 
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Base pokemon return the base evolved pokemon
+        Fully evolved pokemon return error
+        :complexity: O(1)
+        """
         raise ValueError(f"{self.name} does not have evolution")
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :complexity: O(1)
+        """
         if damage > self.get_defence():
             self.lose_hp(2*damage)
         else:

@@ -6,7 +6,7 @@ from random_gen import RandomGen
 from enum import Enum, auto
 
 """
-
+Implements the base functions/moves that are required to be performed by all pokemon
 """
 __author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
 
@@ -102,6 +102,7 @@ class PokemonBase(ABC):
     def get_hp(self) -> int:
         """
         Getter method returning current HP
+        :complexity: O(1)
         """
         return self.hp
 
@@ -141,6 +142,7 @@ class PokemonBase(ABC):
         """
         Lose hp equal to amount passed as arg. Subtract this amount from current HP (stored in hp)
         and set as current HP
+        :complexity: O(1)
         """
         self.hp -= lost_hp
 
@@ -169,6 +171,7 @@ class PokemonBase(ABC):
         of the Pokemon, and applies defending Pokemon's defence calc to this amount.
         Then takes any relevant damage due to status effects and has chance of inflicting
         own status effect onto defending Pokemon
+        :complexity: O(1)
         """
         # >>> Step 1: Status effects on attack damage / redirecting attacks
         if self.status_effect == StatusEffect.SLEEP:
@@ -193,6 +196,7 @@ class PokemonBase(ABC):
     def should_evolve(self) -> bool:
         """
         Check if pokemon has met level requirement to evolve
+        :complexity: O(1)
         """
         return self.level >= self.get_initial_evolved_version().get_level()
 
@@ -218,6 +222,7 @@ class PokemonBase(ABC):
         Scales max HP by calling get_max_hp(), and calculates HP lost prior to HP modification, 
         updating current HP by subtracting from new max HP.
         :pre: max_hp and hp must be defined
+        :complexity: O(1)
         """
         previous_max_hp = self.max_hp  
         previous_hp = self.hp          
@@ -227,7 +232,8 @@ class PokemonBase(ABC):
     @abstractmethod
     def get_evolved_version(self) -> PokemonBase:
         """
-        Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
+        Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it
+        :complexity: O(1)
         """
         evolved = self.get_initial_evolved_version()
         evolved.level = self.level
@@ -239,6 +245,7 @@ class PokemonBase(ABC):
     def level_up(self) -> None:
         """
         Increase pokemon's level, scale hp and max_hp
+        :complexity: O(1)
         """
         self.level += 1
         self.update_hp()
