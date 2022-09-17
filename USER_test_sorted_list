@@ -217,6 +217,6 @@ def test_listitem_order():
     test_arr.add(c)
     print(test_arr)
 
-test_listitem_order()
-
-
+# test_listitem_order()
+team_numbers = [0] * 6
+print(team_numbers)

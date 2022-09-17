@@ -1,4 +1,5 @@
 from __future__ import annotations
+from ast import Num
 from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
 from random import Random
@@ -114,7 +115,7 @@ class PokeTeam:
         #add 0 and team size
         start_val = ListItem(0, 0) #value and key to sort by are same
         end_val = ListItem(team_size, team_size)
-        team_sorted_list = ArraySortedList()
+        team_sorted_list = ArraySortedList((cls.NUM_BASE_POKEMON + 1))
         team_sorted_list.add(start_val) #add 0
         team_sorted_list.add(end_val)   #add team size
         
@@ -129,7 +130,7 @@ class PokeTeam:
             team_sorted_list.add(ListItem(rand_num, rand_num))  #add to team_numbers
             
         #Store calculated number of base pokemon in team_numbers list to be initialised
-        team_numbers = []   #list for storing output of random team gen
+        team_numbers = [0]* (cls.NUM_BASE_POKEMON) #list for storing output of random team gen
         for i in range(1, len(team_sorted_list)):  #access index of list for pokemon calc 1-last index
             team_numbers[i-1]= team_sorted_list[i].value - team_sorted_list[i-1].value  
 
