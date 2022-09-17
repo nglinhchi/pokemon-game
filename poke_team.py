@@ -9,7 +9,7 @@ from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack, Stack
-from bset import BSet
+from aset import ASet
 """
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
@@ -136,8 +136,8 @@ class PokeTeam:
 
         if ai_mode == None:
             ai_mode = PokeTeam.AI.RANDOM
-
-        return PokeTeam(team_name, team_numbers, battle_mode, ai_mode)
+        
+        return PokeTeam(team_name, team_numbers, battle_mode, ai_mode, **kwargs)
         # ----------------------------------------------------------------------
 
     # TODO
@@ -162,7 +162,7 @@ class PokeTeam:
             self.poke_on_field = self.team.serve()
             return self.poke_on_field
         elif self.battle_mode == 2:
-            self.poke_on_field = self.team_mode_2[0].value   #First pokemon in list is the one for battle
+            self.team[0].value  #First pokemon in list is the one for battle
             return self.poke_on_field
     # TODO
     def special(self):
@@ -294,15 +294,15 @@ class PokeTeam:
             elif sort_by == Criterion.SPD:
                 key = poke_to_add.get_speed()
             
-
+            assert type(key) == int, "Key is invalid: not an integer"
             for _ in range(1, num_of_poke+1):
                 team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
         
         ### Sort initial team ###
 
         criterion_list = team_list.reverse_order()  #criterion descending initially.
-
-        unique_keys = BSet() 
+        
+        unique_keys = ASet(len(criterion_list)) 
         for idx, item in enumerate(criterion_list):
             if not item.key in unique_keys:
                 unique_keys.add(item.key)
@@ -319,7 +319,7 @@ class PokeTeam:
 
     
     # def check_break_tie(self, criterion_list: ArraySortedList):
-    #     unique_keys = BSet()
+    #     unique_keys = Aset()
     #     for idx, item in enumerate(criterion_list):
     #         if not item.key in unique_keys:
     #             unique_keys.add(item.key)
@@ -341,7 +341,7 @@ class PokeTeam:
     #         self.sort_by_init(criterion_list)
             
     # def sort_by_init(self, list_to_sort: ArraySortedList):
-    #     unique_keys = BSet()
+    #     unique_keys = Aset()
     #     for idx, item in enumerate(list_to_sort):
     #             if not item.key in unique_keys:
     #                 unique_keys.add(item.key)
@@ -418,7 +418,7 @@ class PokeTeam:
         assert len(pokeorder_list) == end_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
 
         if self.initial_order_exist is True: #if true check/sort again
-            unique_poke_no = BSet()   
+            unique_poke_no = ASet(len(team_list))   
             for idx, item in enumerate(pokeorder_list):
                 if not item.key in unique_poke_no:
                     unique_poke_no.add(item.key)
