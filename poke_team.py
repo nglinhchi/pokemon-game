@@ -1,4 +1,5 @@
 from __future__ import annotations
+from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
 from random import Random
 from typing import List
@@ -6,7 +7,7 @@ from sorted_list import ListItem
 from pokemon import *
 from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
-from stack_adt import ArrayStack
+from stack_adt import ArrayStack, Stack
 from bset import BSet
 """
 """
@@ -89,7 +90,8 @@ class PokeTeam:
         self.ai_type =  ai_type
         self.criterion = criterion
         self.heal_count = 3
-
+        self.initial_order_exist = False
+        self.poke_on_field = None   #initialise pokemon on field
         self.regenerate_team()
 
 
@@ -146,20 +148,21 @@ class PokeTeam:
         elif self.battle_mode == 1:
             self.team.append(poke)
         elif self.battle_mode == 2:
-            pass
+            self.sort_into_team(poke)
 
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
             self.team.reverse()
-            item = self.team.pop()
+            self.poke_on_field = self.team.pop()
             self.team.reverse()
-            return item
+            return self.poke_on_field
         elif self.battle_mode == 1:
-            return self.team.serve()
+            self.poke_on_field = self.team.serve()
+            return self.poke_on_field
         elif self.battle_mode == 2:
-            pass
-
+            self.poke_on_field = self.team_mode_2[0].value   #First pokemon in list is the one for battle
+            return self.poke_on_field
     # TODO
     def special(self):
         if self.battle_mode == 0:
@@ -177,17 +180,18 @@ class PokeTeam:
             for _ in range(count_first_half):
                 self.team.append(temp_stack.pop())
         elif self.battle_mode == 2:
-            pass
+            self.return_pokemon(self.poke_on_field)
+            self.team.reverse_order()
 
     
     # TODO
     def regenerate_team(self):
         if self.battle_mode == 0:
-            self.team = self.pokemonsStack()
+            self.team = self.team_mode_0()
         elif self.battle_mode == 1:
-            self.team = self.pokemonsCircularQueue()
+            self.team = self.team_mode_1()
         elif self.battle_mode == 2:
-            pass
+            self.team = self.team_mode_2()
 
 
     # TODO
@@ -249,14 +253,14 @@ class PokeTeam:
     def leaderboard_team(cls):
         raise NotImplementedError()
 
-    def pokemonsStack(self) -> ArrayStack:
+    def team_mode_0(self) -> ArrayStack:
         team_stack = Stack(sum(self.team_numbers))
         for i, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
                 pokemon = self.getBasePokemon(i)
-                team_stack.append(pokemon)
+                team_stack.push(pokemon)
 
-    def pokemonsCircularQueue(self) -> CircularQueue:
+    def team_mode_1(self) -> CircularQueue:
         team_queue = CircularQueue(sum(self.team_numbers))
         for i, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
@@ -266,15 +270,18 @@ class PokeTeam:
     def getBasePokemon(self, i: int) -> PokemonBase:
         return PokeTeam.BASE_ORDER[i]
 
-    def pokemonsArraySortedList(self):
-        unique_keys = BSet()   #initialise empty set for tiebreaker comparison
-        pokeorder_break = ArraySortedList()    #Empty sorted list to store ties in Pokemon criterion sort
+    def team_mode_2(self):
+        """
+        Initial team for battle mode 2
+        """
+          #initialise empty set for tiebreaker comparison
+        
 
 
-        sort_by = self.criterion.value
+        sort_by = self.criterion
              
         team_list = ArraySortedList(sum(self.team_numbers))
-
+        ### Add to list by team_numbers###
         for count, num_of_poke in enumerate(self.team_numbers):
             poke_to_add = PokeTeam.BASE_ORDER[count]
             if sort_by == Criterion.DEF:
@@ -285,21 +292,72 @@ class PokeTeam:
                 key = poke_to_add.get_level()
             elif sort_by == Criterion.SPD:
                 key = poke_to_add.get_speed()
+            
+
             for _ in range(1, num_of_poke+1):
                 team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+        
+        ### Sort initial team ###
+
+        criterion_list = team_list.reverse_order()  #criterion descending initially.
+
+        unique_keys = BSet() 
+        for idx, item in enumerate(criterion_list):
+            if not item.key in unique_keys:
+                unique_keys.add(item.key)
+            else:   #If tie exist, sort by pokedex_order 
+                tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                tie_last_idx = criterion_list.get_last_index(item.key)
+                self.break_tie(criterion_list, tie_start_idx, tie_last_idx)
+        
+        
+        for num, item in enumerate(criterion_list, 1):  #Assign all in sorted list an order number from 1- length of list
+            item.order = num
+        self.initial_order_exist = True
+        return criterion_list
+
+    
+    # def check_break_tie(self, criterion_list: ArraySortedList):
+    #     unique_keys = BSet()
+    #     for idx, item in enumerate(criterion_list):
+    #         if not item.key in unique_keys:
+    #             unique_keys.add(item.key)
+    #             if len(unique_keys) == len(criterion_list):
+    #                 return criterion_list   #early exit condition, if all unique return list mark true?
+    #         else:
+    #             tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+    #             tie_last_idx = criterion_list.get_last_index(item.key)
+    #             pokedex_ordered_list = criterion_list.break_by_pokeno(tie_start_idx, tie_last_idx)
+
+    #             for idx in range(tie_start_idx, tie_last_idx + 1):
+    #                 criterion_list.swap_at_index(idx, pokedex_ordered_list[idx])
+        
+    #     #if no initial order (first time calling)
+    #     if self.initial_order is False:
+    #         for init_order, item in enumerate(criterion_list, 1):
+    #             item.order = init_order
+    #     else:
+    #         self.sort_by_init(criterion_list)
             
-            criterion_list = team_list.reverse_order()
-            for idx, item in enumerate(criterion_list):
-                if not item.key in unique_keys:
-                    unique_keys.add(item.key)
-                else:
-                    tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-                    tie_last_idx = criterion_list.get_last_index(item.key)
-                    criterion_list.tiebreak(tie_start_idx, tie_last_idx)
+    # def sort_by_init(self, list_to_sort: ArraySortedList):
+    #     unique_keys = BSet()
+    #     for idx, item in enumerate(list_to_sort):
+    #             if not item.key in unique_keys:
+    #                 unique_keys.add(item.key)
+    #             else:
+    #                 tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+    #                 tie_last_idx = list_to_sort.get_last_index(item.key)
+    #                 pokedex_ordered_list = list_to_sort.break_by_order(tie_start_idx, tie_last_idx)
+    #                 for idx in range(tie_start_idx, tie_last_idx + 1):
+    #                     list_to_sort.swap_at_index(idx, pokedex_ordered_list[idx])
+
+    #     # if self.is_tied():
+    #     #     #use initial ordering to break again
+    #     #     #if initial ordering not none: sort by initial
+    #     #     if 
+        #     #else set initial ordering.
 
 
-
-            
 
                 # unique_poke_keys.add(key)   #add key to set of keys
 
@@ -313,7 +371,82 @@ class PokeTeam:
                 #     pokeorder_break.add(poke_to_add, poke_to_add.POKE_NO)  #sort by pokedex ordering
 
 
-                
-
+    
+    def sort_into_team(self, pokemon):
+        """
+        Takes Pokemon and sorts back into team
+        :pre: Pokemons key must be valid (already reversed for descending order)
+        """
+        ### SORT BY FIRST KEY: CRITERION ###
+        self.criterion_order(self, pokemon)
+        ### CHECK IF TIE ###
+        check_key = pokemon.key
+        for idx, item in enumerate(self.team):
+            if item.key == check_key:
+                tie_start_idx = idx
+                tie_end_idx = self.team.get_last_index(pokemon.key)
+        ### SORT BY POKEDEX and INITIAL(Initial check done inside pokedex) ###
+                self.break_tie(self.team, tie_start_idx, tie_end_idx)
         
+
+    
                 
+    def criterion_order(self, pokemon):
+    
+        poke_to_add = pokemon
+        if self.criterion == Criterion.DEF:
+            key = poke_to_add.get_defence()
+        elif self.criterion == Criterion.HP:
+            key = poke_to_add.get_hp()
+        elif self.criterion == Criterion.LV:
+            key = poke_to_add.get_level()
+        elif self.criterion == Criterion.SPD:
+            key = poke_to_add.get_speed()
+        
+        
+        self.team.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+    
+    def break_tie(self, team_list: ArraySortedList, start_idx: int, end_idx: int):
+        pokeorder_list = ArraySortedList((end_idx-start_idx)+1)
+        while start_idx <= end_idx:
+            pokemon = team_list[start_idx].value
+            # previous_key = team_list[start_idx].key
+            key = pokemon.POKE_NO
+            pokeorder_list.add(ListItem(pokemon,key))
+            start_idx += 1
+        assert len(pokeorder_list) == end_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
+
+        if self.initial_order_exist is True: #if true check/sort again
+            unique_poke_no = BSet()   
+            for idx, item in enumerate(pokeorder_list):
+                if not item.key in unique_poke_no:
+                    unique_poke_no.add(item.key)
+                else:
+                    tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                    tie_last_idx = pokeorder_list.get_last_index(item.key)
+                    
+                    self.initial_order(team_list, tie_start_idx, tie_last_idx)
+        
+        #Otherwise Return. No more sorting left
+        #Swap newly sorted items back into team_list
+        for idx, item in enumerate(pokeorder_list, start_idx):
+            # item.order = idx can be done at end by controller
+            #previous key should be set by swap at index
+            team_list.swap_at_index(idx, item)
+            
+        
+        return
+    
+    def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
+        init_order_list = ArraySortedList((end_idx-start_idx)+1)
+        while start_idx <= end_idx:
+            pokemon = pokeorder_list[start_idx].value
+            # previous_key = team_list[start_idx].key
+            key = pokeorder_list[start_idx].order
+            init_order_list.add(ListItem(pokemon,key))
+            start_idx += 1
+        assert len(init_order_list) == end_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
+        for idx, item in enumerate(init_order_list, start_idx):
+                #swap items according to initial order in poke_order_list
+                pokeorder_list.swap_at_index(idx, item)
+    

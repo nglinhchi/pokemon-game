@@ -238,6 +238,12 @@ class Squirtle(PokemonBase):
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
 
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+            
     def get_max_hp(self) -> int:
         return 9 + 2 * self.level
 

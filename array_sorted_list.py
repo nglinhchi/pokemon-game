@@ -3,6 +3,7 @@
     Items to store should be of time ListItem.
 """
 
+from bset import BSet
 from referential_array import ArrayR
 from sorted_list import *
 
@@ -122,7 +123,6 @@ class ArraySortedList(SortedList[T]):
                 high = mid - 1
             else:
                 return mid
-
         return low
     
     # def stable_index_to_add(self,item) -> int:
@@ -152,7 +152,7 @@ class ArraySortedList(SortedList[T]):
     
     def stable_index_to_add(self, item: ListItem) -> int:
         """ 
-        Find the position where the new item should be placed. Makes
+        1Find the position where the new item should be placed. Makes
         sure index is the last occurrence of item.
         :pre: array is not full
         """
@@ -177,7 +177,7 @@ class ArraySortedList(SortedList[T]):
                 return mid + 1
             elif self[mid+1].key == item.key:
                 # print("new cond")
-                low = mid + 15
+                low = mid + 1
                 
 
         # print("low")
@@ -221,9 +221,11 @@ class ArraySortedList(SortedList[T]):
         return reverse_arr
 
 
-    def tiebreak(self, start_idx,last_idx):
+    def break_by_pokeno(self, start_idx,last_idx):
         """
-        Breaks ties by pokemon order for specified instance of tie
+        Breaks ties by pokedex number order for specified instance of tie. Returns new sorted
+        list that contains same instances of Pokemon but sorted with new keys that correspond
+        to it's pokedex number.
         :param start_idx: start of tie
         :param last_idx: end of tie
         """
@@ -234,4 +236,86 @@ class ArraySortedList(SortedList[T]):
             pokemon = self[start_idx].value
             key = pokemon.POKE_NO
             pokeorder_list.add(ListItem(pokemon,key))
+        assert len(pokeorder_list) == last_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
+        return pokeorder_list
+        # #check for tie in this second list
+        # if self.is_tied():
+        #     #use initial ordering to break again
+        #     #if initial ordering not none: sort by initial
+        #     if 
+        #     #else set initial ordering.
+        
+    def break_by_order(self, start_idx,last_idx):
+        """
+        Breaks ties by pokemon initial order for specified instance of tie. Returns new sorted_list 
+        array that contains the same instances of Pokemon but with a different key corresponding
+        to it's initial order number.
+        :param start_idx: start of tie
+        :param last_idx: end of tie
+        """
+        if not (last_idx - start_idx) + 1 > 1:  #check if start and end index contain items (add 1 to include start index)
+            raise ValueError("Invalid range for tiebreak")
+        initorder_list = ArraySortedList((last_idx-start_idx)+1)
+        while start_idx <= last_idx:
+            pokemon = self[start_idx].value
+            key = self[start_idx].order
 
+            initorder_list.add(ListItem(pokemon,key))
+            start_idx += 1
+        assert len(initorder_list) == last_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
+        return initorder_list
+
+    def get_first_index(self, key: int):
+        item = ListItem(None, key)  #dummy item to get key
+        pivot = self._index_to_add(item)
+
+        low = 0
+        high = pivot
+        
+        while low <= high:
+            mid = (low + high) // 2
+            if self[mid].key < key:
+                low = mid + 1
+            elif self[mid].key > key:
+                high = mid - 1
+            else:
+                return mid
+        return low
+    def add_in_front(self, item: ListItem):
+        idx = self.get_first_index(item.key)
+        self[idx] = item
+        self.length += 1
+    
+    def is_tied(self):
+        unique_set = BSet() #initialise set for check
+        for item in self:
+            unique_set.add(item.key)
+        if len(unique_set) != len(self):
+            return False
+        return True
+    
+    def swap_at_index(self, index: int, item: ListItem):
+        """
+        Replaces current item at index with new item passed as arg.
+        :pre: List contains an item at the index currently. Item swapped in maintains same key as item that it is replacing
+        :post: List length remains the same
+        """
+        key = self[index].key
+        item.key = key
+        self.delete_at_index(index) #this method deletes at index and also checks that index is valid
+        self[index] = item
+        self.length += 1
+
+
+    # def sort_by_key(self, key, start_idx = 0, last_idx = None):
+    #     if last_idx == None:
+    #         last_idx = len(self)
+    #     sorted_list = ArraySortedList((last_idx-start_idx)+1)
+    #     while start_idx <= last_idx:
+    #         pokemon_to_sort = self[start_idx].value
+
+    #         #CHOOSE KEY FOR CRITERION#
+    #         key = pokemon_to_sort.key
+    #         sorted_list.add(ListItem(pokemon_to_sort,key))
+
+    #         start_idx += 1

@@ -58,6 +58,10 @@ class PokemonBase(ABC):
         self.status_effect = None
         self.max_hp = self.get_max_hp()
         self.hp = self.get_max_hp()
+        self.attack_damage = self.get_attack_damage
+        self.defence = self.get_defence()
+        self.speed = self.get_speed
+
 
     def __str__(self) -> str:
         return f"LV. {self.get_level()} {self.get_name()}: {self.hp} HP"
