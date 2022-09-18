@@ -187,7 +187,7 @@ class PokeTeam:
         elif self.battle_mode == 1:
             self.team = self.pokemonsCircularQueue()
         elif self.battle_mode == 2:
-            pass
+            self.team = self.pokemonsStack() # TODO dummmy line to enable battle to work (delete this later on)
 
 
     # TODO
