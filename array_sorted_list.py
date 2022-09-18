@@ -156,8 +156,8 @@ class ArraySortedList(SortedList[T]):
         sure index is the last occurrence of item.
         :pre: array is not full
         """
-        if self.is_full() == True:
-            raise ValueError("Array is full")
+        # if self.is_full() == True:
+        #     raise ValueError(f"Array is full {self}")
         low = 0
         high = len(self) - 1
         
@@ -216,8 +216,12 @@ class ArraySortedList(SortedList[T]):
         :out: descending sorted array
         """
         reverse_arr = ArraySortedList(len(self))
-        for item in self:
-            reverse_arr.add(ListItem(item.value, (item.key * -1)))
+        for idx in range(len(self)):
+            key = self[idx].key * -1
+            poke_to_add = self[idx].value
+            reverse_arr.add_in_front(ListItem(poke_to_add, key))
+            
+                
         return reverse_arr
 
 
@@ -268,6 +272,13 @@ class ArraySortedList(SortedList[T]):
     def get_first_index(self, key: int):
         item = ListItem(None, key)  #dummy item to get key
         pivot = self._index_to_add(item)
+        
+    
+        if self.is_full() and not pivot < len(self):
+            raise ValueError("Item key not in list")
+            
+        elif self.is_empty():
+            return 0
 
         low = 0
         high = pivot
@@ -282,6 +293,12 @@ class ArraySortedList(SortedList[T]):
                 return mid
         return low
     def add_in_front(self, item: ListItem):
+        """
+        Adds item to the front instance.
+        :pre: array list must not be full
+        """
+        if self.is_full():
+            raise ValueError(f"List is full {self}")
         idx = self.get_first_index(item.key)
         self[idx] = item
         self.length += 1
@@ -302,6 +319,7 @@ class ArraySortedList(SortedList[T]):
         """
         key = self[index].key
         item.key = key
+        
         self.delete_at_index(index) #this method deletes at index and also checks that index is valid
         self[index] = item
         self.length += 1

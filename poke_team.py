@@ -3,6 +3,7 @@ from ast import Num
 from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
 from random import Random
+from tracemalloc import start
 from typing import List
 from sorted_list import ListItem
 from pokemon import *
@@ -33,7 +34,7 @@ class Criterion(Enum):
 class PokeTeam:
     POKEDEX_ORDER = [Charmander, Charizard, Bulbasaur, Venusaur, Squirtle, 
     Blastoise, Gastly, Haunter, Gengar, Eevee]
-    BASE_ORDER = [Charmander(), Bulbasaur(), Squirtle(), Gastly(), Eevee()]
+    BASE_ORDER = [Charmander, Bulbasaur, Squirtle, Gastly, Eevee]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
     
@@ -77,7 +78,7 @@ class PokeTeam:
         if battle_mode not in [0,1,2]:
             raise ValueError("Not valid Battle Mode")
         #Check ai_type is valid (in PokeTeam.AI)
-        if ai_type not in PokeTeam.AI:
+        if not ai_type in PokeTeam.AI:
             raise TypeError("AI Type is not valid")
         #If battle_mode == 2, criterion provided and in Criterion class
         if battle_mode == 2:
@@ -93,6 +94,7 @@ class PokeTeam:
         self.heal_count = 3
         self.initial_order_exist = False
         self.poke_on_field = None   #initialise pokemon on field
+        self.descending_order = True #Initially true by default descending
         self.regenerate_team()
 
 
@@ -142,28 +144,32 @@ class PokeTeam:
 
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
-        if self.battle_mode == 0:
-            self.team.reverse()
-            self.team.push(poke)
-            self.team.reverse()
-        elif self.battle_mode == 1:
-            self.team.append(poke)
-        elif self.battle_mode == 2:
-            self.sort_into_team(poke)
-
+        if not poke.is_fainted():
+            if self.battle_mode == 0:
+                self.team = self.team.reverse()
+                self.team.push(poke)
+                self.team = self.team.reverse()
+            elif self.battle_mode == 1:
+                self.team.append(poke)
+            elif self.battle_mode == 2:
+                self.sort_into_team(poke)
+        else:
+            return
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.battle_mode == 0:
-            self.team.reverse()
+            self.team = self.team.reverse()
             self.poke_on_field = self.team.pop()
-            self.team.reverse()
-            return self.poke_on_field
+            self.team = self.team.reverse()
         elif self.battle_mode == 1:
             self.poke_on_field = self.team.serve()
-            return self.poke_on_field
         elif self.battle_mode == 2:
-            self.team[0].value  #First pokemon in list is the one for battle
-            return self.poke_on_field
+            # self.current_poke_order = self.team[0].order    #store order and key for return
+            # self.current_poke_key = self.team[0].key
+            self.poke_on_field = self.team[0].value  #First pokemon in list is the one for battle
+            self.team.delete_at_index(0)
+            
+        return self.poke_on_field
     # TODO
     def special(self):
         if self.battle_mode == 0:
@@ -192,6 +198,8 @@ class PokeTeam:
         elif self.battle_mode == 1:
             self.team = self.team_mode_1()
         elif self.battle_mode == 2:
+            self.initial_order_exist = False
+            self.descending_order = True
             self.team = self.team_mode_2()
 
 
@@ -201,38 +209,73 @@ class PokeTeam:
         # "LV. 5 Venusaur: 17 HP"
         str = f"{self.team_name} ({self.battle_mode}): ["
         if self.battle_mode == 0:
-            pass # print pokemon from stack
+            str += self.stack_string()
         if self.battle_mode == 1:
-            pass # print pokemon from queue
+            str += self.queue_string()
         if self.battle_mode == 2:
-            pass # print pokemon from ordered list
+            str += self.list_string()
         str += "]"
         return str
+    
+    def stack_string(self):
+        """
+        Returns string containing all elements of stack
+        """
+        stack_string = "" #initialise empty string for input of stack elements
+        temp_stack = ArrayStack(len(self.team)) #initialise empty storage stack for holding popped elements for return
+        while not self.team.is_empty():
+            top = self.team.pop()
+            stack_string += str(top) + ", "
+            temp_stack.push(top)
+        while not temp_stack.is_empty():
+            self.team.push(temp_stack.pop())    #return all elements back to original stack
+        return stack_string[:-2]    #do not include last comma and whitespace
 
+    def queue_string(self):
+        """
+        Method that returns all the elements of a queue in string form
+        """
+        queue_string = "" #initialise empty string for input of stack elements
+        temp_queue = CircularQueue(len(self.team)) #initialise empty storage stack for holding popped elements for return
+        while not self.team.is_empty():
+            top = self.team.serve()
+            queue_string += str(top) + ", "
+            temp_queue.append(top)
+        while not temp_queue.is_empty():
+            self.team.append(temp_queue.serve())    #return all elements back to original stack
+        return queue_string[:-2]    #do not include last comma and whitespace
 
-    # TODO
+    def list_string(self):
+        """
+        Method that returns a string with all list elements
+        """
+        list_string = "" #initialise empty string
+        for item in self.team:  #access ListItem elements
+            list_string += str(item.value) + ", "
+        return list_string[:-2] #do not include last comma and whitespace
+
     def is_empty(self):
         return self.team.is_empty()
 
 
     def choose_battle_option(self, my_pokemon: PokemonBase, their_pokemon: PokemonBase) -> Action:
         
-        if self.battle_mode == PokeTeam.AI.ALWAYS_ATTACK:
+        if self.ai_type == PokeTeam.AI.ALWAYS_ATTACK:
             return Action.ATTACK
         
-        elif self.battle_mode == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
+        elif self.ai_type == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
             if their_pokemon.poke_type.type_multiplier(my_pokemon.poke_type) >= 1.5:
                 return Action.SWAP 
             else:
                 return Action.ATTACK
         
-        elif self.battle_mode == PokeTeam.AI.RANDOM:
+        elif self.ai_type == PokeTeam.AI.RANDOM:
             actions = list(Action)
             if self.heal_count == 0:
                 actions.remove(Action.HEAL)
             return Action(RandomGen.randint(len(actions)))
         
-        elif self.battle_mode == PokeTeam.AI.USER_INPUT:
+        elif self.ai_type == PokeTeam.AI.USER_INPUT:
             prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
             actions = list("A", "P", "H", "S")
             while True:
@@ -255,51 +298,61 @@ class PokeTeam:
         raise NotImplementedError()
 
     def team_mode_0(self) -> ArrayStack:
-        team_stack = Stack(sum(self.team_numbers))
-        for i, num_pokemon in enumerate(self.team_numbers):
+        team_stack = ArrayStack(sum(self.team_numbers))
+        for idx, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
-                pokemon = self.getBasePokemon(i)
+                pokemon = self.get_base_pokemon(idx)
                 team_stack.push(pokemon)
+        return team_stack
 
     def team_mode_1(self) -> CircularQueue:
         team_queue = CircularQueue(sum(self.team_numbers))
         for i, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
-                pokemon = self.getBasePokemon(i)
+                pokemon = self.get_base_pokemon(i)
                 team_queue.append(pokemon)
+        return team_queue
 
-    def getBasePokemon(self, i: int) -> PokemonBase:
-        return PokeTeam.BASE_ORDER[i]
+    def get_base_pokemon(self, i: int) -> PokemonBase:
+        pokemon = PokeTeam.BASE_ORDER[i]
+        if pokemon == Charmander:
+            p_instance = Charmander()
+        elif pokemon == Bulbasaur:
+            p_instance = Bulbasaur()
+        elif pokemon == Squirtle:
+            p_instance = Squirtle()
+        elif pokemon == Gastly:
+            p_instance = Gastly()
+        elif pokemon == Eevee:
+            p_instance = Eevee()
+        return p_instance
 
     def team_mode_2(self):
         """
         Initial team for battle mode 2
         """
-          #initialise empty set for tiebreaker comparison
-        
-
-
         sort_by = self.criterion
              
         team_list = ArraySortedList(sum(self.team_numbers))
         ### Add to list by team_numbers###
-        for count, num_of_poke in enumerate(self.team_numbers):
-            poke_to_add = PokeTeam.BASE_ORDER[count]
-            if sort_by == Criterion.DEF:
-                key = poke_to_add.get_defence()
-            elif sort_by == Criterion.HP:
-                key = poke_to_add.get_hp()
-            elif sort_by == Criterion.LV:
-                key = poke_to_add.get_level()
-            elif sort_by == Criterion.SPD:
-                key = poke_to_add.get_speed()
-            
-            assert type(key) == int, "Key is invalid: not an integer"
+        for poke_idx, num_of_poke in enumerate(self.team_numbers):
             for _ in range(1, num_of_poke+1):
+                poke_to_add = self.get_base_pokemon(poke_idx)
+                if sort_by == Criterion.DEF:
+                    key = poke_to_add.get_defence()
+                elif sort_by == Criterion.HP:
+                    key = poke_to_add.get_hp()
+                elif sort_by == Criterion.LV:
+                    key = poke_to_add.get_level()
+                elif sort_by == Criterion.SPD:
+                    key = poke_to_add.get_speed()
+                assert type(key) == int, "Key is invalid: not an integer"
                 team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+                
+            # for _ in range(1, num_of_poke+1):
+            #     team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
         
         ### Sort initial team ###
-
         criterion_list = team_list.reverse_order()  #criterion descending initially.
         
         unique_keys = ASet(len(criterion_list)) 
@@ -379,15 +432,20 @@ class PokeTeam:
         :pre: Pokemons key must be valid (already reversed for descending order)
         """
         ### SORT BY FIRST KEY: CRITERION ###
-        self.criterion_order(self, pokemon)
+        # if self.descending_order == True:
+        #     self.team = self.team.reverse_order()
+        self.criterion_order(pokemon)
         ### CHECK IF TIE ###
-        check_key = pokemon.key
+        unique_key = ASet(len(self.team))   
         for idx, item in enumerate(self.team):
-            if item.key == check_key:
-                tie_start_idx = idx
-                tie_end_idx = self.team.get_last_index(pokemon.key)
+            if not item.key in unique_key:
+                unique_key.add(item.key)
+            else:
+                tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                tie_end_idx = self.team.get_last_index(item.key)
         ### SORT BY POKEDEX and INITIAL(Initial check done inside pokedex) ###
                 self.break_tie(self.team, tie_start_idx, tie_end_idx)
+        
         
 
     
@@ -403,34 +461,42 @@ class PokeTeam:
             key = poke_to_add.get_level()
         elif self.criterion == Criterion.SPD:
             key = poke_to_add.get_speed()
-        
-        
-        self.team.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+        if self.descending_order == True:
+            key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
+        # self.current_poke_key = key
+        if not self.team.is_full():
+            self.team.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+        else:
+            raise ValueError("Team is full")
     
     def break_tie(self, team_list: ArraySortedList, start_idx: int, end_idx: int):
-        pokeorder_list = ArraySortedList((end_idx-start_idx)+1)
+        team_tie_start = start_idx   #store the start of tie in reference to team_list.
+        tie_range = end_idx - start_idx
+        pokeorder_list = ArraySortedList(tie_range +1)
+        
         while start_idx <= end_idx:
             pokemon = team_list[start_idx].value
             # previous_key = team_list[start_idx].key
             key = pokemon.POKE_NO
             pokeorder_list.add(ListItem(pokemon,key))
             start_idx += 1
-        assert len(pokeorder_list) == end_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
+        assert len(pokeorder_list) == (tie_range+1), f"Number of elements in list do not match index range of tie: Tie Range: {(tie_range +1)}, Len Pokeorder list: {len(pokeorder_list)}, Tie List: {pokeorder_list}, Team State: {self.team}. "
 
         if self.initial_order_exist is True: #if true check/sort again
-            unique_poke_no = ASet(len(team_list))   
+            unique_poke_nums = ASet(len(pokeorder_list))   
             for idx, item in enumerate(pokeorder_list):
-                if not item.key in unique_poke_no:
-                    unique_poke_no.add(item.key)
+                if not item.key in unique_poke_nums:
+                    unique_poke_nums.add(item.key)
                 else:
+                    
                     tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
                     tie_last_idx = pokeorder_list.get_last_index(item.key)
                     
-                    self.initial_order(team_list, tie_start_idx, tie_last_idx)
+                    self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
         
         #Otherwise Return. No more sorting left
         #Swap newly sorted items back into team_list
-        for idx, item in enumerate(pokeorder_list, start_idx):
+        for idx, item in enumerate(pokeorder_list, team_tie_start):
             # item.order = idx can be done at end by controller
             #previous key should be set by swap at index
             team_list.swap_at_index(idx, item)
@@ -439,15 +505,33 @@ class PokeTeam:
         return
     
     def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
-        init_order_list = ArraySortedList((end_idx-start_idx)+1)
+        assert [type(x) == ListItem for x in pokeorder_list], "Items must be ListItem type"
+        assert type(pokeorder_list) == ArraySortedList
+        tie_range = end_idx - start_idx
+        init_order_list = ArraySortedList(tie_range+1)
+        pokeorder_tie_start = start_idx #store start of tie within pokeorder_list for swap later
         while start_idx <= end_idx:
-            pokemon = pokeorder_list[start_idx].value
+            pokemon_item = pokeorder_list[start_idx]
+            pokemon = pokemon_item.value
             # previous_key = team_list[start_idx].key
-            key = pokeorder_list[start_idx].order
-            init_order_list.add(ListItem(pokemon,key))
+            key  = pokemon_item.order
+            order = pokemon_item.order
+            init_order_list.add(ListItem(pokemon,key, order))
             start_idx += 1
-        assert len(init_order_list) == end_idx-start_idx + 1, "Number of elements in list do not match index range of tie"
-        for idx, item in enumerate(init_order_list, start_idx):
+        assert len(init_order_list) == tie_range + 1, "Number of elements in list do not match index range of tie"
+        for idx, item in enumerate(init_order_list, pokeorder_tie_start):
                 #swap items according to initial order in poke_order_list
                 pokeorder_list.swap_at_index(idx, item)
     
+    # while start_idx <= end_idx:
+    #         pokemon = team_list[start_idx].value
+    #         # previous_key = team_list[start_idx].key
+    #         key = pokemon.POKE_NO
+    #         pokeorder_list.add(ListItem(pokemon,key))
+    #         start_idx += 1
+
+    ### TESTS LEFT ###
+
+    #Test battle option attack
+
+    #test special mode 1

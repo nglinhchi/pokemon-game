@@ -132,11 +132,19 @@ def test_reverse():
     reverse_arr_list = [x.value for x in reverse_arr]
     
     test_arr_list = [x.value for x in test_arr]
+    new_arr = ArraySortedList(6)
+    print(len(new_arr))
+    # new_arr.add_in_front(ListItem('one', 1))
+    print(new_arr)
+    print(test_arr)
+    reverse_arr = test_arr.reverse_order()
     
-    
+    print(reverse_arr, test_arr)
+    print(test_arr.reverse_order())
+    # print(test_arr.reverse_order())
   
-    assert reverse_arr_list == test_arr_list
-# test_reverse()
+    # assert reverse_arr_list == test_arr_list
+test_reverse()
 
 # test_arr = ArraySortedList(6)
 # a = ListItem('one', 2)
@@ -218,5 +226,5 @@ def test_listitem_order():
     print(test_arr)
 
 # test_listitem_order()
-team_numbers = [0] * 6
-print(team_numbers)
+# team_numbers = [0] * 6
+# print(team_numbers)
