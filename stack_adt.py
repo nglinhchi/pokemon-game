@@ -99,6 +99,27 @@ class ArrayStack(Stack[T]):
             raise Exception("Stack is empty")
         return self.array[self.length-1]
 
+    def reverse(self):
+        reversed = ArrayStack(len(self))
+        for _ in range(len(self)):
+            reversed.push(self.pop())
+        return reversed
+    # def print_stack(self):
+    #     if self.is_empty():
+    #             return
+    #     if self.is_full():  #The first element of stack, check prior to pop
+    #         top = self.pop()
+    #         print(f"[{top},", end = " ")
+    #         self.print_stack
+    #     top = self.pop()
+    #     if self.is_empty(): #If last element of stack, will be empty after pop in previous line
+    #         print(f"{top}]")
+    #         self.print_stack
+    #     else:   #normal
+    #         print(top, end = ", ")
+    #         self.print_stack()
+    #     self.push(top)
+
 class TestStack(unittest.TestCase):
     """ Tests for the above class."""
     EMPTY = 0
@@ -182,6 +203,7 @@ class TestStack(unittest.TestCase):
             stack.clear()
             self.assertEqual(len(stack), 0)
             self.assertTrue(stack.is_empty())
+            
 
 if __name__ == '__main__':
     testtorun = TestStack()

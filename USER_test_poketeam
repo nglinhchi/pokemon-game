@@ -1,0 +1,175 @@
+from poke_team import *
+from random_gen import RandomGen
+from array_sorted_list import *
+from stack_adt import *
+def test_regen_team():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+    print(t.team)
+
+    p = t.retrieve_pokemon()
+    print(p)
+    print(t.team)
+    p.lose_hp(1)
+    print(p)
+
+    # print([x for x in t.team])
+    assert len(t.team) == 3
+    # t.team = t.team.reverse_order()
+    # print(t.team)   #should be reversed team maintaining order
+
+    # t.criterion_order(p)    #check criterion ordering correct
+    print(t.team)
+    t.return_pokemon(p)
+    print(t.team)
+    previous_team = t.team
+    t.regenerate_team()
+    regen_team = t.team
+    print(regen_team)
+    assert previous_team != regen_team
+# RandomGen.set_seed(123456789)
+# t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+# print((t.get_base_pokemon(1)))
+# test_regen_team()
+
+# print(t.team[0].order)
+ 
+def test_tie_pokedex():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+    p = t.retrieve_pokemon()
+    p.lose_hp(4)
+    print(t.team, p)
+    t.return_pokemon(p)
+    print(t.team)
+    p = t.retrieve_pokemon()
+    p.lose_hp(1)
+    t.return_pokemon(p)
+    print(t.team)
+
+def test_return_fainted():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+    p = t.retrieve_pokemon()
+    print(p)
+    p.lose_hp(13)
+    assert p.is_fainted() == True
+    t.return_pokemon(p)
+    print(t)
+def test_tie_initial():
+    pass
+
+def test_regen_team():
+        RandomGen.set_seed(123456789)
+        t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+        # This should end, since all pokemon are fainted, slowly.
+        while not t.is_empty():
+            p = t.retrieve_pokemon()
+            p.lose_hp(1)
+            print(p, t.team)
+            assert p.is_fainted() == False
+            t.return_pokemon(p)
+        t.regenerate_team()
+        pokemon = []
+        while not t.is_empty():
+            pokemon.append(t.retrieve_pokemon())
+        expected_classes = [Bulbasaur, Eevee, Charmander, Gastly]
+        self.assertEqual(len(pokemon), len(expected_classes))
+        for p, e in zip(pokemon, expected_classes):
+            self.assertIsInstance(p, e)
+
+def test_break_tie():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
+  
+    t.team[0].value.lose_hp(3)  #manually set bulbasaur hp to 10 and update key
+    t.team[0].key = -10
+    print(t.team)
+    t.break_tie(t.team, 0,1)
+    print(t.team)
+
+def test_initial_order():
+    t = PokeTeam("Test Init ORder", [2,0,1,1,1], 2, PokeTeam.AI.ALWAYS_ATTACK,  Criterion.SPD)
+    
+    t.team[0].order = 2 #manually swap order of the charmander for test
+    t.team[1].order = 1
+    order_list = [x.order for x in t.team]
+    print(t.team, order_list)
+    assert t.initial_order_exist == True
+    # p = t.retrieve_pokemon()
+    # print(type(t.team[0]))
+    # t.return_pokemon(p)
+    # print(t.team)
+    # print(order_list)
+    s = ArraySortedList(2)
+    s.add(t.team[1])
+    s.add(t.team[0])
+    # print(s[0].order)
+    assert s[0].order == 2
+    t.initial_order(s, 0, 1)
+    assert s[0].order == 1  #check that it swapped successfully to order
+    # print(s, s[0].order)
+    # print(t.team, order_list)
+
+# test_initial_order()
+
+# print([x for x in PokeTeam.AI])
+# print(PokeTeam.AI.ALWAYS_ATTACK in PokeTeam.AI)
+# print(type(PokeTeam.AI.ALWAYS_ATTACK))
+# print(PokeTeam.AI.names)
+
+def test_print_string_bm0():    #check string for battle mode 0
+    t = PokeTeam("Dawn", [1, 1, 1, 1, 1], 0, PokeTeam.AI.RANDOM)
+    old_t = t.team
+    print(t.stack_string())
+    assert t.team == old_t #check stack remains same after manipulation to get string
+    print(str(t))   #check calling str method works
+
+def test_print_string_bm1():
+    t = PokeTeam("Dawn", [1, 1, 1, 1, 1], 1, PokeTeam.AI.RANDOM)
+    old_t = t.team
+    print(t.queue_string())
+    assert t.team == old_t #check stack remains same after manipulation to get string
+    print(str(t))   #check calling str method works
+# test_print_string_bm1()
+
+def test_print_string_bm2():
+    t = PokeTeam("Dawn", [1, 1, 1, 1, 1], 2, PokeTeam.AI.RANDOM, Criterion.DEF)
+    print(t.list_string())
+    print(str(t))
+# test_print_string_bm2()
+
+#TODO test battle mode 2 as well, do testing for return for bm0, bm1, bm2
+
+def test_retrieve_bm0():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 0)
+    print(t.team_numbers)
+    pokemon = []
+    while not t.is_empty():
+        pokemon.append(t.retrieve_pokemon())
+        # print(pokemon)
+    # print(t.team.pop())
+    # print(len(t.team.reverse()))
+    # print(len(t.team), pokemon)
+
+
+def test_retrieve_bm1():
+    RandomGen.set_seed(123456789)
+    t = PokeTeam.random_team("Cynthia", 1)
+    print(t.team_numbers)
+    pokemon = []
+    while not t.is_empty():
+        pokemon.append(t.retrieve_pokemon())
+    print(pokemon)
+# test_retrieve_bm1()
+
+#TODO test all other battle options, (AI_type)
+
+
+def test_battle_option_attack(self):
+    t = PokeTeam("Wallace", [1, 0, 0, 0, 0], 1, PokeTeam.AI.ALWAYS_ATTACK)
+    p = t.retrieve_pokemon()
+    e = Eevee()
+    
+#TODO test special for other modes bm 0 bm 2

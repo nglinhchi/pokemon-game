@@ -39,40 +39,44 @@ class PokeType(Enum):
         self.status_effect = status_effect
         self.type_effectiveness = type_effectiveness
 
-    def type_multiplier(self, PokeType):
+    def type_multiplier(self, defend_poketype: PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
         """
-        return self.type_effectiveness[PokeType.type_index]
+        return self.type_effectiveness[defend_poketype.type_index]
 
 
 
 class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
-        self.name = self.__class__.__name__
+        ###TODO MAKE USER FACING: HP and POKE_TYPE ###
+        self.name = self.get_name() #Ensures Pokemon Name is defined.
         self.poke_type = poke_type
-        self.level = 1
+        self.level = self.get_level()
+        ### Deleted level - make abstract to provide base level for individual pokemon- return accurate level on initialisation###
         self.status_effect = None
-        self.max_hp = hp
-        self.hp = hp
+        self.max_hp = self.get_max_hp()
+        self.hp = self.get_max_hp()
+        self.attack_damage = self.get_attack_damage
+        self.defence = self.get_defence()
+        self.speed = self.get_speed
+
 
     def __str__(self) -> str:
-        return f"LV.{self.level} {self.name}: {self.hp} HP"
+        return f"LV. {self.get_level()} {self.get_name()}: {self.hp} HP"
 
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
-
+    @abstractmethod
     def get_name(self) -> str:
-        return self.name
-
+        pass  
+    
     def get_type(self) -> PokeType:
         return self.poke_type
-
+    
+    @abstractmethod
     def get_level(self) -> int:
-        """
-        Getter method returning current Level
-        """
-        return self.level
+        pass #Ensures classes include base level.
 
     def get_status_effect(self) -> StatusEffect:
         return self.status_effect
@@ -206,7 +210,7 @@ class PokemonBase(ABC):
         self.max_hp = self.get_max_hp()
         self.hp = self.max_hp - (previous_max_hp - previous_hp)
 
-    @abstractmethod
+    
     def get_evolved_version(self) -> PokemonBase:
         """
         Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it 
@@ -217,6 +221,7 @@ class PokemonBase(ABC):
         evolved.hp = self.hp
         evolved.max_hp = self.max_hp
         evolved.update_hp()
+        return evolved
 
     def level_up(self) -> None:
         """
