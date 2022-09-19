@@ -1,0 +1,10 @@
+Battle Tower Pseudo:
+
+1. Generate random Poketeams, give each team certain amount of lives.
+2. User Poketeam fights each rand Poketeam
+    Case 1: If User loses match, battle tower end
+    Case 2: If User win/draw, rand Poketeam lose 1 life, continue to next opponent
+3. After fighting each initial rand Poketeam once, remove teams with 0 lives from order, and process repeats (Before every battle, both teams regen)
+4. Once (if) all rand teams have 0 lives, battle tower complete, your team win
+
+

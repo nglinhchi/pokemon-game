@@ -6,7 +6,7 @@ from battle import Battle
 class BattleTower:
 
     def __init__(self, battle: Battle|None=None) -> None:
-        raise NotImplementedError()
+        battle
     
     def set_my_team(self, team: PokeTeam) -> None:
         raise NotImplementedError()

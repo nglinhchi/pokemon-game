@@ -371,61 +371,6 @@ class PokeTeam:
         return criterion_list
 
     
-    # def check_break_tie(self, criterion_list: ArraySortedList):
-    #     unique_keys = Aset()
-    #     for idx, item in enumerate(criterion_list):
-    #         if not item.key in unique_keys:
-    #             unique_keys.add(item.key)
-    #             if len(unique_keys) == len(criterion_list):
-    #                 return criterion_list   #early exit condition, if all unique return list mark true?
-    #         else:
-    #             tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-    #             tie_last_idx = criterion_list.get_last_index(item.key)
-    #             pokedex_ordered_list = criterion_list.break_by_pokeno(tie_start_idx, tie_last_idx)
-
-    #             for idx in range(tie_start_idx, tie_last_idx + 1):
-    #                 criterion_list.swap_at_index(idx, pokedex_ordered_list[idx])
-        
-    #     #if no initial order (first time calling)
-    #     if self.initial_order is False:
-    #         for init_order, item in enumerate(criterion_list, 1):
-    #             item.order = init_order
-    #     else:
-    #         self.sort_by_init(criterion_list)
-            
-    # def sort_by_init(self, list_to_sort: ArraySortedList):
-    #     unique_keys = Aset()
-    #     for idx, item in enumerate(list_to_sort):
-    #             if not item.key in unique_keys:
-    #                 unique_keys.add(item.key)
-    #             else:
-    #                 tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-    #                 tie_last_idx = list_to_sort.get_last_index(item.key)
-    #                 pokedex_ordered_list = list_to_sort.break_by_order(tie_start_idx, tie_last_idx)
-    #                 for idx in range(tie_start_idx, tie_last_idx + 1):
-    #                     list_to_sort.swap_at_index(idx, pokedex_ordered_list[idx])
-
-    #     # if self.is_tied():
-    #     #     #use initial ordering to break again
-    #     #     #if initial ordering not none: sort by initial
-    #     #     if 
-        #     #else set initial ordering.
-
-
-
-                # unique_poke_keys.add(key)   #add key to set of keys
-
-                # #If there is new element added to set, remove 
-                # if key in unique_poke_keys: #Case where there is a tie
-                #     new_key = poke_to_add.POKE_NO
-                #     pokeorder_break.add
-                #     pokeorder_break.add(poke_to_add, new_key)
-                
-                # else:
-                #     pokeorder_break.add(poke_to_add, poke_to_add.POKE_NO)  #sort by pokedex ordering
-
-
-    
     def sort_into_team(self, pokemon):
         """
         Takes Pokemon and sorts back into team
@@ -523,15 +468,3 @@ class PokeTeam:
                 #swap items according to initial order in poke_order_list
                 pokeorder_list.swap_at_index(idx, item)
     
-    # while start_idx <= end_idx:
-    #         pokemon = team_list[start_idx].value
-    #         # previous_key = team_list[start_idx].key
-    #         key = pokemon.POKE_NO
-    #         pokeorder_list.add(ListItem(pokemon,key))
-    #         start_idx += 1
-
-    ### TESTS LEFT ###
-
-    #Test battle option attack
-
-    #test special mode 1
