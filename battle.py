@@ -34,7 +34,7 @@ class Battle:
         # team_sorted_actions contains ListItem(team_number, action_index) sorted by action _index
 
         pokemons_sorted_team = ArraySortedList(2)
-        # pokemons_sorted_team contains Listem(pokemon, team_number) sorted by team_number
+        # pokemons_sorted_team contains LisItem(pokemon, team_number) sorted by team_number
 
         pokemons_attack = CircularQueue(2)
 
