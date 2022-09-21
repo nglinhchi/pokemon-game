@@ -36,8 +36,8 @@ class Battle:
                 
                 # battle here -----------------------------------------------------------------
 
-                action1 = team1.choose_battle_option()
-                action2 = team2.choose_battle_option()
+                action1 = team1.choose_battle_option(pokemon1, pokemon2)
+                action2 = team2.choose_battle_option(pokemon2, pokemon1)
 
                 # PRE-ATTACKS -------------------------------------------------------------------
                 # TODO if current implementation work -> change the order to SWAPS/SPECIALS/HEALS instead of
@@ -76,18 +76,11 @@ class Battle:
                 # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
 
                 if action1 == Action.ATTACK and action2 == Action.ATTACK: # both attacks
-                    
+
                     # get speed
-                    if pokemon1.get_status_effect() == StatusEffect.PARALYSIS:
-                        speed1 = pokemon1.get_speed()//2
-                    else:
-                        speed1 = pokemon1.get_speed()
-
-                    if pokemon2.get_status_effect() == StatusEffect.PARALYSIS:
-                        speed2 = pokemon2.get_speed()//2
-                    else:
-                        speed2 = pokemon2.get_speed()
-
+                    speed1 = pokemon1.get_speed()
+                    speed2 = pokemon2.get_speed()
+                    
                     # compare speed
                     if speed1 > speed2:
                         pokemon1.attack(pokemon2)

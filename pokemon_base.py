@@ -98,11 +98,19 @@ class PokemonBase(ABC):
 
     # GETTERS FOR 'DYNAMIC' ATTRIBUTES ************************************************
 
-    @abstractmethod
     def get_speed(self) -> int:
         """
-        Abstract getter method returning current Speed stat calculated for individual Pokemon
+        Getter method returning current Speed stat calculated for individual Pokemon after impact of status effects
         """
+        speed = self.speed_formula()
+        if self.status_effect == StatusEffect.PARALYSIS:
+            speed = speed // 2
+        return speed
+
+    @abstractmethod
+    def speed_formula(self) -> int:
+        """
+        Abstract method returning speed stat calculated for individual pokemon without impact of status effects"""
         pass
 
     @abstractmethod
@@ -166,6 +174,8 @@ class PokemonBase(ABC):
         base_attack = self.get_attack_damage() 
         multipler = self.poke_type.type_multiplier(other.poke_type)
         effective_attack = int(base_attack * multipler)
+        if self.status_effect == StatusEffect.BURN:
+            effective_attack = effective_attack // 2
         other.defend(effective_attack)
         # >>> Step 3: Losing hp to status effects
         if (self.status_effect != None):

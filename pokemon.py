@@ -33,7 +33,7 @@ class Charizard(PokemonBase):
     def get_attack_damage(self) -> int:
         return 10 + 2 * self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 9 + 1 * self.level
 
     def get_defence(self) -> int:
@@ -75,7 +75,7 @@ class Charmander(PokemonBase):
     def get_attack_damage(self) -> int:
         return 6 + 1 * self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + 1 * self.level
 
     def get_defence(self) -> int:
@@ -120,7 +120,7 @@ class Venusaur(PokemonBase):
     def get_attack_damage(self) -> int:
         return 5
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 3 + self.level//2
 
     def get_defence(self) -> int:
@@ -162,7 +162,7 @@ class Bulbasaur(PokemonBase):
     def get_attack_damage(self) -> int:
         return 5
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + self.level//2
 
     def get_defence(self) -> int:
@@ -208,7 +208,7 @@ class Blastoise(PokemonBase):
     def get_attack_damage(self) -> int:
         return 8 + self.level // 2
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 10
 
     def get_defence(self) -> int:
@@ -250,7 +250,7 @@ class Squirtle(PokemonBase):
     def get_attack_damage(self) -> int:
         return 4 + self.level//2
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7
 
     def get_defence(self) -> int:
@@ -296,7 +296,7 @@ class Gengar(PokemonBase):
     def get_attack_damage(self) -> int:
         return 18
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 12
 
     def get_defence(self) -> int:
@@ -336,7 +336,7 @@ class Haunter(PokemonBase):
     def get_attack_damage(self) -> int:
         return 8
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 6
 
     def get_defence(self) -> int:
@@ -375,7 +375,7 @@ class Gastly(PokemonBase):
     def get_attack_damage(self) -> int:
         return 4
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 2
 
     def get_defence(self) -> int:
@@ -417,7 +417,7 @@ class Eevee(PokemonBase):
     def get_attack_damage(self) -> int:
         return 6 + self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + self.level
 
     def get_defence(self) -> int:
