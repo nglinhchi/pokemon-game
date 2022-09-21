@@ -119,9 +119,10 @@ class Battle:
             
 
         # >>> APPROACH 2 [COMPLETE] - HANDLE SWAP/SPECIAL/HEAL X2 REPETITIVE
-        
-        team1_action = team1.choose_battle_option()
+
         team1_pokemon = team1.retrieve_pokemon()
+        team1_action = team1.choose_battle_option()
+        
 
 
         # TEAM 1 PRE-ATTACK -------------------------------------------------------------------
@@ -130,30 +131,33 @@ class Battle:
             team1.return_pokemon(team1_pokemon)
             team1_pokemon = team1.retrieve_pokemon()
         elif team1_action == Action.SPECIAL:
-            team1.return_pokemon(team1_pokemon)
+            team1.return_pokemon(team1_pokemon) #TODO Double check if necessary to return, does special encapsulate return already?
             team1.special()
             team1_pokemon = team1.retrieve_pokemon()
         elif team1_action == Action.HEAL:
             if team1.heal_count == 0:
-                pass # TODO lose immediately
+                return 2 # TODO lose immediately, Return other team?
             else:
-                team1.heal_count -= 1
-                if team1.battle_mode == 0:
-                    temp = ArrayStack(len(team1.team))
-                    for _ in range(len(team1.team)):
-                        temp.push(team1.team.pop().heal())
-                    temp.reverse()
-                    team1.team = temp
-                elif team1.battle_mode == 1:
-                    for _ in range(len(team1.team)):
-                        team1.team.append(team1.team.serve().heal())
-                elif team1.battle_mode == 2:
-                    pass # ? implmentation TODO
+                #Heal only applied to current pokemon afaik
+                team1_pokemon.heal()
+
+                # team1.heal_count -= 1
+                # if team1.battle_mode == 0:
+                #     temp = ArrayStack(len(team1.team))
+                #     for _ in range(len(team1.team)):
+                #         temp.push(team1.team.pop().heal())
+                #     temp.reverse()
+                #     team1.team = temp
+                # elif team1.battle_mode == 1:
+                #     for _ in range(len(team1.team)):
+                #         team1.team.append(team1.team.serve().heal())
+                # elif team1.battle_mode == 2:
+                #     pass # ? implmentation TODO
 
         # TEAM 2 PRE-ATTACK -------------------------------------------------------------------
-
-        team2_action = team2.choose_battle_option()
         team2_pokemon = team2.retrieve_pokemon()
+        team2_action = team2.choose_battle_option()
+        
 
         if team2_action == Action.SWAP:
             team2.return_pokemon(team2_pokemon)
@@ -164,20 +168,21 @@ class Battle:
             team2_pokemon = team2.retrieve_pokemon()
         elif team2_action == Action.HEAL:
             if team2.heal_count == 0:
-                pass # TODO lose immediately
+                return 1 # TODO lose immediately
             else:
-                team2.heal_count -= 1
-                if team2.battle_mode == 0:
-                    temp = ArrayStack(len(team2.team))
-                    for _ in range(len(team2.team)):
-                        temp.push(team2.team.pop().heal())
-                    temp.reverse()
-                    team2.team = temp
-                elif team2.battle_mode == 1:
-                    for _ in range(len(team2.team)):
-                        team2.team.append(team2.team.serve().heal())
-                elif team2.battle_mode == 2:
-                    pass # ? implmentation TODO
+                team2_pokemon.heal()
+                # team2.heal_count -= 1
+                # if team2.battle_mode == 0:
+                #     temp = ArrayStack(len(team2.team))
+                #     for _ in range(len(team2.team)):
+                #         temp.push(team2.team.pop().heal())
+                #     temp.reverse()
+                #     team2.team = temp
+                # elif team2.battle_mode == 1:
+                #     for _ in range(len(team2.team)):
+                #         team2.team.append(team2.team.serve().heal())
+                # elif team2.battle_mode == 2:
+                #     pass # ? implmentation TODO
 
         # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
 
