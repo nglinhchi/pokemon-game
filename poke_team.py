@@ -146,6 +146,8 @@ class PokeTeam:
     def return_pokemon(self, poke: PokemonBase) -> None:
         if not poke.is_fainted():
             if self.battle_mode == 0:
+                if self.team.is_full():
+                    raise ValueError(f"print {self}")
                 self.team = self.team.reverse()
                 self.team.push(poke)
                 self.team = self.team.reverse()
@@ -157,17 +159,21 @@ class PokeTeam:
             return
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
-        if self.battle_mode == 0:
-            self.team = self.team.reverse()
-            self.poke_on_field = self.team.pop()
-            self.team = self.team.reverse()
-        elif self.battle_mode == 1:
-            self.poke_on_field = self.team.serve()
-        elif self.battle_mode == 2:
-            # self.current_poke_order = self.team[0].order    #store order and key for return
-            # self.current_poke_key = self.team[0].key
-            self.poke_on_field = self.team[0].value  #First pokemon in list is the one for battle
-            self.team.delete_at_index(0)
+        if self.team.is_empty():
+            raise ValueError("Team Empty")
+        else:
+            if self.battle_mode == 0:
+                self.team = self.team.reverse()
+                self.poke_on_field = self.team.pop()
+                self.team = self.team.reverse()
+            elif self.battle_mode == 1:
+                self.poke_on_field = self.team.serve()
+            elif self.battle_mode == 2:
+                # self.current_poke_order = self.team[0].order    #store order and key for return
+                # self.current_poke_key = self.team[0].key
+                self.current_poke_order = self.team[0].order
+                self.poke_on_field = self.team.delete_at_index(0).value  #First pokemon in list is the one for battle
+            
             
         return self.poke_on_field
     # TODO
@@ -249,8 +255,8 @@ class PokeTeam:
         Method that returns a string with all list elements
         """
         list_string = "" #initialise empty string
-        for item in self.team:  #access ListItem elements
-            list_string += str(item.value) + ", "
+        for idx in range(len(self.team)):  #access ListItem elements
+            list_string += str(self.team[idx].value) + ", "
         return list_string[:-2] #do not include last comma and whitespace
 
     def is_empty(self):
@@ -272,11 +278,11 @@ class PokeTeam:
             actions = list(Action)
             if self.heal_count == 0:
                 actions.remove(Action.HEAL)
-            return Action(RandomGen.randint(len(actions)))
+            return Action(RandomGen.randint(1, len(actions)))
         
         elif self.ai_type == PokeTeam.AI.USER_INPUT:
             prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
-            actions = list("A", "P", "H", "S")
+            actions = list("APHS")
             while True:
                 print(prompt)
                 action = input("   Your Move: ")
@@ -435,16 +441,21 @@ class PokeTeam:
         #     self.team = self.team.reverse_order()
         self.criterion_order(pokemon)
         ### CHECK IF TIE ###
-        unique_key = ASet(len(self.team))   
-        for idx, item in enumerate(self.team):
-            if not item.key in unique_key:
-                unique_key.add(item.key)
-            else:
-                tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-                tie_end_idx = self.team.get_last_index(item.key)
-        ### SORT BY POKEDEX and INITIAL(Initial check done inside pokedex) ###
-                self.break_tie(self.team, tie_start_idx, tie_end_idx)
-        
+        if len(self.team) >= 1:  #if not only pokemon on team 
+            try:
+                unique_key = ASet(len(self.team))   
+                # print(f"new instance, {self}, {pokemon}")
+                for idx in range(len(self.team)):
+                # for idx, item in enumerate(self.team):
+                    if not self.team[idx].key in unique_key:
+                        unique_key.add(self.team[idx].key)
+                    else:
+                        tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                        tie_end_idx = self.team.get_last_index(self.team[idx].key)
+                ### SORT BY POKEDEX and INITIAL(Initial check done inside pokedex) ###
+                        self.break_tie(self.team, tie_start_idx, tie_end_idx)
+            except:
+                raise ValueError(f" Set : {unique_key}, Team : {self.team}, {pokemon}, {self.team[idx].key}, {self.team[idx].key}")
         
 
     
@@ -464,7 +475,7 @@ class PokeTeam:
             key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
         # self.current_poke_key = key
         if not self.team.is_full():
-            self.team.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
+            self.team.add(ListItem(poke_to_add, key, self.current_poke_order)) #Sorted list by first criterion.
         else:
             raise ValueError("Team is full")
     
@@ -474,31 +485,40 @@ class PokeTeam:
         pokeorder_list = ArraySortedList(tie_range +1)
         
         while start_idx <= end_idx:
-            pokemon = team_list[start_idx].value
+            pokemon_item = team_list[start_idx]
+            pokemon = pokemon_item.value
             # previous_key = team_list[start_idx].key
             key = pokemon.POKE_NO
-            pokeorder_list.add(ListItem(pokemon,key))
+            order = pokemon_item.order
+            pokeorder_list.add(ListItem(pokemon,key, order))
             start_idx += 1
         assert len(pokeorder_list) == (tie_range+1), f"Number of elements in list do not match index range of tie: Tie Range: {(tie_range +1)}, Len Pokeorder list: {len(pokeorder_list)}, Tie List: {pokeorder_list}, Team State: {self.team}. "
 
         if self.initial_order_exist is True: #if true check/sort again
             unique_poke_nums = ASet(len(pokeorder_list))   
-            for idx, item in enumerate(pokeorder_list):
-                if not item.key in unique_poke_nums:
-                    unique_poke_nums.add(item.key)
-                else:
-                    
-                    tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-                    tie_last_idx = pokeorder_list.get_last_index(item.key)
-                    
-                    self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
-        
+            for idx in range(len(pokeorder_list)):
+            # for idx, item in enumerate(pokeorder_list):
+                try:
+                    if not pokeorder_list[idx].key in unique_poke_nums:
+                        unique_poke_nums.add(pokeorder_list[idx].key)
+                    else:
+                        
+                        tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                        tie_last_idx = pokeorder_list.get_last_index(pokeorder_list[idx].key)
+                        
+                        self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
+                except:
+                    print(f"{pokeorder_list[idx]}")
         #Otherwise Return. No more sorting left
         #Swap newly sorted items back into team_list
-        for idx, item in enumerate(pokeorder_list, team_tie_start):
+        for idx in range(len(pokeorder_list)):
+            pokeorder_list[idx]
+            team_list.swap_at_index(team_tie_start, pokeorder_list[idx])
+            team_tie_start += 1
+        # for idx, item in enumerate(pokeorder_list, team_tie_start):
             # item.order = idx can be done at end by controller
             #previous key should be set by swap at index
-            team_list.swap_at_index(idx, item)
+            # team_list.swap_at_index(idx, item)
             
         
         return
@@ -515,7 +535,9 @@ class PokeTeam:
             # previous_key = team_list[start_idx].key
             key  = pokemon_item.order
             order = pokemon_item.order
-            init_order_list.add(ListItem(pokemon,key, order))
+            item_to_add = ListItem(pokemon,key, order)
+            assert type(pokemon_item.order) == int, f"{pokemon_item.order}"
+            init_order_list.add(item_to_add)
             start_idx += 1
         assert len(init_order_list) == tie_range + 1, "Number of elements in list do not match index range of tie"
         for idx, item in enumerate(init_order_list, pokeorder_tie_start):
