@@ -190,7 +190,6 @@ class PokeTeam:
             self.team = self.pokemonsStack() # TODO dummmy line to enable battle to work (delete this later on)
 
 
-    # TODO
     def __str__(self):
         # Dawn (2): [LV. 1 Gastly: 6 HP, LV. 1 Squirtle: 11 HP, LV. 1 Eevee: 10 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Charmander: 9 HP]"
         # "LV. 5 Venusaur: 17 HP"
@@ -205,8 +204,7 @@ class PokeTeam:
         return str
 
 
-    # TODO
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return self.team.is_empty()
 
 

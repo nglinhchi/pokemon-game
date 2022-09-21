@@ -4,123 +4,130 @@ __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
 from multiprocessing.connection import Listener
 from os import popen
-from queue import Queue
 from tkinter import ACTIVE
-from pokemon_base import PokemonBase, StatusEffect
 from random_gen import RandomGen
-from poke_team import Action, PokeTeam, Criterion
+from poke_team import Action, PokeTeam, Criterion, StatusEffect
 from print_screen import print_game_screen
-from array_sorted_list import ArraySortedList
-from queue_adt import CircularQueue
-from sorted_list import ListItem, SortedList
-from stack_adt import ArrayStack
 
 class Battle:
     
-    ORDER_ACTION = [Action.SWAP, Action.SPECIAL, Action.HEAL, Action.ATTACK]
-    
     def __init__(self, verbosity=0) -> None:
-        raise NotImplementedError()
+        self.verbosity = verbosity
+
 
     def battle(self, team1: PokeTeam, team2: PokeTeam) -> int:
+        
+        pokemon1 = None
+        pokemon2 = None
+
+        while True:
+
+            if pokemon1 == None and team1.is_empty() and pokemon2 == None and team2.is_empty():
+                return 0
+            elif pokemon1 == None and team1.is_empty():
+                return 2
+            elif pokemon2 == None and team2.is_empty():
+                return 1
+            else: # both teams still have pokemon -> battle
+                if pokemon1 == None:
+                    pokemon1 = team1.retrieve_pokemon()
+                if pokemon2 == None: 
+                    pokemon2 = team2.retrieve_pokemon()
+                
+                # battle here -----------------------------------------------------------------
+
+                action1 = team1.choose_battle_option()
+                action2 = team2.choose_battle_option()
+
+                # PRE-ATTACKS -------------------------------------------------------------------
+                # TODO if current implementation work -> change the order to SWAPS/SPECIALS/HEALS instead of
+                # SWAP/SPECIAL/HEAL/SWAP/SPECIAL/HEAL
+
+                if action1 == Action.SWAP:
+                    team1.return_pokemon(pokemon1)
+                    pokemon1 = team1.retrieve_pokemon()
+                elif action1 == Action.SPECIAL:
+                    team1.return_pokemon(pokemon1)
+                    team1.special()
+                    pokemon1 = team1.retrieve_pokemon()
+                elif action1 == Action.HEAL:
+                    if team1.heal_count == 0:
+                        return 2
+                    else:
+                        team1.heal_count -= 1
+                        pokemon1.heal()
+
+                # TEAM 2 PRE-ATTACK -------------------------------------------------------------------
+
+                if action2 == Action.SWAP:
+                    team2.return_pokemon(pokemon2)
+                    pokemon2 = team2.retrieve_pokemon()
+                elif action2 == Action.SPECIAL:
+                    team2.return_pokemon(pokemon2)
+                    team2.special()
+                    pokemon2 = team2.retrieve_pokemon()
+                elif action2 == Action.HEAL:
+                    if team2.heal_count == 0:
+                        return 1
+                    else:
+                        team2.heal_count -= 1
+                        pokemon2.heal()
+
+                # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
+
+                if action1 == Action.ATTACK and action2 == Action.ATTACK: # both attacks
+                    
+                    # get speed
+                    if pokemon1.get_status_effect() == StatusEffect.PARALYSIS:
+                        speed1 = pokemon1.get_speed()//2
+                    else:
+                        speed1 = pokemon1.get_speed()
+
+                    if pokemon2.get_status_effect() == StatusEffect.PARALYSIS:
+                        speed2 = pokemon2.get_speed()//2
+                    else:
+                        speed2 = pokemon2.get_speed()
+
+                    # compare speed
+                    if speed1 > speed2:
+                        pokemon1.attack(pokemon2)
+                        if not pokemon2.is_fainted():
+                            pokemon2.attack(pokemon1)
+                    elif speed1 < speed2:
+                        pokemon2.attack(pokemon1)
+                        if not pokemon1.is_fainted():
+                            pokemon1.attack(pokemon2)
+                    if speed1 == speed2:
+                        pokemon1.attack(pokemon2)
+                        pokemon2.attack(pokemon1)
+
+                elif action1 == Action.ATTACK: # team 1 attacks
+                    pokemon1.attack(pokemon2)
+                    
+                elif action2 == Action.ATTACK: # team 2 attacks
+                    pokemon2.attack(pokemon1)
+
+                # battle ends here ------------------------------------------------------------
+
+                if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()):
+                    pokemon1.lose_hp(1)
+                    pokemon2.lose_hp(1)
+                elif (not pokemon1.is_fainted()) and pokemon2.is_fainted():
+                    pokemon1.level_up()
+                elif pokemon1.is_fainted() and (not pokemon2.is_fainted()):
+                    pokemon2.level_up()
+                
+                if (not pokemon1.is_fainted) and pokemon1.can_evolve():
+                    pokemon1 = pokemon1.get_evolved_version()
+                
+                if (not pokemon2.is_fainted) and pokemon2.can_evolve():
+                    pokemon2 = pokemon2.get_evolved_version()
+
+                if pokemon1.is_fainted():
+                    pokemon1 = None
+                if pokemon2.is_fainted():
+                    pokemon2 = None
     
-        # TODO print out the interface
-
-        # each team choose an action
-        # teams are added to a list, sorted by action chosen
-        team_sorted_actions = ArraySortedList(2)
-        team_sorted_actions.add(ListItem(1, self.ORDER_ACTION.index(team1.choose_battle_option())))
-        team_sorted_actions.add(ListItem(2, self.ORDER_ACTION.index(team2.choose_battle_option())))
-        # team_sorted_actions contains ListItem(team_number, action_index) sorted by action _index
-
-        pokemons_sorted_team = ArraySortedList(2)
-        # pokemons_sorted_team contains Listem(pokemon, team_number) sorted by team_number
-
-        pokemons_attack = CircularQueue(2)
-
-        for i in range (len(team_sorted_actions)):
-
-            team_number = team_sorted_actions[i].value
-
-            # get team, action, pokemon of current PokeTeam
-            if team_number == 1:
-                team = team1
-            elif team_number == 2:
-                team = team2
-            action = team.choose_battle_option()
-            pokemon = team.retrieve_pokemon()
-            pokemons_sorted_team.add(ListItem(pokemon, team_number))
-            
-
-            # count attack
-            attack_count = 0
-
-            if action == Action.SWAP:
-                team.return_pokemon(pokemon)
-                pokemon = team.retrieve_pokemon()
-
-            elif action == Action.SPECIAL:
-                team.return_pokemon(pokemon)
-                team.special()
-                pokemon = team.retrieve_pokemon()
-
-            elif action == Action.HEAL:
-                if team.heal_count == 0:
-                    pass # lose immediately
-                else:
-                    team.heal_count -= 1
-                    if team.battle_mode == 0:
-                        temp = ArrayStack(len(team.team))
-                        for _ in range(len(team.team)):
-                            temp.push(team.team.pop().heal())
-                        temp.reverse()
-                        team = temp
-                    elif team.battle_mode == 1:
-                        for _ in range(len(team.team)):
-                            team.team.append(team.team.serve().heal())
-                    elif team.battle_mode == 2:
-                        pass # ? implmentation TODO
-
-            elif action == Action.ATTACK:
-                attack_count += 1
-                pokemons_attack.append(pokemon)
-                
-            if i == 1: # after 2 iterations, handle attacks
-                
-                if attack_count == 0:
-                    pass
-                elif attack_count == 1:
-                    all_pokemons = CircularQueue(2)
-                    for i in range(len(pokemons_sorted_team)):
-                        all_pokemons.append(pokemons_sorted_team[i].value)
-                    
-
-
-                elif attack_count == 2:
-                    pass
-
-                # get speed value to sort team
-                if pokemon.get_status_effect() == StatusEffect.PARALYSIS:
-                    speed = pokemon.get_speed() // 2
-                else:
-                    speed = pokemon.get_speed()
-                
-                # add to 2nd sorted list
-                team_sorted_attacks.add(ListItem(pokemon, speed))  # pass in team or pokemon? TODO
-
-                if i == 1: # i = 1, after both iteration
-                    pass
-                    
-                
-        if len(team_sorted_attacks) == 2 and team_sorted_attacks[0].key == team_sorted_attacks[1].key: # if both team has same speed
-            # sorted list is stable --> use correspondig index 0 and 1 for team1 and team2
-            pokemon_team1 = team_sorted_attacks[0].value
-            pokemon_team2 = team_sorted_attacks[1].value
-            pokemon_team1.attack(pokemon_team2)
-            pokemon_team2.attack(pokemon_team1)
-        elif len(team_sorted_attacks) == 2: # do attacks in order
-            pass
-            
 
 if __name__ == "__main__":
     b = Battle(verbosity=3)
