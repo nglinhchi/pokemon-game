@@ -11,7 +11,9 @@ from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack, Stack
 from aset import ASet
+
 """
+Implements the methods to construct a team and implements the different battle modes
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
@@ -144,6 +146,9 @@ class PokeTeam:
 
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
+        """
+        returns the on field pokemon back to the team
+        """
         if not poke.is_fainted():
             if self.battle_mode == 0:
                 self.team = self.team.reverse()
@@ -157,6 +162,9 @@ class PokeTeam:
             return
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
+        """
+        Takes the first pokemon of the team and makes them the pokemon on field
+        """
         if self.battle_mode == 0:
             self.team = self.team.reverse()
             self.poke_on_field = self.team.pop()
@@ -172,6 +180,9 @@ class PokeTeam:
         return self.poke_on_field
     # TODO
     def special(self):
+        """
+        Completes the special operation on the team as given in the specifications
+        """
         if self.battle_mode == 0:
             last = self.team.pop()
             self.team.reverse()
@@ -192,7 +203,10 @@ class PokeTeam:
 
     
     # TODO
-    def regenerate_team(self):
+    def regenerate_team(self) -> None:
+        """
+        Regenerates the team based from the same battle numbers
+        """
         if self.battle_mode == 0:
             self.team = self.team_mode_0()
         elif self.battle_mode == 1:
@@ -205,6 +219,9 @@ class PokeTeam:
 
     # TODO
     def __str__(self):
+        """
+        Returns a string output of the current state of the team
+        """
         # Dawn (2): [LV. 1 Gastly: 6 HP, LV. 1 Squirtle: 11 HP, LV. 1 Eevee: 10 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Charmander: 9 HP]"
         # "LV. 5 Venusaur: 17 HP"
         str = f"{self.team_name} ({self.battle_mode}): ["
@@ -245,7 +262,7 @@ class PokeTeam:
             self.team.append(temp_queue.serve())    #return all elements back to original stack
         return queue_string[:-2]    #do not include last comma and whitespace
 
-    def list_string(self):
+    def list_string(self) -> str:
         """
         Method that returns a string with all list elements
         """
@@ -254,7 +271,10 @@ class PokeTeam:
             list_string += str(item.value) + ", "
         return list_string[:-2] #do not include last comma and whitespace
 
-    def is_empty(self):
+    def is_empty(self) -> Bool:
+        """
+
+        """
         return self.team.is_empty()
 
 
