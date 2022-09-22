@@ -100,7 +100,7 @@ class ArrayStack(Stack[T]):
         return self.array[self.length-1]
 
     def reverse(self):
-        reversed = ArrayStack(len(self))
+        reversed = ArrayStack(len(self.array))
         for _ in range(len(self)):
             reversed.push(self.pop())
         return reversed

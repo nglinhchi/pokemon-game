@@ -1,0 +1,110 @@
+from random_gen import RandomGen
+from battle import Battle
+from poke_team import Criterion, PokeTeam
+from pokemon import Bulbasaur, Charizard, Charmander, Eevee, Gastly, Squirtle, Venusaur
+from tests.base_test import BaseTest
+
+def test_basic_battle():
+        RandomGen.set_seed(1337)
+        team1 = PokeTeam("Ash", [1, 1, 1, 0, 0], 0, PokeTeam.AI.ALWAYS_ATTACK)
+        team2 = PokeTeam("Gary", [0,0, 0, 0, 3], 0, PokeTeam.AI.ALWAYS_ATTACK)
+        battle_count = 0
+        b = Battle(verbosity=0)
+        pokemon1 = team1.retrieve_pokemon() 
+        pokemon2 = team2.retrieve_pokemon()    
+        print("initttttt \n \n \n\n \n \n \n \n\n \n \n \n \n \n \n", pokemon1, pokemon2)  
+
+        while True:
+
+            if pokemon1 == None and team1.team.is_empty() and pokemon2 == None and team2.team.is_empty():
+                print(team1, team2)
+                return 0
+            elif pokemon1 == None and team1.team.is_empty():
+                print(team1, team2)
+                return 2
+            elif pokemon2 == None and team2.team.is_empty():
+                print(team1, team2)
+                print(team1.retrieve_pokemon())
+                print(team1.retrieve_pokemon())
+                return 1
+            else: # both teams still have pokemon -> battle
+                if pokemon1 == None:
+                    pokemon1 = team1.retrieve_pokemon()
+                if pokemon2 == None: 
+                    pokemon2 = team2.retrieve_pokemon()
+                
+                if pokemon1.is_fainted():
+                        pokemon1 = team1.retrieve_pokemon()     
+                elif pokemon2.is_fainted():
+                        pokemon2 = team2.retrieve_pokemon()     
+                speed1 = pokemon1.get_speed()
+                speed2 = pokemon2.get_speed()
+                
+                # compare speed
+                if speed1 > speed2:
+                        
+
+                        pokemon1.attack(pokemon2)
+                        
+                        if not pokemon2.is_fainted():
+                               
+                                pokemon2.attack(pokemon1)
+
+                elif speed1 < speed2:
+
+
+                        pokemon2.attack(pokemon1)
+
+                        if not pokemon1.is_fainted():
+
+                                pokemon1.attack(pokemon2)
+
+                if speed1 == speed2:
+
+                        pokemon1.attack(pokemon2)
+                        pokemon2.attack(pokemon1)
+
+
+
+
+                #post attacks
+                if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()):
+                        pokemon1.lose_hp(1)
+                        pokemon2.lose_hp(1)
+                elif (not pokemon1.is_fainted()) and pokemon2.is_fainted():
+                        pokemon1.level_up()
+                elif pokemon1.is_fainted() and (not pokemon2.is_fainted()):
+                        pokemon2.level_up()
+                
+                # print(pokemon1.get_evolved_version())
+                if (not pokemon1.is_fainted()) and pokemon1.can_evolve() and pokemon1.should_evolve():
+
+                        pokemon1 = pokemon1.get_evolved_version()
+                
+                if (not pokemon2.is_fainted()) and pokemon2.can_evolve() and pokemon2.should_evolve():
+                        pokemon2 = pokemon2.get_evolved_version()
+                if pokemon1.is_fainted():
+                    pokemon1 = None
+                if pokemon2.is_fainted():
+                    pokemon2 = None
+
+                
+
+        # res = b.battle(team1, team2)
+        # self.assertEqual(res, 1)
+        # self.assertTrue(team2.is_empty())
+        # remaining = []
+        # while not team1.is_empty():
+        #     remaining.append(team1.retrieve_pokemon())
+        # self.assertEqual(len(remaining), 2)
+        # self.assertEqual(remaining[0].get_hp(), 1)
+        # self.assertIsInstance(remaining[0], Venusaur)
+        # self.assertEqual(remaining[1].get_hp(), 11)
+        # self.assertIsInstance(remaining[1], Squirtle)
+print(test_basic_battle())
+
+
+# print(e.status_effect)
+# print(e.get_status_effect())
+# print(e.poke_type)
+# print(e.poke_type.type_status_effect)

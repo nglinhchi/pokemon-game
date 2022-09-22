@@ -6,7 +6,7 @@ from multiprocessing.connection import Listener
 from os import popen
 from tkinter import ACTIVE
 from random_gen import RandomGen
-from poke_team import Action, PokeTeam, Criterion, StatusEffect
+from poke_team import Action, PokeTeam, Criterion
 from print_screen import print_game_screen
 
 class Battle:
@@ -22,11 +22,13 @@ class Battle:
 
         while True:
 
-            if pokemon1 == None and team1.is_empty() and pokemon2 == None and team2.is_empty():
+            if pokemon1 == None and team1.team.is_empty() and pokemon2 == None and team2.team.is_empty():
                 return 0
-            elif pokemon1 == None and team1.is_empty():
+            elif pokemon1 == None and team1.team.is_empty():
+                team2.return_pokemon(pokemon2)
                 return 2
-            elif pokemon2 == None and team2.is_empty():
+            elif pokemon2 == None and team2.team.is_empty():
+                team1.return_pokemon(pokemon1)
                 return 1
             else: # both teams still have pokemon -> battle
                 if pokemon1 == None:
@@ -47,11 +49,11 @@ class Battle:
                     team1.return_pokemon(pokemon1)
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.SPECIAL:
-                    team1.return_pokemon(pokemon1)
+                    # team1.return_pokemon(pokemon1) Should be implemented inside special
                     team1.special()
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.HEAL:
-                    if team1.heal_count == 0:
+                    if team1.heal_count < 0:
                         return 2
                     else:
                         team1.heal_count -= 1
@@ -67,7 +69,7 @@ class Battle:
                     team2.special()
                     pokemon2 = team2.retrieve_pokemon()
                 elif action2 == Action.HEAL:
-                    if team2.heal_count == 0:
+                    if team2.heal_count < 0:
                         return 1
                     else:
                         team2.heal_count -= 1
@@ -102,18 +104,20 @@ class Battle:
 
                 # battle ends here ------------------------------------------------------------
 
-                if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()):
+                if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()): #should not be elif next because the lose hp could make a pokemon faint, resulting in other one level up
                     pokemon1.lose_hp(1)
                     pokemon2.lose_hp(1)
-                elif (not pokemon1.is_fainted()) and pokemon2.is_fainted():
+                
+                if (not pokemon1.is_fainted()) and pokemon2.is_fainted():
                     pokemon1.level_up()
                 elif pokemon1.is_fainted() and (not pokemon2.is_fainted()):
                     pokemon2.level_up()
-                
-                if (not pokemon1.is_fainted) and pokemon1.can_evolve():
+                print(pokemon1.is_fainted(), pokemon2.is_fainted())
+                print(pokemon1, pokemon2)
+                if (not pokemon1.is_fainted()) and pokemon1.can_evolve() and pokemon1.should_evolve():
                     pokemon1 = pokemon1.get_evolved_version()
                 
-                if (not pokemon2.is_fainted) and pokemon2.can_evolve():
+                if (not pokemon2.is_fainted()) and pokemon2.can_evolve() and pokemon2.should_evolve():
                     pokemon2 = pokemon2.get_evolved_version()
 
                 if pokemon1.is_fainted():
@@ -126,6 +130,7 @@ if __name__ == "__main__":
     b = Battle(verbosity=3)
     RandomGen.set_seed(16)
     t1 = PokeTeam.random_team("Cynthia", 0, criterion=Criterion.SPD)
+    
     t1.ai_type = PokeTeam.AI.USER_INPUT
     t2 = PokeTeam.random_team("Barry", 1)
     print(b.battle(t1, t2))

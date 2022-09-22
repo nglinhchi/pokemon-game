@@ -215,7 +215,8 @@ class ArraySortedList(SortedList[T]):
         so that the array is descending.
         :out: descending sorted array
         """
-        reverse_arr = ArraySortedList(len(self))
+        reverse_arr = ArraySortedList(len(self.array))
+
         for idx in range(len(self)):
             key = self[idx].key * -1
             poke_to_add = self[idx].value

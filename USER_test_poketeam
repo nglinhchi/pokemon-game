@@ -173,3 +173,26 @@ def test_battle_option_attack(self):
     e = Eevee()
     
 #TODO test special for other modes bm 0 bm 2
+# def test_return_bm2():
+
+#     RandomGen.set_seed(192837465)
+#     team1 = PokeTeam("Brock", [1, 1, 1, 1, 1], 2, PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE, criterion=Criterion.HP)
+#     pokemon1 = team1.retrieve_pokemon()
+#     print(team1)
+#     team1.return_pokemon(pokemon1)
+#     print(team1)
+# test_return_bm2()
+
+def test_return_bm2():
+
+    RandomGen.set_seed(192837465)
+    team1 = PokeTeam("Brock", [1,1,1,1,1], 2, PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE, criterion=Criterion.HP)
+    pokemon1 = team1.retrieve_pokemon()
+    team1.return_pokemon(pokemon1)
+    print(team1)
+    
+# test_return_bm2
+
+def test_swap_bm0():
+    RandomGen.set_seed(192837465)
+    team1 = PokeTeam("Brock", [1,1,1,1,1], 0)

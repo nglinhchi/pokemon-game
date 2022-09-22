@@ -125,7 +125,7 @@ def test_stable_index_to_add():
 def test_reverse():
     test_arr = test_normal()
     reverse_arr = ArraySortedList(len(test_arr))
-   
+    test_arr.delete_at_index(0)
     for item in test_arr:
         reverse_arr.add(ListItem(item.value, (item.key * -1)))
     

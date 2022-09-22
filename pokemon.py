@@ -4,7 +4,7 @@ __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
 from inspect import Attribute
 from multiprocessing.sharedctypes import Value
-from pokemon_base import PokemonBase, StatusEffect, PokeType
+from pokemon_base import PokemonBase, PokeType
 
 
 # *******************************************
@@ -30,7 +30,7 @@ class Charizard(PokemonBase):
     def get_max_hp(self) -> int:
         return 12 + 1 * self.level
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 10 + 2 * self.level
 
     def speed_formula(self) -> int:
@@ -72,7 +72,7 @@ class Charmander(PokemonBase):
     def get_max_hp(self) -> int:
         return 8 + 1 * self.level
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 6 + 1 * self.level
 
     def speed_formula(self) -> int:
@@ -90,8 +90,10 @@ class Charmander(PokemonBase):
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
             self.lose_hp(damage)
+
         else:
             self.lose_hp(damage//2)
+
 
 
 # *******************************************
@@ -117,7 +119,7 @@ class Venusaur(PokemonBase):
     def get_max_hp(self) -> int:
         return 20 + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 5
 
     def speed_formula(self) -> int:
@@ -159,7 +161,7 @@ class Bulbasaur(PokemonBase):
     def get_max_hp(self) -> int:
         return 12 + 1 * self.level
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 5
 
     def speed_formula(self) -> int:
@@ -205,7 +207,7 @@ class Blastoise(PokemonBase):
     def get_max_hp(self) -> int:
         return 15 + 2 * self.level
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 8 + self.level // 2
 
     def speed_formula(self) -> int:
@@ -247,7 +249,7 @@ class Squirtle(PokemonBase):
     def get_max_hp(self) -> int:
         return 9 + 2 * self.level
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 4 + self.level//2
 
     def speed_formula(self) -> int:
@@ -293,7 +295,7 @@ class Gengar(PokemonBase):
     def get_max_hp(self) -> int:
         return 12 + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 18
 
     def speed_formula(self) -> int:
@@ -333,7 +335,7 @@ class Haunter(PokemonBase):
     def get_max_hp(self) -> int:
         return 9 + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 8
 
     def speed_formula(self) -> int:
@@ -372,7 +374,7 @@ class Gastly(PokemonBase):
     def get_max_hp(self) -> int:
         return 6 + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 4
 
     def speed_formula(self) -> int:
@@ -414,7 +416,7 @@ class Eevee(PokemonBase):
     def get_max_hp(self) -> int:
         return 10
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 6 + self.level
 
     def speed_formula(self) -> int:
@@ -430,6 +432,7 @@ class Eevee(PokemonBase):
         raise ValueError(f"{self.get_name()} does not have evolution")
         
     def defend(self, damage: int) -> None:
+        print(damage, self.get_level())
         if damage >= self.get_defence():
             self.lose_hp(damage)
         else:
