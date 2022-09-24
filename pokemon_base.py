@@ -58,6 +58,10 @@ class PokemonBase(ABC):
         self.hp = hp
 
     def __str__(self) -> str:
+        """
+        Returns a string output of the pokemon
+        :complexity O(1)
+        """
         return f"LV.{self.level} {self.name}: {self.hp} HP"
 
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
