@@ -37,6 +37,8 @@ class Battle:
                     pokemon2 = team2.retrieve_pokemon()
                 
                 # battle here -----------------------------------------------------------------
+                # team1.poke_on_field = pokemon1
+                # team2.poke_on_field = pokemon2
 
                 action1 = team1.choose_battle_option(pokemon1, pokemon2)
                 action2 = team2.choose_battle_option(pokemon2, pokemon1)
@@ -47,11 +49,15 @@ class Battle:
 
                 if action1 == Action.SWAP:
                     print("swapping")
+                    print("self descending?", team1.descending_order)
+                    print("prior swap", team1.team)
                     team1.return_pokemon(pokemon1)
-
+                    print("after swap return", team1.team)
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.SPECIAL:
+                    print("poke prior to speci 1-2", pokemon1, pokemon2)
                     print("special")
+                    print("descending?", team1.descending_order)
                     # team1.return_pokemon(pokemon1) Should be implemented inside special
                     team1.special()
                     pokemon1 = team1.retrieve_pokemon()
@@ -127,9 +133,11 @@ class Battle:
                 
                 if (not pokemon1.is_fainted()) and pokemon1.can_evolve() and pokemon1.should_evolve():
                     pokemon1 = pokemon1.get_evolved_version()
+                    team1.poke_on_field = pokemon1
                 
                 if (not pokemon2.is_fainted()) and pokemon2.can_evolve() and pokemon2.should_evolve():
                     pokemon2 = pokemon2.get_evolved_version()
+                    team2.poke_on_field = pokemon2
 
                 if pokemon1.is_fainted():
                     pokemon1 = None

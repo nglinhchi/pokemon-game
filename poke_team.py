@@ -96,7 +96,7 @@ class PokeTeam:
         self.heal_count = 3
         self.initial_order_exist = False
         self.poke_on_field = None   #initialise pokemon on field
-        self.descending_order = True #Initially true by default descending
+        self.descending_order = False#Initially true by default descending
         self.regenerate_team()
 
 
@@ -161,15 +161,15 @@ class PokeTeam:
             elif self.battle_mode == 1:
                 self.team.append(poke)
             elif self.battle_mode == 2:
-                if self.descending_order == False:
-                    self.team = self.team.reverse_order()
-                    print("reset", self.team) 
-                    self.sort_into_team(poke)
-                    print("sorted", self.team)
-                    self.team = self.team.reverse_order()
-                    print("reverse reset", self.team)
-                else:   #self descneding == True
-                    self.sort_into_team(poke)
+                # if self.descending_order == False:
+                #     # self.team = self.team.reverse_order()
+                #     # print("reset", self.team) 
+                #     self.sort_into_team(poke)
+                #     print("sorted", self.team)
+                #     self.team = self.team.reverse_order()
+                #     print("reverse reset", self.team)
+                # else:   #self descneding == True
+                self.sort_into_team(poke)
 
         else:
             return
@@ -185,7 +185,7 @@ class PokeTeam:
                 self.poke_on_field = self.team.serve()
             elif self.battle_mode == 2:
                 # self.current_poke_order = self.team[0].order    #store order and key for return
-                # self.current_poke_key = self.team[0].key
+                self.current_poke_key = self.team[0].key
                 self.current_poke_order = self.team[0].order
                 self.poke_on_field = self.team.delete_at_index(0).value  #First pokemon in list is the one for battle
             
@@ -210,16 +210,19 @@ class PokeTeam:
             for _ in range(count_first_half):
                 self.team.append(temp_stack.pop())
         elif self.battle_mode == 2:
-            if self.descending_order == True:
-                self.descending_order = False
-            else:
-                self.descending_order = True
+            
+            print(self.poke_on_field, self.current_poke_key, self.current_poke_order)
             self.return_pokemon(self.poke_on_field)
             self.team = self.team.reverse_order()
             print(self.team)
-            
-            print(self.descending_order, "descending?")
-
+            if self.descending_order == True:
+                self.descending_order = False
+            elif self.descending_order == False:
+                self.descending_order = True
+            # self.retrieve_pokemon()
+            # self.retrieve_pokemon()
+            # print(self.descending_order, "descending?")
+            # print(self.team)
     
     # TODO
     def regenerate_team(self):
@@ -229,7 +232,7 @@ class PokeTeam:
             self.team = self.team_mode_1()
         elif self.battle_mode == 2:
             self.initial_order_exist = False
-            self.descending_order = True
+            self.descending_order = False
             self.team = self.team_mode_2()
 
     def get_team(self):
@@ -389,7 +392,7 @@ class PokeTeam:
             #     team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
         
         ### Sort initial team ###
-        criterion_list = team_list.reverse_order()  #criterion descending initially.
+        criterion_list = team_list  #criterion descending initially.
         
         unique_keys = ASet(len(criterion_list)) 
         for idx, item in enumerate(criterion_list):
@@ -399,8 +402,8 @@ class PokeTeam:
                 tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
                 tie_last_idx = criterion_list.get_last_index(item.key)
                 self.break_tie(criterion_list, tie_start_idx, tie_last_idx)
-        
-        
+        criterion_list = criterion_list.reverse_order()
+        self.descending_order = True
         for num, item in enumerate(criterion_list, 1):  #Assign all in sorted list an order number from 1- length of list
             item.order = num
         self.initial_order_exist = True
@@ -486,7 +489,7 @@ class PokeTeam:
                 ### SORT BY POKEDEX and INITIAL(Initial check done inside pokedex) ###
                         self.break_tie(self.team, tie_start_idx, tie_end_idx)
             except:
-                raise ValueError(f" Set : {unique_key}, Team : {self.team}, {pokemon}, {self.team[idx].key}, {self.team[idx].key}")
+                raise ValueError(f" Set : {unique_key}, Team : {self.team}, {pokemon}, {self.team[idx].key}, {self.team[idx].order}")
         
 
     
@@ -502,8 +505,10 @@ class PokeTeam:
             key = poke_to_add.get_level()
         elif self.criterion == Criterion.SPD:
             key = poke_to_add.get_speed()
+        # if self.descending_order == Tru:
+        # key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
         if self.descending_order == True:
-            key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
+            key = key * -1
         # # self.current_poke_key = key
         if not self.team.is_full():
             self.team.add(ListItem(poke_to_add, key, self.current_poke_order)) #Sorted list by first criterion.
@@ -520,6 +525,8 @@ class PokeTeam:
             pokemon = pokemon_item.value
             # previous_key = team_list[start_idx].key
             key = pokemon.POKE_NO
+            if self.descending_order == False:
+                key = key * -1
             order = pokemon_item.order
             pokeorder_list.add(ListItem(pokemon,key, order))
             start_idx += 1
@@ -539,7 +546,7 @@ class PokeTeam:
                         
                         self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
                 except:
-                    print(f"{pokeorder_list[idx]}")
+                    print(f"failed init check{pokeorder_list[idx]}")
         #Otherwise Return. No more sorting left
         #Swap newly sorted items back into team_list
         for idx in range(len(pokeorder_list)):
