@@ -91,7 +91,6 @@ class BattleTowerIterator:
                 user = self.tower.me                                        # get user team
                 user.regenerate_team()                                      # regen user team
                 opponent.regenerate_team()                                  # regen opponent team
-                
 
                 print("###################################################")
                 print("PRE BATTLE")
@@ -101,18 +100,18 @@ class BattleTowerIterator:
 
                 result = self.tower.battle.battle(user, opponent)           # perform 1 battle
 
-
                 print("###################################################")
                 print("POST BATTLE")
                 print(f"User team: {user} ")
                 print(f"Opponent team: {opponent} || {opponent.live} <3")
                 print("###################################################")
+
                 if result == 0 or result == 1:                              # user team win/draw
                     opponent.live -= 1                                          # opposing team lose 1 live
                     if opponent.live == 0:                                      # opposing team has no more lives
                         self.tower.opponents.delete_at_index(index)             # remove opponent with 0 lives 
                     else:           
-                        self.tower[index] = opponent                            # set opponent with new live count
+                        self.tower.opponents[index] = opponent                            # set opponent with new live count
                 else:                                                       # user team LOSE
                     self.tower.end_tower = True                                 # set end_tower to false, next iter will raise StopIteration
                 return (result, user, opponent, opponent.live)              # return (res, me, other, live)
@@ -121,7 +120,35 @@ class BattleTowerIterator:
             
     
     def avoid_duplicates(self):
-        pass
+        
+        # next return (res, me, other, lives)
+        # for (res, me, other, lives) in self.tower:
+        #     for num in other.team_numbers:
+        #         if num > 1:
+        #             index = self.tower.opponents.index(other)
+        #             self.tower.opponents.delete_at_index(index)
+        #             next
+        
+        lst = []
+
+        for (res, me, other, lives) in self.tower:
+            for num in other.team_numbers:
+                if num > 1:
+                    lst.append(other.team_name)
+                    next
+        print(lst)
+            
+
+        # while self.current_opponent is not None:
+        #     team = current_opponent.item     # retrieve item in current node
+        #     current_opponent = current_opponent.next  # reset to next node
+        #     for num in team.team_numbers: # iterate through team_numbers
+        #         if num > 1:
+        #             index = self.tower.opponents.index(team)
+        #             self.tower.opponents.delete_at_index(index)
+                    
+        # raise StopIteration
+
 
 class TestBattleTower(unittest.TestCase):
     def test_iter(self):
@@ -132,6 +159,8 @@ class TestBattleTower(unittest.TestCase):
         print(next(it))
         
 if __name__ == '__main__':
+    
+    
     # unittest.main()
     RandomGen.set_seed(51234)
     bt = BattleTower(Battle(verbosity=0))
@@ -140,5 +169,33 @@ if __name__ == '__main__':
     # Teams have 7, 10, 10, 3 lives.
     RandomGen.set_seed(213098)
     it = iter(bt)
-    print(next(it))
+    print(next(it)) # 1, 6
+    print(next(it)) # 1, 9
+    print(next(it)) # 1, 9
+    print(next(it)) # 1, 2
+    print(next(it)) # 1, 5
+    print(next(it)) # 2, 9
+    
+    # -------------------------------------------------------------------------------
 
+    # RandomGen.set_seed(29183712400123)
+    # bt = BattleTower(Battle(verbosity=0))
+    # bt.set_my_team(PokeTeam.random_team("Jackson", 0, team_size=6))
+    # bt.generate_teams(10)
+
+    # # Team numbers before:
+    # # [0, 4, 1, 0, 0], 6
+    # # [1, 0, 2, 0, 0], 5
+    # # [1, 1, 0, 1, 0], 8
+    # # [1, 2, 1, 1, 0], 10
+    # # [0, 0, 2, 1, 1], 8
+    # # [1, 1, 3, 0, 0], 4
+    # # [0, 2, 0, 1, 0], 5
+    # # [1, 0, 0, 4, 0], 3
+    # # [1, 1, 1, 0, 2], 7
+    # # [0, 1, 1, 1, 0], 9
+    # it = iter(bt)
+    # it.avoid_duplicates()
+    # # Team numbers after:
+    # # [1, 1, 0, 1, 0], 8
+    # # [0, 1, 1, 1, 0], 9
