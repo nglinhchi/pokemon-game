@@ -16,7 +16,7 @@ class Charizard(PokemonBase):
     BASE_LEVEL = 3
     POKE_NO = 2 
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.FIRE)
+        PokemonBase.__init__(self, 12, PokeType.FIRE)
     
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
@@ -28,7 +28,7 @@ class Charizard(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 12 + 1 * self.level
+        return self.base_hp + 1 * self.level
 
     def attack_damage_formula(self) -> int:
         return 10 + 2 * self.level
@@ -58,7 +58,7 @@ class Charmander(PokemonBase):
     BASE_LEVEL = 1
     POKE_NO = 1
     def __init__(self):
-        PokemonBase.__init__(self, 9, PokeType.FIRE)
+        PokemonBase.__init__(self, 8, PokeType.FIRE)
     
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
@@ -70,7 +70,7 @@ class Charmander(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 8 + 1 * self.level
+        return self.base_hp + 1 * self.level
 
     def attack_damage_formula(self) -> int:
         return 6 + 1 * self.level
@@ -105,7 +105,7 @@ class Venusaur(PokemonBase):
     BASE_LEVEL = 2
     POKE_NO = 4
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GRASS)
+        PokemonBase.__init__(self, 20, PokeType.GRASS)
 
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
@@ -117,7 +117,7 @@ class Venusaur(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
     
     def get_max_hp(self) -> int:
-        return 20 + self.level//2
+        return self.base_hp + self.level//2
 
     def attack_damage_formula(self) -> int:
         return 5
@@ -147,7 +147,7 @@ class Bulbasaur(PokemonBase):
     BASE_LEVEL = 1
     POKE_NO = 3
     def __init__(self):
-        PokemonBase.__init__(self, 13, PokeType.GRASS)
+        PokemonBase.__init__(self, 12, PokeType.GRASS)
     
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
@@ -159,7 +159,7 @@ class Bulbasaur(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 12 + 1 * self.level
+        return self.base_hp + 1 * self.level
 
     def attack_damage_formula(self) -> int:
         return 5
@@ -192,7 +192,7 @@ class Blastoise(PokemonBase):
     BASE_LEVEL = 3
     POKE_NO = 6
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.WATER)
+        PokemonBase.__init__(self, 15, PokeType.WATER)
         self.level = 3 # base level
     
     def get_name(self) -> str:
@@ -205,7 +205,7 @@ class Blastoise(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 15 + 2 * self.level
+        return self.base_hp + 2 * self.level
 
     def attack_damage_formula(self) -> int:
         return 8 + self.level // 2
@@ -235,7 +235,7 @@ class Squirtle(PokemonBase):
     BASE_LEVEL = 1
     POKE_NO = 5
     def __init__(self):
-        PokemonBase.__init__(self, 11, PokeType.WATER)
+        PokemonBase.__init__(self, 9, PokeType.WATER)
     
     def get_name(self) -> str:
         return __class__.NAME  #Ensures name is set for pokemon
@@ -247,7 +247,7 @@ class Squirtle(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
             
     def get_max_hp(self) -> int:
-        return 9 + 2 * self.level
+        return self.base_hp + 2 * self.level
 
     def attack_damage_formula(self) -> int:
         return 4 + self.level//2
@@ -280,7 +280,7 @@ class Gengar(PokemonBase):
     BASE_LEVEL = 3
     POKE_NO = 9
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        PokemonBase.__init__(self, 12, PokeType.GHOST)
         self.level = 3 # base level
 
     def get_name(self) -> str:
@@ -293,7 +293,7 @@ class Gengar(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 12 + self.level//2
+        return self.base_hp + self.level//2
 
     def attack_damage_formula(self) -> int:
         return 18
@@ -320,7 +320,7 @@ class Haunter(PokemonBase):
     BASE_LEVEL = 1
     POKE_NO = 8
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        PokemonBase.__init__(self, 9, PokeType.GHOST)
         self.level = 1 # base level
     
     def get_name(self) -> str:
@@ -333,7 +333,7 @@ class Haunter(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 9 + self.level//2
+        return self.base_hp + self.level//2
 
     def attack_damage_formula(self) -> int:
         return 8
@@ -372,7 +372,7 @@ class Gastly(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 6 + self.level//2
+        return self.base_hp + self.level//2
 
     def attack_damage_formula(self) -> int:
         return 4
@@ -414,7 +414,7 @@ class Eevee(PokemonBase):
             return __class__.BASE_LEVEL #Ensures classes include base level.
 
     def get_max_hp(self) -> int:
-        return 10
+        return self.base_hp
 
     def attack_damage_formula(self) -> int:
         return 6 + self.level

@@ -1,7 +1,9 @@
+from battle import Battle
 from poke_team import *
 from random_gen import RandomGen
 from array_sorted_list import *
 from stack_adt import *
+from tower import BattleTower
 def test_regen_team():
     RandomGen.set_seed(123456789)
     t = PokeTeam.random_team("Cynthia", 2, team_size=4, criterion=Criterion.HP)
@@ -196,3 +198,36 @@ def test_return_bm2():
 def test_swap_bm0():
     RandomGen.set_seed(192837465)
     team1 = PokeTeam("Brock", [1,1,1,1,1], 0)
+
+def test_bm0():
+    RandomGen.set_seed(51234)
+    my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
+    opponents = []
+    for i in range(4):
+
+            team_name = f"Team {i}"
+            battle_mode = RandomGen.randint(0,1)
+            opponents.append(PokeTeam.random_team(team_name, battle_mode))
+            # opponents[-1].live = RandomGen.randint(2,10)
+            # print(f"{opponent} >>> {opponent.live} <3")
+    # print(opponents)
+    RandomGen.set_seed(1029873918273)
+    team2 = opponents[0]
+    b = Battle()
+    print(b.battle(my_team, team2))
+test_bm0()
+
+# team1 = PokeTeam("Ash", [1, 1, 1, 0, 0], 0, PokeTeam.AI.ALWAYS_ATTACK)
+# print(team1)
+# p = team1.retrieve_pokemon()
+# print(p, team1)
+# team1.return_pokemon(p)
+# print(team1)
+# RandomGen.set_seed(51234)
+# my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
+# my_team.retrieve_pokemon()
+# my_team.retrieve_pokemon()
+
+# my_team.return_pokemon()
+# my_team.retrieve_pokemon()
+# print(my_team)

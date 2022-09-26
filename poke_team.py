@@ -3,6 +3,7 @@ from ast import Num
 from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
 from random import Random
+from re import S
 from tracemalloc import start
 from typing import List
 from sorted_list import ListItem
@@ -37,7 +38,7 @@ class PokeTeam:
     BASE_ORDER = [Charmander, Bulbasaur, Squirtle, Gastly, Eevee]
     MAX_TEAM_SIZE = 6
     NUM_BASE_POKEMON = 5
-    
+
     class AI(Enum):
         ALWAYS_ATTACK = auto()
         SWAP_ON_SUPER_EFFECTIVE = auto()
@@ -86,6 +87,7 @@ class PokeTeam:
             assert criterion in Criterion, f"{criterion} is not a valid criterion"
             
         # initialise
+        self.team = None
         self.team_name = team_name
         self.team_numbers = team_numbers
         self.battle_mode = battle_mode
@@ -142,19 +144,33 @@ class PokeTeam:
         return PokeTeam(team_name, team_numbers, battle_mode, ai_mode, **kwargs)
         # ----------------------------------------------------------------------
 
+    def get_ai_type(self):
+        return self.ai_type
+
+    def get_heal_count(self):
+        return self.heal_count
+    def use_heal(self):
+        self.heal_count = self.get_heal_count() - 1
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
         if not poke.is_fainted():
             if self.battle_mode == 0:
                 if self.team.is_full():
                     raise ValueError(f"print {self}")
-                self.team = self.team.reverse()
                 self.team.push(poke)
-                self.team = self.team.reverse()
             elif self.battle_mode == 1:
                 self.team.append(poke)
             elif self.battle_mode == 2:
-                self.sort_into_team(poke)
+                if self.descending_order == False:
+                    self.team = self.team.reverse_order()
+                    print("reset", self.team) 
+                    self.sort_into_team(poke)
+                    print("sorted", self.team)
+                    self.team = self.team.reverse_order()
+                    print("reverse reset", self.team)
+                else:   #self descneding == True
+                    self.sort_into_team(poke)
+
         else:
             return
     # TODO
@@ -163,9 +179,7 @@ class PokeTeam:
             raise ValueError("Team Empty")
         else:
             if self.battle_mode == 0:
-                self.team = self.team.reverse()
                 self.poke_on_field = self.team.pop()
-                self.team = self.team.reverse()
             elif self.battle_mode == 1:
                 self.poke_on_field = self.team.serve()
             elif self.battle_mode == 2:
@@ -180,12 +194,12 @@ class PokeTeam:
     def special(self):
         if self.battle_mode == 0:
             if len(self.team) >= 2:
-                last = self.team.pop()
-                self.team.reverse()
                 first = self.team.pop()
-                self.team.push(last)
-                self.team.reverse()
+                self.team = self.team.reverse()
+                last = self.team.pop()
                 self.team.push(first)
+                self.team = self.team.reverse()
+                self.team.push(last)
         elif self.battle_mode == 1:
             count_first_half = len(self.team)//2
             temp_stack = ArrayStack(count_first_half)
@@ -194,8 +208,15 @@ class PokeTeam:
             for _ in range(count_first_half):
                 self.team.append(temp_stack.pop())
         elif self.battle_mode == 2:
+            if self.descending_order == True:
+                self.descending_order = False
+            else:
+                self.descending_order = True
             self.return_pokemon(self.poke_on_field)
-            self.team.reverse_order()
+            self.team = self.team.reverse_order()
+            print(self.team)
+            
+            print(self.descending_order, "descending?")
 
     
     # TODO
@@ -208,6 +229,11 @@ class PokeTeam:
             self.initial_order_exist = False
             self.descending_order = True
             self.team = self.team_mode_2()
+
+    def get_team(self):
+        if self.team == None:
+            raise ValueError("Team has not been created")
+        return self.team
 
 
     def __str__(self):
@@ -266,22 +292,22 @@ class PokeTeam:
 
     def choose_battle_option(self, my_pokemon: PokemonBase, their_pokemon: PokemonBase) -> Action:
         
-        if self.ai_type == PokeTeam.AI.ALWAYS_ATTACK:
+        if self.get_ai_type() == PokeTeam.AI.ALWAYS_ATTACK:
             return Action.ATTACK
         
-        elif self.ai_type == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
-            if their_pokemon.poke_type.type_multiplier(my_pokemon.poke_type) >= 1.5:
+        elif self.get_ai_type() == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
+            if their_pokemon.get_type().type_multiplier(my_pokemon.get_type()) >= 1.5:
                 return Action.SWAP 
             else:
                 return Action.ATTACK
         
-        elif self.ai_type == PokeTeam.AI.RANDOM:
+        elif self.get_ai_type() == PokeTeam.AI.RANDOM:
             actions = list(Action)
-            if self.heal_count == 0:
+            if self.get_heal_count() == 0:
                 actions.remove(Action.HEAL)
-            return Action(RandomGen.randint(1, len(actions)))
+            return actions[RandomGen.randint(0, len(actions)- 1)]
         
-        elif self.ai_type == PokeTeam.AI.USER_INPUT:
+        elif self.get_ai_type() == PokeTeam.AI.USER_INPUT:
             prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
             actions = list("APHS")
             while True:
@@ -309,7 +335,7 @@ class PokeTeam:
             for _ in range(num_pokemon):
                 pokemon = self.get_base_pokemon(idx)
                 team_stack.push(pokemon)
-        return team_stack
+        return team_stack.reverse()
 
     def team_mode_1(self) -> CircularQueue:
         team_queue = CircularQueue(sum(self.team_numbers))
@@ -439,7 +465,7 @@ class PokeTeam:
         """
         ### SORT BY FIRST KEY: CRITERION ###
         # if self.descending_order == True:
-        #     self.team = self.team.reverse_order()
+        # #     self.team = self.team.reverse_order()
         self.criterion_order(pokemon)
         ### CHECK IF TIE ###
         if len(self.team) >= 1:  #if not only pokemon on team 
@@ -474,7 +500,7 @@ class PokeTeam:
             key = poke_to_add.get_speed()
         if self.descending_order == True:
             key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
-        # self.current_poke_key = key
+        # # self.current_poke_key = key
         if not self.team.is_full():
             self.team.add(ListItem(poke_to_add, key, self.current_poke_order)) #Sorted list by first criterion.
         else:

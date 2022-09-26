@@ -46,13 +46,17 @@ class Battle:
                 # SWAP/SPECIAL/HEAL/SWAP/SPECIAL/HEAL
 
                 if action1 == Action.SWAP:
+                    print("swapping")
                     team1.return_pokemon(pokemon1)
+
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.SPECIAL:
+                    print("special")
                     # team1.return_pokemon(pokemon1) Should be implemented inside special
                     team1.special()
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.HEAL:
+                    print("heal")
                     if team1.heal_count < 0:
                         return 2
                     else:
@@ -62,23 +66,28 @@ class Battle:
                 # TEAM 2 PRE-ATTACK -------------------------------------------------------------------
 
                 if action2 == Action.SWAP:
+                    print("swapping2")
                     team2.return_pokemon(pokemon2)
                     pokemon2 = team2.retrieve_pokemon()
                 elif action2 == Action.SPECIAL:
+                    print("special2")
                     team2.return_pokemon(pokemon2)
+
                     team2.special()
                     pokemon2 = team2.retrieve_pokemon()
                 elif action2 == Action.HEAL:
+                    print("heal2")
                     if team2.heal_count < 0:
                         return 1
                     else:
                         team2.heal_count -= 1
                         pokemon2.heal()
-
+                print("teamstate1", team1, team1.team)
+                print("teamstate2", team2)
                 # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
 
                 if action1 == Action.ATTACK and action2 == Action.ATTACK: # both attacks
-
+                    print("both attack")
                     # get speed
                     speed1 = pokemon1.get_speed()
                     speed2 = pokemon2.get_speed()
@@ -97,13 +106,15 @@ class Battle:
                         pokemon2.attack(pokemon1)
 
                 elif action1 == Action.ATTACK: # team 1 attacks
+                    print("attack")
                     pokemon1.attack(pokemon2)
                     
                 elif action2 == Action.ATTACK: # team 2 attacks
+                    print("attack2")
                     pokemon2.attack(pokemon1)
 
                 # battle ends here ------------------------------------------------------------
-
+                print("before post battle", pokemon1, pokemon2)
                 if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()): #should not be elif next because the lose hp could make a pokemon faint, resulting in other one level up
                     pokemon1.lose_hp(1)
                     pokemon2.lose_hp(1)
@@ -112,8 +123,8 @@ class Battle:
                     pokemon1.level_up()
                 elif pokemon1.is_fainted() and (not pokemon2.is_fainted()):
                     pokemon2.level_up()
-                print(pokemon1.is_fainted(), pokemon2.is_fainted())
-                print(pokemon1, pokemon2)
+                # print(pokemon1.is_fainted(), pokemon2.is_fainted())
+                
                 if (not pokemon1.is_fainted()) and pokemon1.can_evolve() and pokemon1.should_evolve():
                     pokemon1 = pokemon1.get_evolved_version()
                 
@@ -124,7 +135,7 @@ class Battle:
                     pokemon1 = None
                 if pokemon2.is_fainted():
                     pokemon2 = None
-    
+                print(pokemon1, pokemon2)
 
 if __name__ == "__main__":
     b = Battle(verbosity=3)

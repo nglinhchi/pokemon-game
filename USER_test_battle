@@ -2,6 +2,7 @@ from random_gen import RandomGen
 from battle import Battle
 from poke_team import Criterion, PokeTeam
 from pokemon import Bulbasaur, Charizard, Charmander, Eevee, Gastly, Squirtle, Venusaur
+from stack_adt import ArrayStack
 from tests.base_test import BaseTest
 
 def test_basic_battle():
@@ -101,10 +102,19 @@ def test_basic_battle():
         # self.assertIsInstance(remaining[0], Venusaur)
         # self.assertEqual(remaining[1].get_hp(), 11)
         # self.assertIsInstance(remaining[1], Squirtle)
-print(test_basic_battle())
+# print(test_basic_battle())
 
 
 # print(e.status_effect)
 # print(e.get_status_effect())
 # print(e.poke_type)
 # print(e.poke_type.type_status_effect)
+# s = ArrayStack(5)
+
+# for idx in range(1,6):
+#     s.push(idx)
+# print(s.pop())
+# print(s.pop())
+# s.push(6)
+# print(s.pop())
+

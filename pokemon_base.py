@@ -1,6 +1,8 @@
 from __future__ import annotations
 from abc import abstractmethod, ABC
 from contextlib import AbstractAsyncContextManager
+from dataclasses import dataclass
+from multiprocessing.sharedctypes import Value
 from typing_extensions import Self
 from random_gen import RandomGen
 
@@ -13,23 +15,15 @@ __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
 
 
-
-# class StatusEffects:
-#     def __init__(self, type,)
-
-#     def get_status
-
-
-#     """
-#     List of valid status effects with assigned values representing each effect's damage (where exists).
-#     """
-#     BURN = 1
-#     POISON = 3
-#     PARALYSIS = None
-#     SLEEP = None
-#     CONFUSION = 4
-STATUS_EFFECTS = ["BURN", "POISON", "PARALYSIS", "SLEEP", "CONFUSION"]
-STATUS_DAMAGE = [1, 3, 0, 0, 0]
+class StatusEffects(Enum):
+    """
+    List of valid status effects with assigned values representing each effect's damage (where exists).
+    """
+    BURN = auto()
+    POISON = auto()
+    PARALYSIS = auto()
+    SLEEP = auto()
+    CONFUSION = auto()
 
 
 class PokeType(Enum):
@@ -37,18 +31,20 @@ class PokeType(Enum):
     Assigns corresponding status effect and an index for each type to be referenced to calculate type_multiplier value, and type_effectiveness values in a list
     """
     
-    FIRE =      (0,      [1,     2,      0.5,    1,      1])
-    GRASS =     (1, [0.5,   1,      2,      1,      1])
-    WATER =     (2, [2,     0.5,    1,      1,      1])
-    GHOST =     (3,     [1.25,  1.25,   1.25,   2,      0])
-    NORMAL =    (4,  [1.25,  1.25,   1.25,   0,      1])
+    FIRE =      (0,      [1,     2,      0.5,    1,      1], StatusEffects.BURN, 1)
+    GRASS =     (1, [0.5,   1,      2,      1,      1], StatusEffects.POISON, 3)
+    WATER =     (2, [2,     0.5,    1,      1,      1], StatusEffects.PARALYSIS)
+    GHOST =     (3,     [1.25,  1.25,   1.25,   2,      0], StatusEffects.SLEEP)
+    NORMAL =    (4,  [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSION)
     
-    def __init__(self, type_index: int, type_effectiveness: list):
+    def __init__(self, type_index: int, type_effectiveness: list, effect: StatusEffects, effect_damage = 0):
         self.type_index = type_index
-        self.type_status_effect = STATUS_EFFECTS[type_index]
-        self.status_effect_damage = STATUS_DAMAGE[type_index]
+        self.effect = effect
+        self.effect_damage = effect_damage
         self.type_effectiveness = type_effectiveness
 
+    def get_damage(self):
+        return self.effect_damage
     def type_multiplier(self, defend_poketype: PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
@@ -57,6 +53,15 @@ class PokeType(Enum):
     
         return multiplier
 
+# @dataclass
+# class PokeType(PokemonBase):
+#     damage: int = 0
+#     id: get_type_effect()
+#     # STATUS_EFFECTS = ["BURN", "POISON", "PARALYSIS", "SLEEP", "CONFUSION"]
+#     # STATUS_DAMAGE = [1, 3, 0, 0, 0]
+
+
+
 
 
 class PokemonBase(ABC):
@@ -64,7 +69,8 @@ class PokemonBase(ABC):
     def __init__(self, hp: int, poke_type: PokeType) -> None:
         ###TODO MAKE USER FACING: HP and POKE_TYPE ###
         self.name = self.get_name() #Ensures Pokemon Name is defined.
-        self.poke_type = poke_type
+        self.set_poketype(poke_type)    #Check for valid poke_type
+        self.set_base_hp(hp)    #Check for valid hp
         self.level = self.get_level()
         ### Deleted level - make abstract to provide base level for individual pokemon- return accurate level on initialisation###
         self.status_effect = None
@@ -74,7 +80,15 @@ class PokemonBase(ABC):
         self.defence = self.get_defence()
         self.speed = self.get_speed
 
-
+    def set_poketype(self, poke_type: StatusEffects):
+        if poke_type not in PokeType:
+            raise ValueError("Invalid Poke Type")
+        self.type = poke_type
+    def set_base_hp(self, hp: int):
+        if type(hp) is not int or hp > 0 is False:
+            raise ValueError("Invalid Max HP")
+        else:
+            self.base_hp = hp
     def __str__(self) -> str:
         return f"LV. {self.get_level()} {self.get_name()}: {self.hp} HP"
 
@@ -84,13 +98,16 @@ class PokemonBase(ABC):
         pass  
     
     def get_type(self) -> PokeType:
-        return self.poke_type
+        return self.type
+    
+    def get_type_effect(self):
+        return self.get_type().effect
     
     @abstractmethod
     def get_level(self) -> int:
         pass #Ensures classes include base level.
 
-    def get_status_effect(self) -> StatusEffect:
+    def get_status_effect(self) -> StatusEffects:
         return self.status_effect
 
     @abstractmethod
@@ -115,7 +132,7 @@ class PokemonBase(ABC):
         Getter method returning current Speed stat calculated for individual Pokemon after impact of status effects
         """
         speed = self.speed_formula()
-        if self.status_effect == STATUS_EFFECTS[2]:
+        if self.get_status_effect() == StatusEffects.PARALYSIS:
             speed = int(speed * 0.5)
         return speed
 
@@ -128,7 +145,7 @@ class PokemonBase(ABC):
     
     def get_attack_damage(self) -> int:
         ad = self.attack_damage_formula()
-        if self.status_effect == STATUS_EFFECTS[0]:
+        if self.get_status_effect() == StatusEffects.BURN:
             return ad * 0.5
         return ad
     
@@ -181,25 +198,22 @@ class PokemonBase(ABC):
         own status effect onto defending Pokemon
         """
         # >>> Step 1: Status effects on attack damage / redirecting attacks
-        if self.status_effect == STATUS_EFFECTS[3]:
+        if self.get_status_effect() == StatusEffects.SLEEP:
             return
-        elif self.status_effect == STATUS_EFFECTS[4]:
+        elif self.get_status_effect() == StatusEffects.CONFUSION:
             if(RandomGen.random_chance(0.5)): # 50% of attacking self
                 other = self
         # >>> Step 2: Do the attack
         base_attack = self.get_attack_damage()
-        multipler = self.poke_type.type_multiplier(other.poke_type)
+        multipler = self.get_type().type_multiplier(other.get_type())
         effective_attack = base_attack * multipler
-        # print(f"Effective attack of {self} is: {effective_attack}")
-
-        print(f"attack is {int(effective_attack)} \n {self}, {self.get_status_effect()}")
         other.defend(int(effective_attack))
         # >>> Step 3: Losing hp to status effects
         if self.get_status_effect() is not None:
-            self.lose_hp(other.poke_type.status_effect_damage)
+            self.lose_hp(other.get_type().get_damage())
         # >>> Step 4: Possibly applying status effects
         if(RandomGen.random_chance(0.2)): # 20% of inflicting status effect
-            other.status_effect = self.poke_type.type_status_effect
+            other.status_effect = self.get_type_effect()
 
     # LEVEL UP AND EVOLUTION ************************************************
 
@@ -256,3 +270,4 @@ class PokemonBase(ABC):
         """
         self.level += 1
         self.update_hp()
+    
