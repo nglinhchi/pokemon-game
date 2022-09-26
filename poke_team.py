@@ -179,12 +179,13 @@ class PokeTeam:
     # TODO
     def special(self):
         if self.battle_mode == 0:
-            last = self.team.pop()
-            self.team.reverse()
-            first = self.team.pop()
-            self.team.push(last)
-            self.team.reverse()
-            self.team.push(first)
+            if len(self.team) >= 2:
+                last = self.team.pop()
+                self.team.reverse()
+                first = self.team.pop()
+                self.team.push(last)
+                self.team.reverse()
+                self.team.push(first)
         elif self.battle_mode == 1:
             count_first_half = len(self.team)//2
             temp_stack = ArrayStack(count_first_half)
