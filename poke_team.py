@@ -173,6 +173,7 @@ class PokeTeam:
 
         else:
             return
+    
     # TODO
     def retrieve_pokemon(self) -> PokemonBase | None:
         if self.team.is_empty():
@@ -194,6 +195,7 @@ class PokeTeam:
     def special(self):
         if self.battle_mode == 0:
             if len(self.team) >= 2:
+
                 first = self.team.pop()
                 self.team = self.team.reverse()
                 last = self.team.pop()
@@ -335,7 +337,9 @@ class PokeTeam:
             for _ in range(num_pokemon):
                 pokemon = self.get_base_pokemon(idx)
                 team_stack.push(pokemon)
+
         return team_stack.reverse()
+
 
     def team_mode_1(self) -> CircularQueue:
         team_queue = CircularQueue(sum(self.team_numbers))
