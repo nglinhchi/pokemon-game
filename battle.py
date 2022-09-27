@@ -12,7 +12,7 @@ from print_screen import *
 class Battle:
     
     def __init__(self, verbosity=0) -> None:
-        pass
+        self.verbosity = verbosity
 
 
 
@@ -41,10 +41,10 @@ class Battle:
                 # battle here -----------------------------------------------------------------
                 # team1.poke_on_field = pokemon1
                 # team2.poke_on_field = pokemon2
-
+                
                 action1 = team1.choose_battle_option(pokemon1, pokemon2)
                 action2 = team2.choose_battle_option(pokemon2, pokemon1)
-
+                print("pre attack status effects:", pokemon1.get_status_effect(), pokemon2.get_status_effect())
                 # PRE-ATTACKS -------------------------------------------------------------------
                 # TODO if current implementation work -> change the order to SWAPS/SPECIALS/HEALS instead of
                 # SWAP/SPECIAL/HEAL/SWAP/SPECIAL/HEAL
@@ -118,11 +118,12 @@ class Battle:
                     pokemon1.attack(pokemon2)
                     
                 elif action2 == Action.ATTACK: # team 2 attacks
+                    print(pokemon2)
                     print("attack2")
                     pokemon2.attack(pokemon1)
 
                 # battle ends here ------------------------------------------------------------
-                print("before post battle", pokemon1, pokemon2)
+                print("before post battle", pokemon1, pokemon2, "status effects", pokemon1.get_status_effect(), pokemon2.get_status_effect())
                 if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()): #should not be elif next because the lose hp could make a pokemon faint, resulting in other one level up
                     pokemon1.lose_hp(1)
                     pokemon2.lose_hp(1)

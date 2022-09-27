@@ -199,23 +199,7 @@ def test_swap_bm0():
     RandomGen.set_seed(192837465)
     team1 = PokeTeam("Brock", [1,1,1,1,1], 0)
 
-def test_bm0():
-    RandomGen.set_seed(51234)
-    my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
-    opponents = []
-    for i in range(4):
 
-            team_name = f"Team {i}"
-            battle_mode = RandomGen.randint(0,1)
-            opponents.append(PokeTeam.random_team(team_name, battle_mode))
-            # opponents[-1].live = RandomGen.randint(2,10)
-            # print(f"{opponent} >>> {opponent.live} <3")
-    # print(opponents)
-    RandomGen.set_seed(1029873918273)
-    team2 = opponents[0]
-    b = Battle()
-    print(b.battle(my_team, team2))
-# test_bm0()
 
 # team1 = PokeTeam("Ash", [1, 1, 1, 0, 0], 0, PokeTeam.AI.ALWAYS_ATTACK)
 # print(team1)
@@ -261,3 +245,37 @@ def test_special_bm2():
     init_order = [poke.order for poke in my_team.get_team()[:len(my_team.get_team())]]
     assert init_order == [6,5,4,3,2,1]
 test_special_bm2()
+
+def test_bm0():
+    RandomGen.set_seed(51234)
+    bt = BattleTower(Battle(verbosity=0))
+    bt.set_my_team(PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP))
+    # my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
+    # opponents = []
+    bt.generate_teams(4)
+    # for i in range(4):
+
+    #         team_name = f"Team {i}"
+    #         battle_mode = RandomGen.randint(0,1)
+    #         opponents.append(PokeTeam.random_team(team_name, battle_mode))
+            # opponents[-1].live = RandomGen.randint(2,10)
+            # print(f"{opponent} >>> {opponent.live} <3")
+    RandomGen.set_seed(1029873918273)
+    opp = bt.opponents[0]
+    b = Battle()
+    # print(bt.me.Action)
+    print(b.battle(bt.me, opp))
+    bt.me.regenerate_team()
+    opp1 = bt.opponents[1]
+    b.battle(bt.me, opp1)
+    print("\n\n\n\n\n\n\n\n\n\n\n ----------------------3RD BATTLE ----------------------")
+    bt.me.regenerate_team()
+    opp2 = bt.opponents[2]
+    b.battle(bt.me, opp2)
+    # print(opponents)
+    
+
+    # print(team2)
+    # b = Battle()
+    # print(b.battle(my_team, team2))
+test_bm0()

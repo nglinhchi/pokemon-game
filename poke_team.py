@@ -155,6 +155,7 @@ class PokeTeam:
     # TODO
     def return_pokemon(self, poke: PokemonBase) -> None:
         if not poke.is_fainted():
+            poke.status_effect = None
             if self.battle_mode == 0:
                 if self.team.is_full():
                     raise ValueError(f"print {self}")
@@ -232,6 +233,7 @@ class PokeTeam:
     
     # TODO
     def regenerate_team(self):
+        self.heal_count = 3
         if self.battle_mode == 0:
             self.team = self.team_mode_0()
         elif self.battle_mode == 1:
@@ -314,6 +316,7 @@ class PokeTeam:
         
         elif self.get_ai_type() == PokeTeam.AI.RANDOM:
             actions = list(Action)
+
             if self.get_heal_count() == 0:
                 actions.remove(Action.HEAL)
             return actions[RandomGen.randint(0, len(actions)- 1)]

@@ -1,5 +1,4 @@
 from __future__ import annotations
-from random import Random
 from unicodedata import name
 
 from poke_team import PokeTeam, Criterion
