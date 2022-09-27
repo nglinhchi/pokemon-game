@@ -11,13 +11,14 @@ from linked_list import LinkedList
 class Tournament:
     
     def __init__(self, battle: Battle|None=None) -> None:
-        raise NotImplementedError()
+        self.battle = battle
 
     def set_battle_mode(self, battle_mode: int) -> None:
         raise NotImplementedError()
 
     def is_valid_tournament(self, tournament_str: str) -> bool:
-        raise NotImplementedError()
+        Stacked_battles = Stack()
+        
 
     def is_balanced_tournament(self, tournament_str: str) -> bool:
         # 1054 only
