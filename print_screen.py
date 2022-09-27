@@ -106,7 +106,15 @@ def print_game_screen(team1_pokemon_name, team2_pokemon_name, team1_cur_hp, team
     BATTLE_WINDOW[9][16 + COVERED_2 - 1] = BATTLE_WINDOW[9][16 + COVERED_2 - 1] + CLEAR
     
     # STATUS
+    if team1_status == None:
+        team1_status = "free"
+    else:
+        team1_status = team1_status.name.lower()
     BATTLE_WINDOW[21][102], BATTLE_WINDOW[21][103], BATTLE_WINDOW[21][104] = STATUS_MAPPING[team1_status]
+    if team2_status == None:
+        team2_status = "free"
+    else:
+        team2_status = team2_status.name.lower()
     BATTLE_WINDOW[6][32], BATTLE_WINDOW[6][33], BATTLE_WINDOW[6][34] = STATUS_MAPPING[team2_status]
     
     # REMAINING POKEMON

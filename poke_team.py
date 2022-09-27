@@ -94,6 +94,7 @@ class PokeTeam:
         self.ai_type =  ai_type
         self.criterion = criterion
         self.heal_count = 3
+        self.break_by_init = False
         self.initial_order_exist = False
         self.poke_on_field = None   #initialise pokemon on field
         self.descending_order = False#Initially true by default descending
@@ -219,7 +220,7 @@ class PokeTeam:
             # print(self.poke_on_field, self.current_poke_key, self.current_poke_order)
             # self.return_pokemon(self.poke_on_field)
             self.team = self.reverse_order()
-            print(self.team)
+            # print(self.team)
             if self.descending_order == True:
                 self.descending_order = False
             elif self.descending_order == False:
@@ -426,10 +427,10 @@ class PokeTeam:
             key = self.get_team()[idx].key * -1
             poke_to_add = self.get_team()[idx].value
             order = self.get_team()[idx].order 
-            if self.descending_order == False:
-                reverse_arr.add_stable(ListItem(poke_to_add, key, order))
-            elif self.descending_order == True:
-                reverse_arr.add_in_front(ListItem(poke_to_add, key, order))
+            # if self.descending_order == False:
+            #     reverse_arr.add_stable(ListItem(poke_to_add, key, order))
+            # elif self.descending_order == True:
+            reverse_arr.add_in_front(ListItem(poke_to_add, key, order))
 
                 
         return reverse_arr
@@ -507,17 +508,17 @@ class PokeTeam:
             unique_poke_nums = ASet(len(pokeorder_list))   
             for idx in range(len(pokeorder_list)):
             # for idx, item in enumerate(pokeorder_list):
-                try:
-                    if not pokeorder_list[idx].key in unique_poke_nums:
-                        unique_poke_nums.add(pokeorder_list[idx].key)
-                    else:
-                        
-                        tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
-                        tie_last_idx = pokeorder_list.get_last_index(pokeorder_list[idx].key)
-                        
-                        self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
-                except:
-                    print(f"failed init check{pokeorder_list[idx]}")
+                # try:
+                if not pokeorder_list[idx].key in unique_poke_nums:
+                    unique_poke_nums.add(pokeorder_list[idx].key)
+                else:
+                    self.break_by_init = True
+                    tie_start_idx = idx - 1 #if the item is in set, means previous was the start of the tie
+                    tie_last_idx = pokeorder_list.get_last_index(pokeorder_list[idx].key)
+                    
+                    self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
+                # except:
+                #     print(f"failed init check{pokeorder_list[idx]}")
         #Otherwise Return. No more sorting left
         #Swap newly sorted items back into team_list
         for idx in range(len(pokeorder_list)):
@@ -533,6 +534,7 @@ class PokeTeam:
         return
     
     def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
+        
         assert [type(x) == ListItem for x in pokeorder_list], "Items must be ListItem type"
         assert type(pokeorder_list) == ArraySortedList
         tie_range = end_idx - start_idx
@@ -543,6 +545,8 @@ class PokeTeam:
             pokemon = pokemon_item.value
             # previous_key = team_list[start_idx].key
             key  = pokemon_item.order
+            if self.descending_order == False:
+                key = key * -1
             order = pokemon_item.order
             item_to_add = ListItem(pokemon,key, order)
             assert type(pokemon_item.order) == int, f"{pokemon_item.order}"

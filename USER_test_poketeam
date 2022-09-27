@@ -232,29 +232,32 @@ def test_bm0():
 # my_team.retrieve_pokemon()
 # print(my_team)
 def test_special_bm2():
+    """
+    Tests that special (reversing) will maintain the right ordering for initial order sort
+    """
     RandomGen.set_seed(51234)
     my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
-    print(my_team.get_team())
-    for poke in my_team.get_team(): #init order 1 2 3 4 5 6
-        print(poke.order)
+    # print(my_team.get_team())
+    init_order = [poke.order for poke in my_team.get_team()]
+    assert init_order == [1,2,3,4,5,6]
     poke = my_team.retrieve_pokemon()   #2 3 4 5 6
     my_team.return_pokemon(poke)    #1 2 3 4 5 6
     my_team.special()   #6 5 4 3 2 1
     poke = my_team.retrieve_pokemon()   #5 4 3 2 1
     # l = [x.order for x in my_team.get_team()]
-    print(my_team.get_team())
-    for idx in range(len(my_team.get_team())): #does poke retain order?
-        print(my_team.get_team()[idx].order)
+    init_order = [poke.order for poke in my_team.get_team()[:len(my_team.get_team())]]
+    assert init_order == [5,4,3,2,1], f"{init_order}"    #after take 6th pokemon
     my_team.return_pokemon(poke)
     my_team.special()
     poke = my_team.retrieve_pokemon()
-    print(my_team.get_team())
-    for idx in range(len(my_team.get_team())): #does poke retain order?
-        print(my_team.get_team()[idx].order)
+    init_order = [poke.order for poke in my_team.get_team()[:len(my_team.get_team())]]
+    assert init_order == [2,3,4,5,6]
     my_team.return_pokemon(poke)
     my_team.special()
     poke = my_team.retrieve_pokemon()
-    print(my_team.get_team())
-    for idx in range(len(my_team.get_team())): #does poke retain order?
-        print(my_team.get_team()[idx].order)
+    init_order = [poke.order for poke in my_team.get_team()[:len(my_team.get_team())]]
+    assert init_order == [5,4,3,2,1]
+    my_team.return_pokemon(poke)
+    init_order = [poke.order for poke in my_team.get_team()[:len(my_team.get_team())]]
+    assert init_order == [6,5,4,3,2,1]
 test_special_bm2()

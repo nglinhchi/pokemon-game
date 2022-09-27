@@ -7,12 +7,13 @@ from os import popen
 from tkinter import ACTIVE
 from random_gen import RandomGen
 from poke_team import Action, PokeTeam, Criterion
-from print_screen import print_game_screen
+from print_screen import *
 
 class Battle:
     
     def __init__(self, verbosity=0) -> None:
-        self.verbosity = verbosity
+        pass
+
 
 
     def battle(self, team1: PokeTeam, team2: PokeTeam) -> int:
@@ -21,7 +22,7 @@ class Battle:
         pokemon2 = None
 
         while True:
-
+            
             if pokemon1 == None and team1.team.is_empty() and pokemon2 == None and team2.team.is_empty():
                 return 0
             elif pokemon1 == None and team1.team.is_empty():
@@ -36,6 +37,7 @@ class Battle:
                 if pokemon2 == None: 
                     pokemon2 = team2.retrieve_pokemon()
                 
+                # print_game_screen(pokemon1.get_name(), pokemon2.get_name(), pokemon1.get_hp(), pokemon1.get_max_hp(), pokemon2.get_hp(), pokemon2.get_max_hp(), pokemon1.get_level(), pokemon2.get_level(), pokemon1.get_status_effect(), pokemon2.get_status_effect(), len(team1.team), len(team2.team))
                 # battle here -----------------------------------------------------------------
                 # team1.poke_on_field = pokemon1
                 # team2.poke_on_field = pokemon2
@@ -144,6 +146,8 @@ class Battle:
                 if pokemon2.is_fainted():
                     pokemon2 = None
                 print(pokemon1, pokemon2)
+                
+
 
 if __name__ == "__main__":
     b = Battle(verbosity=3)
