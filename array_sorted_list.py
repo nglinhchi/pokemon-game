@@ -209,21 +209,25 @@ class ArraySortedList(SortedList[T]):
     def get_last_index(self, key: int):
         return self.stable_index_to_add(ListItem(None, key)) - 1  #returns index of last occurence of item with same key. Value set to none as does not matter
 
-    def reverse_order(self):
-        """
-        Takes input array sorted in ascending order and reverses it using the same key
-        so that the array is descending.
-        :out: descending sorted array
-        """
-        reverse_arr = ArraySortedList(len(self.array))
+    # def reverse_order(self):
+    """
+    NOW IMPLEMENTED INSIDE poke_team
+    """
+    #     """
+    #     Takes input array sorted in ascending order and reverses it using the same key
+    #     so that the array is descending.
+    #     :out: descending sorted array
+    #     """
+    #     reverse_arr = ArraySortedList(len(self.array))
 
-        for idx in range(len(self)):
-            key = self[idx].key * -1
-            poke_to_add = self[idx].value
-            reverse_arr.add_in_front(ListItem(poke_to_add, key))
+    #     for idx in range(len(self)):
+    #         key = self[idx].key * -1
+    #         poke_to_add = self[idx].value
+    #         order = self[idx].order 
+    #         reverse_arr.add_in_front(ListItem(poke_to_add, key, order))
             
                 
-        return reverse_arr
+    #     return reverse_arr
 
 
     def break_by_pokeno(self, start_idx,last_idx):

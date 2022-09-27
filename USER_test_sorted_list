@@ -40,7 +40,7 @@ def test_stable():
     f = ListItem('six', 4) #test stable
 
 
-    list_items = [d,c,e, b,a,f]
+    list_items = [f,c,e, b,a,d]
 
     for item in list_items:
         print("This item: ",item)
@@ -59,7 +59,7 @@ def test_stable():
         # mid = low + (high - low)//2
 # test_normal()
 
-# test_stable()
+test_stable()
 
 ###Test if order is maintained
 def second_sort_test():
@@ -190,7 +190,7 @@ def test_add_in_front():
     test_arr.delete_at_index(3)
     g= ListItem("front-most", 4)
     test_arr.add_in_front(g)
-    # print(test_arr)
+    print(test_arr)
 
     #test when it's only item
     test_arr = test_normal()
@@ -203,9 +203,9 @@ def test_add_in_front():
     test_arr.delete_at_index(3)
     test_arr[3] = c
     test_arr.length += 1
-    return test_arr
+    # return test_arr
     print(test_arr)
-# test_add_in_front()
+test_add_in_front()
 
 def test_swap_at_index():
     test_arr = test_normal()

@@ -215,7 +215,7 @@ def test_bm0():
     team2 = opponents[0]
     b = Battle()
     print(b.battle(my_team, team2))
-test_bm0()
+# test_bm0()
 
 # team1 = PokeTeam("Ash", [1, 1, 1, 0, 0], 0, PokeTeam.AI.ALWAYS_ATTACK)
 # print(team1)
@@ -231,3 +231,30 @@ test_bm0()
 # my_team.return_pokemon()
 # my_team.retrieve_pokemon()
 # print(my_team)
+def test_special_bm2():
+    RandomGen.set_seed(51234)
+    my_team = PokeTeam.random_team("N", 2, team_size=6, criterion=Criterion.HP)
+    print(my_team.get_team())
+    for poke in my_team.get_team(): #init order 1 2 3 4 5 6
+        print(poke.order)
+    poke = my_team.retrieve_pokemon()   #2 3 4 5 6
+    my_team.return_pokemon(poke)    #1 2 3 4 5 6
+    my_team.special()   #6 5 4 3 2 1
+    poke = my_team.retrieve_pokemon()   #5 4 3 2 1
+    # l = [x.order for x in my_team.get_team()]
+    print(my_team.get_team())
+    for idx in range(len(my_team.get_team())): #does poke retain order?
+        print(my_team.get_team()[idx].order)
+    my_team.return_pokemon(poke)
+    my_team.special()
+    poke = my_team.retrieve_pokemon()
+    print(my_team.get_team())
+    for idx in range(len(my_team.get_team())): #does poke retain order?
+        print(my_team.get_team()[idx].order)
+    my_team.return_pokemon(poke)
+    my_team.special()
+    poke = my_team.retrieve_pokemon()
+    print(my_team.get_team())
+    for idx in range(len(my_team.get_team())): #does poke retain order?
+        print(my_team.get_team()[idx].order)
+test_special_bm2()

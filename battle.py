@@ -58,7 +58,7 @@ class Battle:
                     print("poke prior to speci 1-2", pokemon1, pokemon2)
                     print("special")
                     print("descending?", team1.descending_order)
-                    # team1.return_pokemon(pokemon1) Should be implemented inside special
+                    team1.return_pokemon(pokemon1) #Should be implemented inside special
                     team1.special()
                     pokemon1 = team1.retrieve_pokemon()
                 elif action1 == Action.HEAL:
