@@ -50,6 +50,7 @@ class PokeTeam:
     def __init__(self, team_name: str, team_numbers: list[int], battle_mode: int, ai_type: PokeTeam.AI, criterion=None, criterion_value=None) -> None:
         """
         Creates user-specified Poketeam
+        :complexity O(n) where n is len(team numbers)
         """ 
 
         #Check type(team_name) == str
@@ -129,6 +130,10 @@ class PokeTeam:
         #last numbers are 0 and team size, therefore need to generate number of base 
         #pokemon - 1 random numbers
 
+        # Algorithm calculates num of each pokemon through difference of ascending adjacent values.
+        # First and last number are 0 and team size respectively
+        # (therefore requiring num of base pokemon -1 random numbers between)
+
         for _ in range(1, cls.NUM_BASE_POKEMON):   
             rand_num = RandomGen.randint(0,team_size)
             team_sorted_list.add(ListItem(rand_num, rand_num))  #add to team_numbers
@@ -148,10 +153,12 @@ class PokeTeam:
     def return_pokemon(self, poke: PokemonBase) -> None:
         """
         returns the on field pokemon back to the team
+        best-case complexity:
+        worst_case complexity:
         """
         if not poke.is_fainted():
             if self.battle_mode == 0:
-                self.team = self.team.reverse()
+                self.team = self.team.reverse() #O(n)
                 self.team.push(poke)
                 self.team = self.team.reverse()
             elif self.battle_mode == 1:

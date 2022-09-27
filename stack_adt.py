@@ -100,6 +100,9 @@ class ArrayStack(Stack[T]):
         return self.array[self.length-1]
 
     def reverse(self):
+        """
+        Returns the elements in the stack in the opposite order
+        """
         reversed = ArrayStack(len(self))
         for _ in range(len(self)):
             reversed.push(self.pop())
