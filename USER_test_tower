@@ -1,0 +1,25 @@
+from battle import Battle
+from poke_team import *
+from random_gen import RandomGen
+from array_sorted_list import *
+from stack_adt import *
+from tower import BattleTower
+
+def test_iteration():
+    t0 = PokeTeam.random_team("Cynthia", 0, team_size=4) #test bm0
+    t1 = PokeTeam.random_team("Jake", 1, team_size = 4)    #test bm1
+    #IF BM0
+    # self.current_
+    # if current_team.item.get_battle_mode() = 0:
+    for _ in range(len(t0.team)):
+        temp = ArrayStack(len(t0.team))
+        type_set = BSet(len(t0.team))
+        poke = t0.retrieve_pokemon()    #O(1) for stack pop
+        type_index = poke.get_type().get_type_index() + 1 #O(1) -> O(1) return int type_index + 1 because bit vector must be pos
+        if type_index not in type_set:  #O(1) return, bitwise and arithmetic O(1)
+            type_set.add(type_index)
+        else:   #is duplicate
+            #Remove- Linked list so set previous t current enxt , skip over current- constant
+
+
+# test_iteration()

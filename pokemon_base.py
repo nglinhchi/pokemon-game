@@ -50,13 +50,15 @@ class PokeType(Enum):
         self.effect = effect
         self.type_effectiveness = type_effectiveness
 
+    def get_type_index(self):
+        return self.type_index
     # def get_effect_damage(self):
     #     return self.effect.effect_damage
     def type_multiplier(self, defend_poketype: PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
         """
-        multiplier = self.type_effectiveness[defend_poketype.type_index]
+        multiplier = self.type_effectiveness[defend_poketype.get_type_index()]
     
         return multiplier
 

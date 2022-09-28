@@ -145,6 +145,11 @@ class PokeTeam:
         return PokeTeam(team_name, team_numbers, battle_mode, ai_mode, **kwargs)
         # ----------------------------------------------------------------------
 
+    def get_battle_mode(self):
+        """
+        O(1) return battle mode instance variable
+        """
+        return self.battle_mode
     def get_ai_type(self):
         return self.ai_type
 

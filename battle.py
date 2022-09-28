@@ -5,6 +5,7 @@ __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 from multiprocessing.connection import Listener
 from os import popen
 from tkinter import ACTIVE
+from pokemon_base import PokemonBase
 from random_gen import RandomGen
 from poke_team import Action, PokeTeam, Criterion
 from print_screen import *
@@ -29,6 +30,7 @@ class Battle:
                 team2.return_pokemon(pokemon2)
                 return 2
             elif pokemon2 == None and team2.team.is_empty():
+                assert type(pokemon1) != None, f"{pokemon1}"
                 team1.return_pokemon(pokemon1)
                 return 1
             else: # both teams still have pokemon -> battle
