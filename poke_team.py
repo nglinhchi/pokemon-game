@@ -106,6 +106,7 @@ class PokeTeam:
     def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
         """
         Creates random generated Poketeam
+        :complexity O(n)
         """
         # assign team_size
         
@@ -153,7 +154,7 @@ class PokeTeam:
     def return_pokemon(self, poke: PokemonBase) -> None:
         """
         returns the on field pokemon back to the team
-        best-case complexity:
+        best-case complexity: O(1)
         worst_case complexity:
         """
         if not poke.is_fainted():
@@ -244,6 +245,7 @@ class PokeTeam:
     def stack_string(self):
         """
         Returns string containing all elements of stack
+        :complexity O(1)
         """
         stack_string = "" #initialise empty string for input of stack elements
         temp_stack = ArrayStack(len(self.team)) #initialise empty storage stack for holding popped elements for return
