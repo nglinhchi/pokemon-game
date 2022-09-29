@@ -161,3 +161,7 @@ if __name__ == "__main__":
     t2 = PokeTeam.random_team("Barry", 1)
     print(b.battle(t1, t2))
 
+    RandomGen.set_seed(2)
+    team1 = PokeTeam("Team1", [1, 0, 1, 2, 2], 0, PokeTeam.AI.SWAP)
+        team2 = PokeTeam("Team2", [0, 0, 0, 1, 0], 0, PokeTeam.AI.ALWAYS_ATTACK)
+
