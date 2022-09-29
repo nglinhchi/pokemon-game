@@ -131,8 +131,19 @@ class Testpokemonbase(BaseTest):
         self.assertEqual(b.get_hp(), 11)
 
     def test_attack(self):
+        e = Eevee()
+        g = Gastly()
+        e.status_effect = g.poke_type.status_effect
+        self.assertEqual(e.attack(g), None)
+        e.attack(g)
+        self.assertEqual(e.get_hp(), 10)
 
-    # not sure what i should be testing (just the damage taken or status effects and everything else as well)
+        #check if pokemon lose hp after successful attack if certain status effects apply
+        e = Eevee()
+        b = Bulbasaur()
+        e.status_effect = b.poke_type.status_effect
+        e.attack(b)
+        self.assertEqual(e.get_hp(), 7)
 
 
     def test_should_evolve(self):
@@ -174,8 +185,15 @@ class Testpokemonbase(BaseTest):
         self.assertEqual(g.get_hp, 8)
 
     def test_update_hp(self):
-        
-        # not sure how to test update_hp on its own as it relies on levelling up or evolving which call update_hp
+        s = Squirtle()
+        s.level_up()
+        self.assertEqual(s.get_hp(), 13)
+        s.lose_hp(5)
+        s.level_up()
+        self.assertEqual(s.get_hp(), 10)
+        s.lose_hp(2)
+        s.level_up()
+        self.assertEqual(s.get_hp(), 10)
 
 
 
