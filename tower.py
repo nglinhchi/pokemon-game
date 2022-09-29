@@ -26,21 +26,7 @@ class BattleTower:
     
     def set_my_team(self, team: PokeTeam) -> None:
         self.me = team
-    
-    # LINKED QUEUE IMPLEMENTATION
-    # def generate_teams(self, n: int) -> None:
-    #     if type(n) is not int or n < 0:
-    #         raise ValueError("n must be a positive integer")
-    #     teams = LinkQueue()
-    #     for i in range(n):
-    #         team_name = f"Team {i}"
-    #         battle_mode = RandomGen.randint(0,1)
-    #         opponent = PokeTeam.random_team(team_name, battle_mode)
-    #         opponent.live = RandomGen.randint(2,10)
-    #         teams.append(opponent)
-    #     self.opponents = teams
 
-    # LINKED LIST IMPLEMENTATION
     def generate_teams(self, n: int) -> None:
         if type(n) is not int or n < 0:
             raise ValueError("n must be a positive integer")
@@ -62,17 +48,11 @@ class BattleTowerIterator:
     def __init__(self, bt: BattleTower) -> None:
         self.tower = bt
         self.current_opponent = bt.opponents.head
-        self.start = True
+        self.previous_opponent = None
         
     def __iter__(self):
         return self
 
-    # LINKED QUEUE IMPLEMENTATION
-    # def __next__(self):
-    #     if self.current_opponent is not None:
-    #         opponent = self.current_opponent.item
-
-    # LINKED LIST IMPLEMENTATION
     def __next__(self):
         """
         - perform 1 battle in tower
@@ -85,71 +65,53 @@ class BattleTowerIterator:
         if self.tower.end_tower:
             raise StopIteration
         else:
-            # if (self.current_opponent is None) and (self.current_opponent is not self.tower.opponents.head): # iterate through whole list ???
-            #     self.current_opponent = self.current_opponent.head  # go back to head and iterate again
-            if self.current_opponent is not None:                       # still have opponents in the list
-                # if self.current_opponent == self.tower.opponents.head:  #if current opponent is the head
-                if self.start == True:
-
-                    opponent = self.current_opponent.item
-                    user = self.tower.me
-                    assert type(opponent) == PokeTeam and type(user) == PokeTeam, f"{opponent}, {user}"
-                    result = self.tower.battle.battle(user, opponent)
-                    
-                    # if opponent.live == 0:
-                    #     self.delete_start_flag = 1
-                    #     self.second_node = self.current_opponent.next     #the next of the head, i.e second in list
-
-                    # self.start = False
-                    
-
-                else:   #if not start- all other cases
-                # self.previous = self.current_opponent                   #current opp = head
-                # self.current_opponent
-                    self.previous = self.current_opponent                      # retrieve the next opponent
-                    if self.previous.next == self.tower.opponents.head and self.delete_start_flag == 1: #if previous next points to head and delete flag is raise
-                        self.previous.next = self.second_node   #skip the current node to the second node stored earlier
-                        self.delete_start_flag = 0  #unflag delete so head does not get deleted again
-                    # index = self.tower.opponents.index(opponent)                # get index of opponent
-                    # self.p
-                    self.current_opponent = self.previous.next          # reset current opponent to next opponent
-                    opponent = self.current_opponent.item
-                    user = self.tower.me                                        # get user team
-                    user.regenerate_team()                                      # regen user team
-                    opponent.regenerate_team()                                  # regen opponent team
-
-                    print("###################################################")
-                    print("PRE BATTLE")
-                    print(f"User team: {user} ")
-                    print(f"Opponent team: {opponent} || {opponent.live} <3")
-                    print("###################################################")
-
-                    result = self.tower.battle.battle(user, opponent)           # perform 1 battle
-
-                    print("###################################################")
-                    print("POST BATTLE")
-                    print(f"User team: {user} ")
-                    print(f"Opponent team: {opponent} || {opponent.live} <3")
-                    print("###################################################")
-
-                if result == 0 or result == 1:                              # user team win/draw
-                    opponent.live -= 1                                          # opposing team lose 1 live
-                    if opponent.live == 0:                                      # opposing team has no more lives
-                        if self.start == True:  #if start, flag for delete when get to end node (the node that points to head)
-                            self.delete_start_flag = 1
-                            self.second_node = self.current_opponent.next
-                            self.start = False
-                        else:   #if not start, delete normal
-                            self.previous.next = self.current_opponent.next     #set previous to currents next- skip over the current one- delete
-                    #     self.tower.opponents.delete_at_index(index)             # remove opponent with 0 lives 
-                    # else:           
-                    #     self.tower.opponents[index] = opponent                            # set opponent with new live count
-                else:                                                       # user team LOSE
-                    self.tower.end_tower = True                                 # set end_tower to false, next iter will raise StopIteration- lose case when result = 2
-                return (result, user, opponent, opponent.live)              # return (res, me, other, live)
-            else:
-                self.tower.end_tower = True                             # has no more opponents in list list, WIN
             
+            # IF REACH END OF LIST + STILL CONTAINS OPPONENTS --> GO BACK TO HEAD TO ITERATE
+            if (self.current_opponent is None) and (self.current_opponent is not self.tower.opponents.head):
+                self.current_opponent = self.current_opponent.head  # assign CURRENT to HEAD again
+            
+            # IF LIST STILL CONTAINTS OPPONENT --> BATTLE
+            if self.current_opponent is not None:                      
+                opponent = self.current_opponent.item                       # retrieve the current opponent
+                user = self.tower.me                                        # get user team
+                user.regenerate_team()                                      # regen user team
+                opponent.regenerate_team()                                  # regen opponent team
+                
+                print("###################################################")
+                print("PRE BATTLE")
+                print(f"User team: {user} ")
+                print(f"Opponent team: {opponent} || {opponent.live} <3")
+                print("###################################################")
+
+                assert type(opponent) == PokeTeam and type(user) == PokeTeam, f"{opponent}, {user}"
+                result = self.tower.battle.battle(user, opponent)           # perform 1 battle
+
+                print("###################################################")
+                print("POST BATTLE")
+                print(f"User team: {user} ")
+                print(f"Opponent team: {opponent} || {opponent.live} <3")
+                print("###################################################")
+
+                if result == 0 or result == 1:                                              # user team WIN/DRAW battle
+                    opponent.live -= 1                                      
+                    if opponent.live == 0 and opponent == self.tower.opponents.head.item:       # opponent has 0 lives, opponent is head -> change head
+                        self.tower.opponents.head = self.current_opponent.next
+                    elif opponent.live == 0:                                                    # opponent has 0 lives, opponent is an intermediate node --> prev opponent point to current's next opponent (remove self from linked list)
+                            self.previous_opponent.next = self.current_opponent.next
+                    elif opponent.live > 0:                                                     # opponent still have lives --> become the prev surviving opponent
+                        self.previous_opponent = self.current_opponent
+                    self.current_opponent = self.current_opponent.next                          # standard assignment to point to next opponent
+
+                elif result == 2:                                                           # user team LOSE battle
+                    self.tower.end_tower = True                                                 # set end_tower to false, next iter will raise StopIteration
+
+                return (result, user, opponent, opponent.live)                              # return (res, me, opponent, live)
+            
+            # IF LIST DOESN'T CONTAINS ANY OPPONENTS --> WIN
+            else:
+                self.tower.end_tower = True     
+        
+        
     
     def avoid_duplicates(self):
         # if current_team.item.get_battle_mode() = 0:
