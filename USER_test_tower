@@ -20,6 +20,8 @@ def test_iteration():
             type_set.add(type_index)
         else:   #is duplicate
             #Remove- Linked list so set previous t current enxt , skip over current- constant
-
+            pass
 
 # test_iteration()
+
+print(list(PokeType)[0].name)
