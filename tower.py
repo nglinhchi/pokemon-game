@@ -83,7 +83,7 @@ class BattleTowerIterator:
                 print(f"Opponent team: {opponent} || {opponent.live} <3")
                 print("###################################################")
 
-                # TODO assert 
+                assert type(opponent) == PokeTeam and type(user) == PokeTeam, f"{opponent}, {user}"
                 result = self.tower.battle.battle(user, opponent)           # perform 1 battle
 
                 print("###################################################")
