@@ -72,9 +72,7 @@ class BattleTowerIterator:
             
             # IF LIST STILL CONTAINTS OPPONENT --> BATTLE
             if self.current_opponent is not None:                      
-                opponent = self.current_opponent.item                       # retrieve the next opponent
-                # index = self.tower.opponents.index(opponent)              # get index of opponent
-                self.current_opponent = self.current_opponent.next          # current opponent = next opponent
+                opponent = self.current_opponent.item                       # retrieve the current opponent
                 user = self.tower.me                                        # get user team
                 user.regenerate_team()                                      # regen user team
                 opponent.regenerate_team()                                  # regen opponent team
@@ -94,17 +92,22 @@ class BattleTowerIterator:
                 print(f"Opponent team: {opponent} || {opponent.live} <3")
                 print("###################################################")
 
-                if result == 0 or result == 1:                              # user team win/draw
-                    opponent.live -= 1                                          # opposing team lose 1 live
-                    if opponent.live == 0:                                      # opposing team has no more lives
-                        self.tower.opponents.delete_at_index(index)             # remove opponent with 0 lives 
-                    else:           
-                        self.tower.opponents[index] = opponent                            # set opponent with new live count
-                else:                                                       # user team LOSE
-                    self.tower.end_tower = True                                 # set end_tower to false, next iter will raise StopIteration
-                return (result, user, opponent, opponent.live)              # return (res, me, other, live)
+                if result == 0 or result == 1:                                              # user team WIN/DRAW battle
+                    opponent.live -= 1                                      
+                    if opponent.live == 0 and opponent == self.tower.opponents.head.item:       # opponent has 0 lives, opponent is head -> change head
+                        self.tower.opponents.head = self.current_opponent.next
+                    elif opponent.live == 0:                                                    # opponent has 0 lives, opponent is an intermediate node --> prev opponent point to current's next opponent (remove self from linked list)
+                            self.previous_opponent.next = self.current_opponent.next
+                    elif opponent.live > 0:                                                     # opponent still have lives --> become the prev surviving opponent
+                        self.previous_opponent = self.current_opponent
+                    self.current_opponent = self.current_opponent.next                          # standard assignment to point to next opponent
+
+                elif result == 2:                                                           # user team LOSE battle
+                    self.tower.end_tower = True                                                 # set end_tower to false, next iter will raise StopIteration
+
+                return (result, user, opponent, opponent.live)                              # return (res, me, opponent, live)
             
-            # IF LIST DOESN"T CONTAINS ANY OPPONENTS --> WIN
+            # IF LIST DOESN'T CONTAINS ANY OPPONENTS --> WIN
             else:
                 self.tower.end_tower = True     
         
