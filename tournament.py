@@ -1,6 +1,8 @@
 from __future__ import annotations
 from ast import operator
+from bset import BSet
 from linked_stack import LinkedStack
+from pokemon_base import PokeType
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack
 
@@ -157,9 +159,52 @@ class Tournament:
         return l
     
     def linked_list_with_metas(self) -> LinkedList[tuple[PokeTeam, PokeTeam, list[str]]]:
-        raise NotImplementedError()
-    
-    # def flip_tournament(self, tournament_list: LinkedList[tuple[PokeTeam, PokeTeam]], team1: PokeTeam, team2: PokeTeam) -> None:
-    #     # 1054
-    #     raise NotImplementedError()
+        ###Access match tuple###
+        branch_set = None
+        new_branch_flag = 1
+        #TODO: Way to flag new branch so that branch is reset if it starts from a new branch.
+        #Need to store the old branch somewhere so that if it join with the new branch can merge the 2
+        #LINKED LIST?
+        while True:
+            not_in_match = []
+            res = self.advance_tournament()
+            if res is None:
+                break
+            team1 = res[0]
+            team2 = res[1]
+            ###TODO: DECIDE REGEN HERE OR INSIDE ADVANCE(TOURNAMENT GEN)
+            #NOTE: RETRIEVE IS NOT O(1) FOR BM2
+            team1_set = BSet()
+            team2_set = BSet()
+            #SETS ARE CAPPED BY MAX LIM OF POKEMON ON TEAM
+            for _ in range(len(team1.team)):
+                poke1type = team1.retrieve_pokemon().get_type().get_type_index()
+                team1_set.add(poke1type + 1)    #+1 because type index starts form 0                       
+            for _ in range(len(team1.team)):
+                poke2type = team2.retrieve_pokemon().get_type().get_type_index()
+                team2_set.add(poke2type + 1)
+            match_set = team1_set.union(team2_set)
+            if branch_set is None:  #First battle
+                branch_set = match_set  
+            elif new_branch_flag == 1:
+                #TODO do something 
+                new_branch_flag = 0
+            else:
+                branch_set = branch_set.union(match_set)    #keep total
+            not_match_meta = branch_set.difference(match_set)
+            #TODO: CHECK COMPLEXITY OF THIS APPROACH: IS CALLING len IN THIS INSTANCE MAKE IT P^2 OR JUST P
+            #EDIT USE SAFE BUT UGLY (NOT ENCAPSULATED) APPROACH FOR NOW
+            for item in range(1, not_match_meta.elems.bit_length() + 1):
+                #TODO DIFFERENT WAY ACCESS NAME?
+                if item in not_match_meta:
+                    not_in_match.append(list(PokeType)[item-1].name)
+
+                
+
+
+            
+            
+
+
+
     
