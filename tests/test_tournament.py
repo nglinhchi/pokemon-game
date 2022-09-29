@@ -79,7 +79,7 @@ class TestTournament(BaseTest):
             team1, team2, types = l[x]
             self.assertEqual(expected[x], types)
 
-    def test_balance(self):
-        # 1054
-        t = Tournament()
-        self.assertFalse(t.is_balanced_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +"))
+    # def test_balance(self):
+    #     # 1054
+    #     t = Tournament()
+    #     self.assertFalse(t.is_balanced_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +"))
