@@ -56,6 +56,10 @@ class Tournament:
         # tournament_stack = LinkedStack()
         #initialise teams   
         tournament_stack = LinkedStack()
+        """
+        Alternate index list [::-1] to make link
+        
+        """
 
         for _ in range(self.battle_count):  #O(T) where T is number of tournament battles
             if type(self.reverse_tournament.peek()) is not int:
@@ -155,7 +159,7 @@ class Tournament:
     def linked_list_with_metas(self) -> LinkedList[tuple[PokeTeam, PokeTeam, list[str]]]:
         raise NotImplementedError()
     
-    def flip_tournament(self, tournament_list: LinkedList[tuple[PokeTeam, PokeTeam]], team1: PokeTeam, team2: PokeTeam) -> None:
-        # 1054
-        raise NotImplementedError()
+    # def flip_tournament(self, tournament_list: LinkedList[tuple[PokeTeam, PokeTeam]], team1: PokeTeam, team2: PokeTeam) -> None:
+    #     # 1054
+    #     raise NotImplementedError()
     
