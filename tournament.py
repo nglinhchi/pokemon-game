@@ -21,6 +21,7 @@ class Tournament:
         self.battle_mode = battle_mode
 
     def is_valid_tournament(self, tournament_str: str) -> bool:
+        #Valid: 2 opp then operator, or if operator there is at least 2 on stack
         valid_operator = ["+"]
         tournament_list = tournament_str.split(" ")
         for elt in tournament_list:
@@ -30,11 +31,13 @@ class Tournament:
     #     raise NotImplementedError()
 
     def start_tournament(self, tournament_str: str) -> None:
+        # if not self.is_valid_tournament(tournament_str):
+        #     raise ValueError("Invalid tournament string")
         operator = ["+"]
         ### Run is valid tournament ###s
         self.tournament_list = tournament_str.split(" ")
         temp_stack = ArrayStack(len(self.tournament_list)) #won't be more than length of all elements
-        self.reverse_tournament = LinkedStack()
+        self.reverse_tournament = ArrayStack(len(self.tournament_list))
         self.battle_count = 0
         for elt in self.tournament_list:
             if elt not in operator:
@@ -53,26 +56,28 @@ class Tournament:
         # tournament_stack = LinkedStack()
         #initialise teams   
         tournament_stack = LinkedStack()
-        try:
-            for _ in range(self.battle_count):  #O(T) where T is number of tournament battles
-                if type(self.reverse_tournament.peek()) is not int:
-                    team1 = self.reverse_tournament.pop()
-                    team2 = self.reverse_tournament.pop()
-                    self.reverse_tournament.pop()   #operator remove
-                    team1.regenerate_team()
-                    team2.regenerate_team()
-                    yield self.battle.battle(team1,team2)
-                    yield (team1, team2, self.result)
-                else:   #if operator
-                    self.reverse_tournament.pop()   #remove operator
-                    team2 = tournament_stack.pop()
-                    team1 = tournament_stack.pop()
-                    yield self.battle.battle(team1,team2)
-                    yield (team1,team2, self.result)
-                if self.result == 2:
-                        tournament_stack.push(team2)
-                else:   #if draw team1 win
-                        tournament_stack.push(team1)
+
+        for _ in range(self.battle_count):  #O(T) where T is number of tournament battles
+            if type(self.reverse_tournament.peek()) is not int:
+                team1 = self.reverse_tournament.pop()
+                team2 = self.reverse_tournament.pop()
+                self.reverse_tournament.pop()   #operator remove
+                yield self.battle.battle(team1,team2)
+                team1.regenerate_team()
+                team2.regenerate_team()
+                yield (team1, team2, self.result)
+            else:   #if operator
+                self.reverse_tournament.pop()   #remove operator
+                team2 = tournament_stack.pop()
+                team1 = tournament_stack.pop()
+                yield self.battle.battle(team1,team2)
+                team1.regenerate_team()
+                team2.regenerate_team()
+                yield (team1,team2, self.result)
+            if self.result == 2:
+                    tournament_stack.push(team2)
+            else:   #if draw team1 win
+                    tournament_stack.push(team1)
                 # if type(self.reverse_tournament.peek()) is not int: #O(1)
                 #     # self.reverse_tournament.pop()   #get rid of + (0)
                 #     team2 = tournament_stack.pop()
@@ -90,18 +95,20 @@ class Tournament:
                 # else:
                 #     self.battle_count += 1
                 #     tournament_stack.push(self.reverse_tournament.pop())      
-                #     tournament_stack.push(self.reverse_tournament.pop())  
-        except StopIteration as e:
-            return None
+                #     tournamentstack.push(self.reverse_tournament.pop())  
+        
 
     def advance_tournament(self) -> tuple[PokeTeam, PokeTeam, int] | None:
         """
         Complexity O(B+R) where B is complexity of battle, R is complexity of regenerate team
         """
         # next(self.tournament)
-        self.result = next(self.tournament)   #result of battle (int)
-        print(self.result)
-        return next(self.tournament)   #res tuple
+        try:
+            self.result = next(self.tournament)   #result of battle (int)
+            print(self.result)
+            return next(self.tournament)   #res tuple   (team1,team2, result(int))
+        except StopIteration as e:
+            return None
         # res = next(self.tournament)   #returns tuple
 
         # count = 0 

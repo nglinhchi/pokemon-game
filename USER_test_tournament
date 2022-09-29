@@ -59,8 +59,19 @@ class TestTournament(unittest.TestCase):
         t = Tournament()
         t.set_battle_mode(0)
         t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-        t.advance_tournament()
-        t.advance_tournament()
+        print(t.advance_tournament())
+        print(t.advance_tournament())
+        print(t.advance_tournament())
+        print(t.advance_tournament())
+        print(t.advance_tournament())
+        print(t.advance_tournament())
+        [print(str(x)) for x in t.advance_tournament()]
+        self.assertEqual(t.advance_tournament(), None)
+
+
+
+
+
 
 
 if __name__ == "__main__":
