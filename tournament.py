@@ -11,15 +11,18 @@ from linked_list import LinkedList
 class Tournament:
     
     def __init__(self, battle: Battle|None=None) -> None:
+        raise NotImplementedError()
         try:
             self.battle = battle
         except AttributeError as e:
             self.battle = Battle()
 
     def set_battle_mode(self, battle_mode: int) -> None:
+        raise NotImplementedError()
         self.battle_mode = battle_mode
 
     def is_valid_tournament(self, tournament_str: str) -> bool:
+        raise NotImplementedError()
         tournament_list = tournament_str.split(" ")
     def is_balanced_tournament(self, tournament_str: str) -> bool:
         # 1054 only
@@ -32,6 +35,7 @@ class Tournament:
         raise NotImplementedError()
 
     def linked_list_of_games(self) -> LinkedList[tuple[PokeTeam, PokeTeam]]:
+        raise NotImplementedError()
         l = LinkedList()
         while True:
             res = self.advance_tournament()
