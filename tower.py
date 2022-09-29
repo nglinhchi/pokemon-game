@@ -11,7 +11,7 @@ from random_gen import RandomGen
 
 import unittest
 
-from stack_adt import ArrayStack
+from stack_adt import ArrayStack, Stack
 
 class BattleTower:
 
@@ -82,10 +82,10 @@ class BattleTowerIterator:
                 print(f"User team: {user} ")
                 print(f"Opponent team: {opponent} || {opponent.live} <3")
                 print("###################################################")
-
+                
                 assert type(opponent) == PokeTeam and type(user) == PokeTeam, f"{opponent}, {user}"
                 result = self.tower.battle.battle(user, opponent)           # perform 1 battle
-
+                
                 print("###################################################")
                 print("POST BATTLE")
                 print(f"User team: {user} ")
@@ -114,6 +114,63 @@ class BattleTowerIterator:
         
     
     def avoid_duplicates(self):
+
+        # ---------------- PSEUDOCODE -----------------
+
+        # while current is not None:
+        
+        # check current's pokemons:
+            # doesn't contains duplicate:
+                # prev = current
+            # contains duplicate:
+                # if head --> head = current.next
+                # intermediate --> prev.next = current.next
+        # increment to next team
+            # standard assignment - current = current.next
+        
+        # ---------------- PSEUDOCODE -----------------
+
+        while self.current_opponent is not None:
+
+            opponent_team = self.current_opponent.item.team
+            type_set = BSet(len(opponent_team))
+            contain_duplicates = False
+            
+            # CHECK IF TEAM CONTAINS DEUPLATE
+            if opponent_team.battle_mode == 0:
+                temp_stack = ArrayStack(len(opponent_team))
+                pokemon = opponent_team.pop()
+                # TODO Bset implementation to check if pokemon.get_type() exists in type_set or not
+                # for loop
+                #  if have duplicates --> set contain_duplicates = True, break
+                # else --> add pokemon.get_type() to type_set
+            elif opponent_team.battle_mode == 1:
+                for _ in range(len(opponent_team)):
+                    pokemon = opponent_team.serve()
+                    # TODO Bset implementation to check if pokemon.get_type() exists in type_set or not
+                    # for loop
+                    # if have duplicates --> set contain_duplates = True, break
+                    # else --> add pokemon.get_type() to type_set
+            elif opponent_team.battle_mode == 2:
+                pass
+
+            # HANDLE DELETION OF TEAMS WITH DUPLICATES
+            if contain_duplicates:
+                if self.current_opponent == self.tower.opponents.head:
+                    self.tower.opponents.head = self.current_opponent.next
+                else:
+                    self.previous_opponent.next = self.current_opponent.next
+            
+            # TEAM WITHOUT DUPLICATE BECOMES PREVIOUS OPP
+            else:
+                self.previous_opponent = self.current_opponent
+            
+            # STANDARD INCREMENT TO POINT TO NEXT OPPONENT
+            self.current_opponent = self.current_opponent.next
+
+
+        """ JD's implementation
+
         # if current_team.item.get_battle_mode() = 0:
         dup_start = True   #mark current opponent as start of duplicate
         idx = 0
@@ -130,12 +187,12 @@ class BattleTowerIterator:
                 current = previous.next
                 current_opp = current.item
         
-            for _ in range(len(current_opp.team)): #number of pokemon O(p)
+            for _ in range(len(current_opp.team)): # number of pokemon O(p)
                 temp_stack = ArrayStack(len(current_opp.team))
                 type_set = BSet(len(current_opp.team))
-                poke = current_opp.retrieve_pokemon()    #O(1) for stack pop
+                poke = current_opp.retrieve_pokemon()    # O(1) for stack pop
                 type_index = poke.get_type().get_type_index() + 1 #O(1) -> O(1) return int type_index + 1 because bit vector must be pos
-                if type_index not in type_set:  #O(1) return, bitwise and arithmetic O(1)
+                if type_index not in type_set:  # O(1) return, bitwise and arithmetic O(1)
                     type_set.add(type_index)
                 else:   #is duplicate
                     if dup_start == True:  #O(1)
@@ -150,34 +207,37 @@ class BattleTowerIterator:
                             # dup_start_delete = 0- No need as will break at end of list- check is done
                             return
                         break
-            
-        # next return (res, me, other, lives)
-        # for (res, me, other, lives) in self.tower:
-        #     for num in other.team_numbers:
-        #         if num > 1:
-        #             index = self.tower.opponents.index(other)
-        #             self.tower.opponents.delete_at_index(index)
-        #             next
+        """
+
+        """
+        next return (res, me, other, lives)
+        for (res, me, other, lives) in self.tower:
+            for num in other.team_numbers:
+                if num > 1:
+                    index = self.tower.opponents.index(other)
+                    self.tower.opponents.delete_at_index(index)
+                    next
         
-        # lst = []
+        lst = []
 
-        # for (res, me, other, lives) in self.tower:
-        #     for num in other.team_numbers:
-        #         if num > 1:
-        #             lst.append(other.team_name)
-        #             next
-        # print(lst)
+        for (res, me, other, lives) in self.tower:
+            for num in other.team_numbers:
+                if num > 1:
+                    lst.append(other.team_name)
+                    next
+        print(lst)
             
 
-        # while self.current_opponent is not None:
-        #     team = current_opponent.item     # retrieve item in current node
-        #     current_opponent = current_opponent.next  # reset to next node
-        #     for num in team.team_numbers: # iterate through team_numbers
-        #         if num > 1:
-        #             index = self.tower.opponents.index(team)
-        #             self.tower.opponents.delete_at_index(index)
+        while self.current_opponent is not None:
+            team = current_opponent.item     # retrieve item in current node
+            current_opponent = current_opponent.next  # reset to next node
+            for num in team.team_numbers: # iterate through team_numbers
+                if num > 1:
+                    index = self.tower.opponents.index(team)
+                    self.tower.opponents.delete_at_index(index)
                     
-        # raise StopIteration
+        raise StopIteration
+        """
 
 
 class TestBattleTower(unittest.TestCase):
@@ -201,10 +261,7 @@ if __name__ == '__main__':
     it = iter(bt)
     print(next(it)) # 1, 6
     print(next(it)) # 1, 9
-    print(next(it)) # 1, 9
-    print(next(it)) # 1, 2
-    print(next(it)) # 1, 5
-    print(next(it)) # 2, 9
+    print(next(it)) # 2, 10
     
     # -------------------------------------------------------------------------------
 
