@@ -14,7 +14,7 @@ class TestBattle(BaseTest):
         result = b.battle(team1, team2)
         self.assertEqual(result, 1)
 
-    @patch('builtins.input', side_effect=[H, H, H, H, H])
+    @patch('builtins.input', side_effect=[H, H, H, H, H])       #mocking user input
     def test_forfeited_battle(self, mock_input):
         # test a battle where one team has healed too many times (giving the win to the other team)
         team1 = PokeTeam("Team1", [1, 2, 0, 3, 0], 0, PokeTeam.AI.USER_INPUT)
