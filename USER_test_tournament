@@ -1,0 +1,69 @@
+# # class ListIter:
+
+# #     def __init__(self, list):
+# #         self.count = 0
+# #         self.max_count = len(list)
+# #         self.list = list
+
+# #     def __iter__(self):
+# #         return self.list
+    
+# #     def __next__(self):
+# #         result = yield self.list[self.count]
+# #         self.count += 1
+# #         print(result)
+# def list_iterator(list):
+#     iter_list = list
+#     count = 0   #O(1) complexity
+#     max_count= len(list)   #O(1)
+#     result = yield iter_list[count]   #O(1)
+#     # print(result, "result")
+#     count += 1  #O(1)
+
+
+
+# gen = list_iterator([1,2,3,4,5,6])
+# a = next(gen)
+# print(a)
+
+
+import unittest
+
+from battle import Battle
+from linked_stack import LinkedStack
+from random_gen import RandomGen
+from tournament import *
+import os, sys
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
+
+class TestTournament(unittest.TestCase):
+    # def test_start_tournament(self):
+    #     RandomGen.set_seed(123456)
+    #     t = Tournament()
+    #     t.set_battle_mode(0)
+    #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+    #     t.advance_tournament()
+    #     self.assertEqual(t.result, 1)
+    #     t.advance_tournament()
+    #     # self.assertEqual()
+    def test_battle1_tournament(self):
+        RandomGen.set_seed(123456)
+        t = Tournament()
+        t.set_battle_mode(0)
+        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+        t.advance_tournament()
+        t.advance_tournament()
+
+
+if __name__ == "__main__":
+
+    unittest.main()
+

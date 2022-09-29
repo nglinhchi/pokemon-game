@@ -64,39 +64,39 @@ class TestTower(BaseTest):
             (2, 7)
         ])
         
-    def test_sort_lives(self):
-        # 1054 only
-        RandomGen.set_seed(9821309123)
+    # def test_sort_lives(self):
+    #     # 1054 only
+    #     RandomGen.set_seed(9821309123)
     
-        bt = BattleTower(Battle(verbosity=0))
-        bt.set_my_team(PokeTeam.random_team("Jackson", 1, team_size=6))
-        bt.generate_teams(10)
+    #     bt = BattleTower(Battle(verbosity=0))
+    #     bt.set_my_team(PokeTeam.random_team("Jackson", 1, team_size=6))
+    #     bt.generate_teams(10)
 
-        it = iter(bt)
-        # [1, 1, 3, 0, 0] 3 Name: Team 0
-        # [2, 1, 0, 1, 0] 2 Name: Team 1
-        # [2, 0, 0, 1, 1] 4 Name: Team 2
-        # [3, 0, 1, 0, 1] 2 Name: Team 3
-        # [0, 0, 2, 1, 2] 4 Name: Team 4
-        # [0, 1, 0, 2, 0] 3 Name: Team 5
-        # [3, 0, 2, 0, 0] 8 Name: Team 6
-        # [0, 0, 2, 1, 0] 4 Name: Team 7
-        # [0, 2, 1, 1, 0] 3 Name: Team 8
-        # [1, 0, 1, 3, 1] 4 Name: Team 9
-        RandomGen.set_seed(123)
-        res, me, other_1, lives = next(it)
-        it.sort_by_lives()
-        # [1, 1, 3, 0, 0] 2 Name: Team 0
-        # [2, 1, 0, 1, 0] 2 Name: Team 1
-        # [3, 0, 1, 0, 1] 2 Name: Team 3
-        # [0, 1, 0, 2, 0] 3 Name: Team 5
-        # [0, 2, 1, 1, 0] 3 Name: Team 8
-        # [2, 0, 0, 1, 1] 4 Name: Team 2
-        # [0, 0, 2, 1, 2] 4 Name: Team 4
-        # [0, 0, 2, 1, 0] 4 Name: Team 7
-        # [1, 0, 1, 3, 1] 4 Name: Team 9
-        # [3, 0, 2, 0, 0] 8 Name: Team 6
-        res, me, other_2, lives = next(it)
+    #     it = iter(bt)
+    #     # [1, 1, 3, 0, 0] 3 Name: Team 0
+    #     # [2, 1, 0, 1, 0] 2 Name: Team 1
+    #     # [2, 0, 0, 1, 1] 4 Name: Team 2
+    #     # [3, 0, 1, 0, 1] 2 Name: Team 3
+    #     # [0, 0, 2, 1, 2] 4 Name: Team 4
+    #     # [0, 1, 0, 2, 0] 3 Name: Team 5
+    #     # [3, 0, 2, 0, 0] 8 Name: Team 6
+    #     # [0, 0, 2, 1, 0] 4 Name: Team 7
+    #     # [0, 2, 1, 1, 0] 3 Name: Team 8
+    #     # [1, 0, 1, 3, 1] 4 Name: Team 9
+    #     RandomGen.set_seed(123)
+    #     res, me, other_1, lives = next(it)
+    #     it.sort_by_lives()
+    #     # [1, 1, 3, 0, 0] 2 Name: Team 0
+    #     # [2, 1, 0, 1, 0] 2 Name: Team 1
+    #     # [3, 0, 1, 0, 1] 2 Name: Team 3
+    #     # [0, 1, 0, 2, 0] 3 Name: Team 5
+    #     # [0, 2, 1, 1, 0] 3 Name: Team 8
+    #     # [2, 0, 0, 1, 1] 4 Name: Team 2
+    #     # [0, 0, 2, 1, 2] 4 Name: Team 4
+    #     # [0, 0, 2, 1, 0] 4 Name: Team 7
+    #     # [1, 0, 1, 3, 1] 4 Name: Team 9
+    #     # [3, 0, 2, 0, 0] 8 Name: Team 6
+    #     res, me, other_2, lives = next(it)
 
-        self.assertEqual(str(other_1), str(other_2))
+    #     self.assertEqual(str(other_1), str(other_2))
 
