@@ -62,8 +62,8 @@ class PokemonBase(ABC):
 
     def __str__(self) -> str:
         """
-        Returns a string output of the pokemon
-        :complexity O(1)
+        :return: string output of the pokemon
+        :complexity: O(1)
         """
         return f"LV.{self.level} {self.name}: {self.hp} HP"
 
@@ -72,6 +72,7 @@ class PokemonBase(ABC):
     def get_name(self) -> str:
         """
         Getter method returning the name of the pokemon
+        :return: string of the pokemon's name
         :complexity: O(1)
         """
         return self.name
@@ -79,6 +80,7 @@ class PokemonBase(ABC):
     def get_type(self) -> PokeType:
         """
         Getter method returning the type of the pokemon
+        :return: pokemon's poketype
         :complexity: O(1)
         """
         return self.poke_type
@@ -86,6 +88,7 @@ class PokemonBase(ABC):
     def get_level(self) -> int:
         """
         Getter method returning current Level
+        :return: integer of the pokemon's current level
         :complexity: O(1)
         """
         return self.level
@@ -93,6 +96,7 @@ class PokemonBase(ABC):
     def get_status_effect(self) -> StatusEffect:
         """
         Getter method returning the status effects currently inflicted on a pokemon
+        :return: pokemon's current status effects
         :complexity: O(1)
         """
         return self.status_effect
@@ -100,15 +104,18 @@ class PokemonBase(ABC):
     @abstractmethod
     def get_max_hp(self) -> int:
         """
-        Abstract method containing HP scaling formula for individual pokemon. Calculates 
+        Abstract method containing HP scaling formula for individual pokemon. Calculates
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
         """
         pass
 
     def get_hp(self) -> int:
         """
         Getter method returning current HP
+        :return: integer of the pokemon's current HP
         :complexity: O(1)
         """
         return self.hp
@@ -119,6 +126,8 @@ class PokemonBase(ABC):
     def get_speed(self) -> int:
         """
         Abstract getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
         """
         pass
 
@@ -126,6 +135,8 @@ class PokemonBase(ABC):
     def get_attack_damage(self) -> int:
         """
         Abstract getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
         """
         pass
 
@@ -133,6 +144,8 @@ class PokemonBase(ABC):
     def get_defence(self) -> int:
         """
         Abstract getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
         """
         pass
 
@@ -140,7 +153,8 @@ class PokemonBase(ABC):
 
     def is_fainted(self) -> bool:
         """
-        Returns either true or false depending on whether the pokemon has fainted
+        Method determining whether a pokemon has fainted or not
+        :return: True if pokemon has fainted, False if it hasn't
         :complexity: O(1)
         """
         return self.hp <= 0
@@ -149,6 +163,8 @@ class PokemonBase(ABC):
         """
         Lose hp equal to amount passed as arg. Subtract this amount from current HP (stored in hp)
         and set as current HP
+        :param: integer representing the value of hp for the pokemon to lose
+        :return: None
         :complexity: O(1)
         """
         self.hp -= lost_hp
@@ -156,6 +172,7 @@ class PokemonBase(ABC):
     def heal(self) -> None:
         """
         Restores current HP to full and removes any status effects
+        :return: None
         :complexity: O(1)
         """
         self.hp = self.max_hp
@@ -164,13 +181,16 @@ class PokemonBase(ABC):
     @abstractmethod
     def defend(self, damage: int) -> None:
         """
-        Abstract method that calculates damage mitigation/damage to take depending on 
-        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect 
+        Abstract method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
         """
         pass
 
-    def attack(self, other: PokemonBase):
+    def attack(self, other: PokemonBase) -> None:
         """
         Attack handler that takes another Pokemon as arg and checks if attacking 
         Pokemon is capable of attacking, applying relevant (changes) due to status
@@ -178,6 +198,8 @@ class PokemonBase(ABC):
         of the Pokemon, and applies defending Pokemon's defence calc to this amount.
         Then takes any relevant damage due to status effects and has chance of inflicting
         own status effect onto defending Pokemon
+        :param: a PokemonBase that represents the other pokemon to attack
+        :return: None
         :complexity: O(1)
         """
         # >>> Step 1: Status effects on attack damage / redirecting attacks
@@ -203,6 +225,7 @@ class PokemonBase(ABC):
     def should_evolve(self) -> bool:
         """
         Check if pokemon has met level requirement to evolve
+        :return: boolean expression depending on whether the pokemon has met the requirements
         :complexity: O(1)
         """
         return self.level >= self.get_initial_evolved_version().get_level()
@@ -210,16 +233,19 @@ class PokemonBase(ABC):
     @abstractmethod
     def can_evolve(self) -> bool:
         """
-        Base pokemon returns true
-        Fully evolved pokemon returns false
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
         """
         pass
 
     @abstractmethod
     def get_initial_evolved_version(self) -> PokemonBase: 
         """
-        Base pokemon return the base evolved pokemon
-        Fully evolved pokemon return error
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
         """
         pass
 
@@ -229,6 +255,7 @@ class PokemonBase(ABC):
         Scales max HP by calling get_max_hp(), and calculates HP lost prior to HP modification, 
         updating current HP by subtracting from new max HP.
         :pre: max_hp and hp must be defined
+        :return: None
         :complexity: O(1)
         """
         previous_max_hp = self.max_hp  
@@ -240,6 +267,7 @@ class PokemonBase(ABC):
     def get_evolved_version(self) -> PokemonBase:
         """
         Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it
+        :return: PokemonBase of the evolved version
         :complexity: O(1)
         """
         evolved = self.get_initial_evolved_version()
@@ -252,6 +280,7 @@ class PokemonBase(ABC):
     def level_up(self) -> None:
         """
         Increase pokemon's level, scale hp and max_hp
+        :return: None
         :complexity: O(1)
         """
         self.level += 1

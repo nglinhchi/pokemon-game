@@ -13,6 +13,9 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 # CHARMANDER >> CHARIZARD
 class Charizard(PokemonBase): 
     def __init__(self):
+        """
+        Initialises a Charizard instance
+        """
         PokemonBase.__init__(self, -1, PokeType.FIRE)
         self.level = 3 # base level
     
@@ -21,6 +24,7 @@ class Charizard(PokemonBase):
         Method containing HP scaling formula for individual pokemon. Calculates
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
         :complexity: O(1)
         """
         return 12 + 1 * self.level
@@ -28,6 +32,7 @@ class Charizard(PokemonBase):
     def get_attack_damage(self) -> int:
         """
         Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
         :complexity: O(1)
         """
         return 10 + 2 * self.level
@@ -35,6 +40,7 @@ class Charizard(PokemonBase):
     def get_speed(self) -> int:
         """
         Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
         :complexity: O(1)
         """
         return 9 + 1 * self.level
@@ -42,6 +48,7 @@ class Charizard(PokemonBase):
     def get_defence(self) -> int:
         """
         Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
         :complexity: O(1)
         """
         return 4
@@ -49,16 +56,16 @@ class Charizard(PokemonBase):
     def can_evolve(self) -> bool:
         """
         Returns whether an evolved version of the pokemon exists
-        Base pokemon returns true
-        Fully evolved pokemon returns false
+        :return: True if Base pokemon, False for evolved pokemon
         :complexity: O(1)
         """
         return False
 
     def get_initial_evolved_version(self) -> PokemonBase:
         """
-        Base pokemon return the base evolved pokemon
-        Fully evolved pokemon return error
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
         :complexity: O(1)
         """
         raise ValueError(f"{self.name} does not have evolution")
@@ -68,6 +75,8 @@ class Charizard(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
         :complexity: O(1)
         """
         if damage > self.get_defence():
@@ -80,27 +89,71 @@ class Charizard(PokemonBase):
 class Charmander(PokemonBase):
     
     def __init__(self):
+        """
+        Initialises a Charmander instance
+        """
         PokemonBase.__init__(self, 9, PokeType.FIRE)
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 8 + 1 * self.level
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 6 + 1 * self.level
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 7 + 1 * self.level
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 4
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return True
 
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         return Charizard()
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage > self.get_defence():
             self.lose_hp(damage)
         else:
@@ -114,28 +167,72 @@ class Charmander(PokemonBase):
 class Venusaur(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Venusaur instance
+        """
         PokemonBase.__init__(self, -1, PokeType.GRASS)
         self.level = 2 # base level
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 20 + self.level//2
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 5
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 3 + self.level//2
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 10
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         raise ValueError(f"{self.name} does not have evolution")
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage > (self.get_defence() + 5):
             self.lose_hp(damage)
         else:
@@ -146,27 +243,71 @@ class Venusaur(PokemonBase):
 class Bulbasaur(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Bulbasaur instance
+        """
         PokemonBase.__init__(self, 13, PokeType.GRASS)
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 12 + 1 * self.level
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 5
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 7 + self.level//2
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 5
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return True
     
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         return Venusaur()
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage > (self.get_defence() + 5):
             self.lose_hp(damage)
         else:
@@ -179,28 +320,72 @@ class Bulbasaur(PokemonBase):
 # SQUIRTLE >> BLASTOISE
 class Blastoise(PokemonBase):
     def __init__(self):
+        """
+        Initialises a Blastoise instance
+        """
         PokemonBase.__init__(self, -1, PokeType.WATER)
         self.level = 3 # base level
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 15 + 2 * self.level
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 8 + self.level // 2
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 10
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 8 + 1 * self.level
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return False
 
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage > (self.get_defence() * 2):
             self.lose_hp(damage)
         else:
@@ -211,27 +396,71 @@ class Blastoise(PokemonBase):
 class Squirtle(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Squirtle instance
+        """
         PokemonBase.__init__(self, 11, PokeType.WATER)
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 9 + 2 * self.level
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 4 + self.level//2
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 7
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 6 + self.level
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return True
 
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         return Blastoise()
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage > (self.get_defence() * 2):
             self.lose_hp(damage)
         else:
@@ -245,28 +474,72 @@ class Squirtle(PokemonBase):
 class Gengar(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Gengar instance
+        """
         PokemonBase.__init__(self, -1, PokeType.GHOST)
         self.level = 3 # base level
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 12 + self.level//2
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 18
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 12
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 3
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         self.lose_hp(damage)
 
 
@@ -274,28 +547,72 @@ class Gengar(PokemonBase):
 class Haunter(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Haunter instance
+        """
         PokemonBase.__init__(self, -1, PokeType.GHOST)
         self.level = 1 # base level
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 9 + self.level//2
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 8
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 6
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 6
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return True
 
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         return Gengar()
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         self.lose_hp(damage)
 
 
@@ -303,27 +620,71 @@ class Haunter(PokemonBase):
 class Gastly(PokemonBase):
 
     def __init__(self):
+        """
+        Initialises a Gastly instance
+        """
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 6 + self.level//2
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 4
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 2
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 8
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return True
     
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         return Haunter()
 
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         self.lose_hp(damage)
 
 
@@ -334,27 +695,71 @@ class Gastly(PokemonBase):
 class Eevee(PokemonBase):
     
     def __init__(self):
+        """
+        Initialises an Eevee instance
+        """
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
     def get_max_hp(self) -> int:
+        """
+        Method containing HP scaling formula for individual pokemon. Calculates
+        this max HP using base_hp and returns.
+        :pre: base_hp must be defined
+        :return: integer of pokemon's max hp
+        :complexity: O(1)
+        """
         return 10
 
     def get_attack_damage(self) -> int:
+        """
+        Getter method returning current Attack stat calculated for individual Pokemon
+        :return: integer of pokemon's attack damage
+        :complexity: O(1)
+        """
         return 6 + self.level
 
     def get_speed(self) -> int:
+        """
+        Getter method returning current Speed stat calculated for individual Pokemon
+        :return: integer of pokemon's speed
+        :complexity: O(1)
+        """
         return 7 + self.level
 
     def get_defence(self) -> int:
+        """
+        Getter method returning current Defence stat calculated for individual Pokemon
+        :return: integer of pokemon's defence
+        :complexity: O(1)
+        """
         return 4 + self.level
     
     def can_evolve(self) -> bool:
+        """
+        Returns whether an evolved version of the pokemon exists
+        :return: True if Base pokemon, False for evolved pokemon
+        :complexity: O(1)
+        """
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
+        """
+        Retrieves the base evolved pokemon
+        :raises ValueError: if the pokemon is fully evolved
+        :return: a pokemon base of the evolved version
+        :complexity: O(1)
+        """
         raise ValueError(f"{self.name} does not have evolution")
         
     def defend(self, damage: int) -> None:
+        """
+        Method that calculates damage mitigation/damage to take depending on
+        individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
+        damage amount onto Pokemon's health.
+        :param: integer representing the value of the attack from the other pokemon
+        :return: None
+        :complexity: O(1)
+        """
         if damage >= self.get_defence():
             self.lose_hp(damage)
         else:
