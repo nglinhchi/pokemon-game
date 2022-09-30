@@ -8,6 +8,12 @@ from random_gen import RandomGen
 from stack_adt import ArrayStack
 import unittest
 
+"""
+Creates battletower class that implements all methods needed to create and run a tower between user team and opponent teams,
+with the aid of battletower iterator
+"""
+__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen"
+
 class BattleTower:
 
     def __init__(self, battle: Battle|None=None) -> None:
@@ -25,6 +31,7 @@ class BattleTower:
     def set_my_team(self, team: PokeTeam) -> None:
         """ Assigns the value for user team of the tower
         :param arg1: user team that will be facing and battling with opponent teams
+        :complexity: best and worst O(1)
         """
         self.me = team
 
@@ -33,6 +40,7 @@ class BattleTower:
             a random number of lives. These teams will be added to the opponents list of tower
         :pre: n must be a positive integer
         :param arg1: number of opponent teams user would like to have in the tower
+        :complexity: best and worst O(N) where N is the length of opponents
         """
         if type(n) is not int or n < 0:
             raise ValueError("n must be a positive integer")

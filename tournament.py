@@ -1,10 +1,4 @@
 from __future__ import annotations
-"""
-Creates tournament class that implements all methods needed to create and run a tournament between PokeTeams.
-
-"""
-__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang"
-
 from bset import BSet
 from linked_stack import LinkedStack
 from pokemon_base import PokeType
@@ -14,6 +8,11 @@ from random_gen import RandomGen
 from poke_team import PokeTeam
 from battle import Battle
 from linked_list import LinkedList
+
+"""
+Creates tournament class that implements all methods needed to create and run a tournament between PokeTeams.
+"""
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang"
 
 class Tournament:
     
@@ -36,6 +35,7 @@ class Tournament:
         tournament
         :param battle_mode: Integer between 0 and 1 that represents valid battle mode
         :return: None
+        :complexity: best and worstt O(1)
         """
         self.battle_mode = battle_mode
 
@@ -48,6 +48,7 @@ class Tournament:
         :pre: Tournament string must be in postfix notation and competitor name must not be '+' as this is used for checking
         :post: Tournament string remains unchanged
         :return: True or False, depending on if string passes check (True means string is valid)
+        :complexity: best O(1) when invalid user input, worst O(N) where N is length of temp_stack
         """
       
         if type(tournament_str) is not str:
@@ -108,7 +109,7 @@ class Tournament:
         :post: After iterations are exhausted, tournament should be complete with winner returned.
         :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
         :return: tuple containing 3 values (team one, team two, result of match)
-        :complexity: 
+        :complexity: best and worst are the same
             - 1 iteration is O(B+R) Where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team
             - Cost of iterating through entire tournament is O(T*(B+R)) where T is number of battles in tournament
         """
@@ -144,7 +145,7 @@ class Tournament:
         :pre: tournament generator instance must have been created through start_tournament -> tournament_gen method.
         :post: result from tournament gen is unmodified.
         :return: None or tuple(team one: PokeTeam, team two: PokeTeam, result of battle: int)
-        :complexity: O(B+R) where B is complexity of battle, R is complexity of regenerate team
+        :complexity: best and worst are the same, O(B+R) where B is complexity of battle, R is complexity of regenerate team
         """
         # next(self.tournament)
         try:
