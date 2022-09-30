@@ -1,4 +1,14 @@
 from __future__ import annotations
+
+"""
+Implements the methods to construct a team and implements the different battle modes.
+
+"""
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen"
+
+from enum import Enum, auto
+from pokemon_base import PokemonBase
+from random_gen import RandomGen
 from ast import Num
 from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
@@ -12,14 +22,6 @@ from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack, Stack
 from aset import ASet
-"""
-"""
-__author__ = "Scaffold by Jackson Goerner, Code by ______________"
-
-from enum import Enum, auto
-from pokemon_base import PokemonBase
-from random_gen import RandomGen
-
 class Action(Enum):
     ATTACK = auto()
     SWAP = auto()
@@ -49,6 +51,13 @@ class PokeTeam:
     def __init__(self, team_name: str, team_numbers: list[int], battle_mode: int, ai_type: PokeTeam.AI, criterion=None, criterion_value=None) -> None:
         """
         Creates user-specified Poketeam
+        :param arg1: string of the teams name
+        :param arg2: list of integers representing the num of each base pokemon
+        :param arg3: integer of the battle mode
+        :param arg4: AI class variable
+        :param arg5: optional Criterion class variable that determines the criteria for ordering
+        :return: None
+        :complexity O(n) where n is len(team numbers)
         """ 
         if not type(team_name) == str:
             raise ValueError("Team name must be string")
@@ -94,6 +103,12 @@ class PokeTeam:
     def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
         """
         Creates random generated Poketeam
+        :param arg1: string of the teams name
+        :param arg2: integer of the battle mode
+        :param arg3: optional integer representing team size
+        :param arg4: optional AI class variable
+        :return: PokeTeam instance of the team
+        :complexity: O(n)
         """
         # assign team_size
         
