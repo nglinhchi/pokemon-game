@@ -129,8 +129,6 @@ class BattleTowerIterator:
             else:
                 self.tower.end_tower = True     
         
-        
-    
     def avoid_duplicates(self):
         """ Removes any opponent teams in tower that have more than 1 pokemons of the same type.
         :post: opponent teams' state remains unchanged

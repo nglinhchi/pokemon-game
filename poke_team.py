@@ -447,6 +447,7 @@ class PokeTeam:
             item.order = num
         self.initial_order_exist = True
         return self.team
+        
     def reverse_order(self):
         """
         Takes input array sorted in ascending order and reverses it using the same key
