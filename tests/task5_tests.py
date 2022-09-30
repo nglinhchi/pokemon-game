@@ -15,7 +15,7 @@ class TestTower(BaseTest):
         self.assertEqual(b.me.team_name, "my_team")
 
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam("Bob", [1,3,1,0,0], 1, PokeTeam.AI.ALWAYS_ATTACK))
+        b.set_my_team(PokeTeam("Bob", [1, 3, 1, 0, 0], 1, PokeTeam.AI.ALWAYS_ATTACK))
         self.assertIsInstance(b.me, PokeTeam)
         self.assertEqual(b.me.battle_mode, 1)
 
@@ -34,7 +34,7 @@ class TestTower(BaseTest):
         b.generate_teams(5)
         teams = iter(b)
         for team in teams:
-            self.assertTrue(team.num_lives >= 2 and team.num_lives <= 10)
+            self.assertTrue(2 <= team.num_lives <= 10)
 
         # tests that the function generates the expected number of teams
         RandomGen.set_seed(2)
@@ -51,7 +51,7 @@ class TestTower(BaseTest):
         # tests a simple tower returns the required tuple
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size = 6, criterion = Criterion.HP))
+        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size=6, criterion=Criterion.HP))
         b.generate_teams(4)
         results = iter(b)
         self.assertEqual(next(results)[0], 1)
@@ -66,7 +66,7 @@ class TestTower(BaseTest):
         # tests the function always returns the required length of the tuple
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size = 6, criterion = Criterion.HP))
+        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size=6, criterion=Criterion.HP))
         b.generate_teams(4)
         results = iter(b)
         for tuple in results:
@@ -75,7 +75,7 @@ class TestTower(BaseTest):
     def test_avoid_duplicates(self):
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size = 6, criterion = Criterion.HP))
+        b.set_my_team(PokeTeam.random_team("my_team", 2, team_size=6, criterion=Criterion.HP))
         b.generate_teams(2)
         results = iter(b)
         results.avoid_duplicates()
@@ -87,7 +87,7 @@ class TestTower(BaseTest):
         # tests function with higher amount of teams
         RandomGen.set_seed(10)
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam.random_team("my_team", 1, team_size = 2, criterion = Criterion.HP))
+        b.set_my_team(PokeTeam.random_team("my_team", 1, team_size=2, criterion=Criterion.HP))
         b.generate_teams(10)
         results = iter(b)
         results.avoid_duplicates()
@@ -98,7 +98,7 @@ class TestTower(BaseTest):
 
         RandomGen.set_seed(100)
         b = BattleTower(Battle(verbosity=0))
-        b.set_my_team(PokeTeam.random_team("my_team", 1, team_size = 2, criterion = Criterion.HP))
+        b.set_my_team(PokeTeam.random_team("my_team", 1, team_size=2, criterion=Criterion.HP))
         b.generate_teams(10)
         results = iter(b)
         results.avoid_duplicates()
