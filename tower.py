@@ -68,7 +68,8 @@ class BattleTowerIterator:
             
             # IF REACH END OF LIST + STILL CONTAINS OPPONENTS --> GO BACK TO HEAD TO ITERATE
             if (self.current_opponent is None) and (self.current_opponent is not self.tower.opponents.head):
-                self.current_opponent = self.current_opponent.head  # assign CURRENT to HEAD again
+                # self.current_opponent = self.current_opponent.head  # assign CURRENT to HEAD again
+                self.current_opponent = self.tower.opponents.head
             
             # IF LIST STILL CONTAINTS OPPONENT --> BATTLE
             if self.current_opponent is not None:                      
@@ -132,27 +133,34 @@ class BattleTowerIterator:
 
         while self.current_opponent is not None:
 
+            opponent_poke_team = self.current_opponent.item
             opponent_team = self.current_opponent.item.team
             type_set = BSet(len(opponent_team))
             contain_duplicates = False
             
             # CHECK IF TEAM CONTAINS DEUPLATE
-            if opponent_team.battle_mode == 0:
+            if opponent_poke_team.battle_mode == 0:
                 temp_stack = ArrayStack(len(opponent_team))
-                pokemon = opponent_team.pop()
-                # TODO Bset implementation to check if pokemon.get_type() exists in type_set or not
-                # for loop
-                #  if have duplicates --> set contain_duplicates = True, break
-                # else --> add pokemon.get_type() to type_set
-            elif opponent_team.battle_mode == 1:
+                for _ in range(len(opponent_team)):
+                    pokemon = opponent_team.pop()
+                    type_index = pokemon.get_type().get_type_index() + 1
+                    if type_index not in type_set:
+                        type_set.add(type_index)
+                    else:
+                        contain_duplicates = True
+                        break
+                for _ in range(len(temp_stack)): # state for opponent team stays the same
+                    opponent_team.push(temp_stack.pop())
+            elif opponent_poke_team.battle_mode == 1:
                 for _ in range(len(opponent_team)):
                     pokemon = opponent_team.serve()
-                    # TODO Bset implementation to check if pokemon.get_type() exists in type_set or not
-                    # for loop
-                    # if have duplicates --> set contain_duplates = True, break
-                    # else --> add pokemon.get_type() to type_set
-            elif opponent_team.battle_mode == 2:
-                pass
+                    type_index = pokemon.get_type().get_type_index() + 1
+                    opponent_team.append(pokemon) # state for opponent team stays the same
+                    if type_index not in type_set:
+                        type_set.add(type_index)
+                    else:
+                        contain_duplicates = True
+                        break
 
             # HANDLE DELETION OF TEAMS WITH DUPLICATES
             if contain_duplicates:
@@ -168,9 +176,8 @@ class BattleTowerIterator:
             # STANDARD INCREMENT TO POINT TO NEXT OPPONENT
             self.current_opponent = self.current_opponent.next
 
-
-        """ JD's implementation
-
+        # JD's implementation
+"""
         # if current_team.item.get_battle_mode() = 0:
         dup_start = True   #mark current opponent as start of duplicate
         idx = 0
@@ -207,9 +214,8 @@ class BattleTowerIterator:
                             # dup_start_delete = 0- No need as will break at end of list- check is done
                             return
                         break
-        """
-
-        """
+"""
+"""
         next return (res, me, other, lives)
         for (res, me, other, lives) in self.tower:
             for num in other.team_numbers:
@@ -237,7 +243,7 @@ class BattleTowerIterator:
                     self.tower.opponents.delete_at_index(index)
                     
         raise StopIteration
-        """
+"""
 
 
 class TestBattleTower(unittest.TestCase):
