@@ -11,7 +11,7 @@ from enum import Enum, auto
 """
 
 """
-__author__ = "Scaffold by Jackson Goerner, Code by ______________"
+__author__ = "Scaffold by Jackson Goerner, Code by JD, Chloe, Jane"
 
 
 
@@ -23,7 +23,7 @@ class StatusEffects(Enum):
     POISON = auto()
     PARALYSIS = auto()
     SLEEP = auto()
-    CONFUSION = auto()
+    CONFUSE = auto()
 
     def get_effect_damage(self):
         if self.name == 'BURN':
@@ -43,7 +43,7 @@ class PokeType(Enum):
     GRASS =     (1, [0.5,   1,      2,      1,      1], StatusEffects.POISON)
     WATER =     (2, [2,     0.5,    1,      1,      1], StatusEffects.PARALYSIS)
     GHOST =     (3,     [1.25,  1.25,   1.25,   2,      0], StatusEffects.SLEEP)
-    NORMAL =    (4,  [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSION)
+    NORMAL =    (4,  [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSE)
     
     def __init__(self, type_index: int, type_effectiveness: list, effect: StatusEffects):
         self.type_index = type_index
@@ -52,8 +52,7 @@ class PokeType(Enum):
 
     def get_type_index(self):
         return self.type_index
-    # def get_effect_damage(self):
-    #     return self.effect.effect_damage
+
     def type_multiplier(self, defend_poketype: PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
@@ -61,16 +60,6 @@ class PokeType(Enum):
         multiplier = self.type_effectiveness[defend_poketype.get_type_index()]
     
         return multiplier
-
-# @dataclass
-# class PokeType(PokemonBase):
-#     damage: int = 0
-#     id: get_type_effect()
-#     # STATUS_EFFECTS = ["BURN", "POISON", "PARALYSIS", "SLEEP", "CONFUSION"]
-#     # STATUS_DAMAGE = [1, 3, 0, 0, 0]
-
-
-
 
 
 class PokemonBase(ABC):
@@ -93,13 +82,18 @@ class PokemonBase(ABC):
         if poke_type not in PokeType:
             raise ValueError("Invalid Poke Type")
         self.type = poke_type
+
     def set_base_hp(self, hp: int):
         if type(hp) is not int or hp > 0 is False:
             raise ValueError("Invalid Max HP")
         else:
             self.base_hp = hp
+            
     def __str__(self) -> str:
         return f"LV. {self.get_level()} {self.get_name()}: {self.hp} HP"
+
+
+
 
     # GETTERS FOR 'STATIC' ATTRIBUTES ************************************************
     @abstractmethod
@@ -134,6 +128,9 @@ class PokemonBase(ABC):
         """
         return self.hp
 
+
+
+
     # GETTERS FOR 'DYNAMIC' ATTRIBUTES ************************************************
 
     def get_speed(self) -> int:
@@ -148,9 +145,9 @@ class PokemonBase(ABC):
     @abstractmethod
     def speed_formula(self) -> int:
         """
-        Abstract method returning speed stat calculated for individual pokemon without impact of status effects"""
+        Abstract method returning speed stat calculated for individual pokemon without impact of status effects
+        """
         pass
-
     
     def get_attack_damage(self) -> int:
         ad = self.attack_damage_formula()
@@ -168,6 +165,9 @@ class PokemonBase(ABC):
         Abstract getter method returning current Defence stat calculated for individual Pokemon
         """
         pass
+
+
+
 
     # OTHER METHODS ************************************************
 
@@ -210,7 +210,7 @@ class PokemonBase(ABC):
         if self.get_status_effect() == StatusEffects.SLEEP:
             print("sleeped")
             return
-        elif self.get_status_effect() == StatusEffects.CONFUSION:
+        elif self.get_status_effect() == StatusEffects.CONFUSE:
             if(RandomGen.random_chance(0.5)): # 50% of attacking self
                 other = self
         # >>> Step 2: Do the attack
@@ -226,6 +226,9 @@ class PokemonBase(ABC):
         if(RandomGen.random_chance(0.2)): # 20% of inflicting status effect
             other.status_effect = self.get_type_effect()
 
+    
+    
+    
     # LEVEL UP AND EVOLUTION ************************************************
 
     def should_evolve(self) -> bool:
