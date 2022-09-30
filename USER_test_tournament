@@ -45,35 +45,79 @@ class HiddenPrints:
         sys.stdout = self._original_stdout
 
 class TestTournament(unittest.TestCase):
-    # def test_start_tournament(self):
-    #     RandomGen.set_seed(123456)
-    #     t = Tournament()
-    #     t.set_battle_mode(0)
-    #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-    #     t.advance_tournament()
-    #     self.assertEqual(t.result, 1)
-    #     t.advance_tournament()
-    #     # self.assertEqual()
-    def test_battle1_tournament(self):
+    def test_start_tournament(self):
         RandomGen.set_seed(123456)
         t = Tournament()
         t.set_battle_mode(0)
         t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-        print(t.advance_tournament())
-        print(t.advance_tournament())
-        print(t.advance_tournament())
-        print(t.advance_tournament())
-        print(t.advance_tournament())
-        print(t.advance_tournament())
-        [print(str(x)) for x in t.advance_tournament()]
-        self.assertEqual(t.advance_tournament(), None)
+        t.advance_tournament()
+        self.assertEqual(t.result, 1)
+        t.advance_tournament()
+        # self.assertEqual()
+    # def test_battle1_tournament(self):
+    #     RandomGen.set_seed(123456)
+    #     t = Tournament()
+    #     t.set_battle_mode(0)
+    #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+    #     print(t.advance_tournament())
+    #     print(t.advance_tournament())
+    #     print(t.advance_tournament())
+    #     print(t.advance_tournament())
+    #     print(t.advance_tournament())
+    #     print(t.advance_tournament())
+    #     [print(str(x)) for x in t.advance_tournament()]
+    #     self.assertEqual(t.advance_tournament(), None)
 
 
+    def test_creation(self):
+        t = Tournament(Battle(verbosity=0))
+        t.set_battle_mode(1)
+        self.assertRaises(ValueError, lambda: t.start_tournament("t1 t2 + t3 t4 + + + t5 t6 + t7 t8 + + +"))
+        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
 
+    def test_is_valid_tournament(self):
+        t = Tournament(Battle(verbosity=0))
+        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + + t5 t6 + t7 t8 + + +"), False)
+        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + +"), True)
+        self.assertEqual(t.is_valid_tournament("t1 t2 + +"), False)    #test length stack < 2 at elt is operator
+        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + t5"), False)  #test length stack != 1 at end (no winner)
+        self.assertEqual(t.is_valid_tournament("+ + + + + + +"), False) #correct format, but accessing protected + operator
+        self.assertEqual(t.is_valid_tournament("a b c d + + +"), True)
+        self.assertEqual(t.is_valid_tournament("- - + - - + + - +"), True)
+        self.assertEqual(t.is_valid_tournament("t1 +"), False)  #no opponent
+        self.assertEqual(t.is_valid_tournament("t1 t2 +"), True)    #minimum of tournament
+        self.assertEqual(t.is_valid_tournament("t1"), False)    #no operator, length < minimum
+        self.assertEqual(t.is_valid_tournament(" "), False) #empty
+        self.assertEqual(t.is_valid_tournament("+"), False) #just operator, length < minimum
+        self.assertEqual(t.is_valid_tournament("t1 t2"), False) #no operator
+        self.assertEqual(t.is_valid_tournament("+ t1 t2"), False)   #wrong order
+        self.assertEqual(t.is_valid_tournament(""), False)  #empty no space
+    
+    def test_meta(self):
+        RandomGen.set_seed(123456)
+        t = Tournament(Battle(verbosity=0))
+        t.set_battle_mode(0)
+        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+        l = t.linked_list_with_metas()
+        # Roark = [0, 2, 1, 1, 1]
+        # Garderia = [0, 0, 2, 0, 1]
+        # Maylene = [6, 0, 0, 0, 0]
+        # Crasher_Wake = [0, 2, 0, 1, 0]
+        # Fantina = [0, 0, 1, 1, 1]
+        # Byron = [0, 2, 0, 0, 1]
+        # Candice = [2, 2, 1, 0, 0]
+        # Volkner = [0, 5, 0, 0, 0]
+        RandomGen.set_seed(123456)
+        t.start_tournament("Roark Gardenia + Maylene +")
+        expected = [
+            []
 
-
-
-
+        ]
+        l = t.linked_list_with_metas
+        for x in range(len(l)):
+            team1, team2, types = l[x]
+            self.assertEqual(expected[x], types)
+        
 if __name__ == "__main__":
 
     unittest.main()
