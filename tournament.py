@@ -100,7 +100,7 @@ class Tournament:
                tournament_queue.append(PokeTeam.random_team(elt, self.battle_mode))
             else:
                 battle_count += 1
-                tournament_queue.append(elt)
+                tournament_queue.append(0)  #append 0 in place of '+' because cheaper comparison
         self.battle_count = battle_count
         self.tournament = self.tournament_gen(tournament_queue)
     
@@ -110,11 +110,13 @@ class Tournament:
         according to the order set in the queue. Is a generator that is iterated through by advance_tournament
         :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
         :post: After iterations are exhausted, tournament should be complete with winner returned.
+        :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
+        :complexity: O(==)
         """
         tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
         for _ in range(self.battle_count):
             elt = tournament_queue.serve()
-            if elt != "+": 
+            if type(elt) is not int: 
                 team1 = elt
                 team2 = tournament_queue.serve()
                 tournament_queue.serve()   #remove operator
