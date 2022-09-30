@@ -1,23 +1,2 @@
 
 .idea/workspace.xml
-__pycache__/abstract_list.cpython-39.pyc
-__pycache__/array_sorted_list.cpython-39.pyc
-__pycache__/aset.cpython-39.pyc
-__pycache__/battle.cpython-39.pyc
-__pycache__/bset.cpython-39.pyc
-__pycache__/linked_list.cpython-39.pyc
-__pycache__/linked_stack.cpython-39.pyc
-__pycache__/node.cpython-39.pyc
-__pycache__/poke_team.cpython-39.pyc
-__pycache__/pokemon.cpython-39.pyc
-__pycache__/pokemon_base.cpython-39.pyc
-__pycache__/print_screen.cpython-39.pyc
-__pycache__/queue_adt.cpython-39.pyc
-__pycache__/random_gen.cpython-39.pyc
-__pycache__/referential_array.cpython-39.pyc
-__pycache__/set.cpython-39.pyc
-__pycache__/sorted_list.cpython-39.pyc
-__pycache__/stack_adt.cpython-39.pyc
-__pycache__/tournament.cpython-39.pyc
-__pycache__/tower.cpython-39.pyc
-__pycache__/typing_extensions.cpython-39.pyc
