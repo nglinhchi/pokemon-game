@@ -12,11 +12,7 @@ class BattleTower:
 
     def __init__(self, battle: Battle|None=None) -> None:
         """
-        Attributes
-        - battle: battle instance that will be used to perform batlles between user team and opponent teams, (type: Battle)
-        - me: user team (type: Poke_Team)
-        - opponents: a list containing opponent teams that will face against user team, each team is of type Poke_Team
-            with an additional attribute 'live' (type: LinkedList)
+        :param arg1: battle instance that will be used to perform battles between user team and opponent teams
         """
         if battle is not None:
             self.battle = battle
@@ -27,16 +23,16 @@ class BattleTower:
         self.end_tower = False
     
     def set_my_team(self, team: PokeTeam) -> None:
-        """
-        - Set user input 'team' to be user team of the tower, which will be faceing and battling with the opponent teams
+        """ Assigns the value for user team of the tower
+        :param arg1: user team that will be facing and battling with opponent teams
         """
         self.me = team
 
     def generate_teams(self, n: int) -> None:
-        """
-        - Generate a number of teams based on user input n
-        - Each team has a number of lives
-        - Teams are added to the opponents list of tower
+        """ Generates a number of teams based on user input, where each time will be assigned with 
+            a random number of lives. These teams will be added to the opponents list of tower
+        :pre: n must be a positive integer
+        :param arg1: number of opponent teams user would like to have in the tower
         """
         if type(n) is not int or n < 0:
             raise ValueError("n must be a positive integer")
@@ -51,36 +47,30 @@ class BattleTower:
         self.opponents = teams
 
     def __iter__(self):
-        """
-        - Magic method, creates and returns an iterator for the tower
-        """
+        """ Magic method, creates and returns an iterator for the tower """
         return BattleTowerIterator(self)
 
 class BattleTowerIterator:
 
     def __init__(self, bt: BattleTower) -> None:
         """
-        Attributes
-        - tower: reference to battle tower instance linked to the iterator
-        - current_opponent: current opponent team in tower to be work with
-        - previous_opponent: previous opponent team in tower to be work with
+        :param arg1: instance of battle tower that will be lnked to the iterator
         """
         self.tower = bt
         self.current_opponent = bt.opponents.head
         self.previous_opponent = None
         
     def __iter__(self):
-        """
-        - Returns itself, as required to be iterable.
-        """
+        """ Returns itself, as required to be iterable. """
         return self
 
     def __next__(self):
-        """
-        - Performs 1 battle in tower, between current opponent and user team
-        - Returns a tuple containing result of battle, user team after battle, opponent team after battle, remaining livs of opponent team
-        - :raises StopIteration: if user previously lose a battle, or has defeated all opponent teams (i.e. opponents list is empty)
-        - Compelxity O(B), where B is complexity of battle()
+        """ Performs 1 battle in tower, between current opponent and user team and returns battle result, 
+        user team after battle, opponent team after battle, remaining lives of opponent team
+        :raises StopIteration: if user previously lose a battle, or has defeated all opponent teams (i.e. opponents list is empty)
+        :complexity: best O(1) if there's no oponnent teams in tower,
+                     worst O(B), where there's at least one opponent team in tower,
+                     where B is complexity of battle()
         """
         if self.tower.end_tower:  
             raise StopIteration     
@@ -132,14 +122,12 @@ class BattleTowerIterator:
         
     
     def avoid_duplicates(self):
-        """
-        - Iterate through list of opponent teams, for each team based on selected battle mode, will have
-            a specific implementation to iterate through its list of pokemons and check whether there are
-            duplicates of pokemon types, in case duplicate exists, opponent team is removed from tower' opponent list
-        - Opponent team state remains unchanged after the check
-        - Complexity O(N*P), where:
-            N is the number of trainers remaining in the battle tower
-            P is the limit on the number of pokemon per team.
+        """ Removes any opponent teams in tower that have more than 1 pokemons of the same type.
+        :post: opponent teams' state remains unchanged
+        :complexity: best O(1) if there's no opponent teams in tower,
+                     worst O(N*P) if there's at least 1 opponent team in tower,
+                     where N is the number of trainers remaining in the battle tower and
+                     P is the limit on the number of pokemon per team.
         """
 
         while self.current_opponent is not None:                            # O(N)
