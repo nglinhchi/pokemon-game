@@ -50,6 +50,7 @@ class PokeTeam:
     def __init__(self, team_name: str, team_numbers: list[int], battle_mode: int, ai_type: PokeTeam.AI, criterion=None, criterion_value=None) -> None:
         """
         Creates user-specified Poketeam
+        :return: None
         :complexity O(n) where n is len(team numbers)
         """ 
 
@@ -103,10 +104,15 @@ class PokeTeam:
 
     # TODO
     @classmethod
-    def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs):
+    def random_team(cls, team_name: str, battle_mode: int, team_size=None, ai_mode=None, **kwargs) -> PokeTeam:
         """
         Creates random generated Poketeam
-        :complexity O(n)
+        :param arg1: string of the teams name
+        :param arg2: integer of the battle mode
+        :param arg3: optional integer representing team size
+        :param arg4: optional AI class variable
+        :return: PokeTeam instance of the team
+        :complexity: O(n)
         """
         # assign team_size
         
@@ -154,8 +160,9 @@ class PokeTeam:
     def return_pokemon(self, poke: PokemonBase) -> None:
         """
         returns the on field pokemon back to the team
-        best-case complexity: O(1)
-        worst_case complexity:
+        :param: a PokemonBase representing the team to return the pokemon to
+        :return: None
+        :complexity: Best O(1) if battle mode = 1
         """
         if not poke.is_fainted():
             if self.battle_mode == 0:
@@ -214,6 +221,8 @@ class PokeTeam:
     def regenerate_team(self) -> None:
         """
         Regenerates the team based from the same battle numbers
+        :return: None
+        :complexity:
         """
         if self.battle_mode == 0:
             self.team = self.team_mode_0()
@@ -229,6 +238,8 @@ class PokeTeam:
     def __str__(self):
         """
         Returns a string output of the current state of the team
+        :return: string output of the team
+        :complexity: O(1)
         """
         # Dawn (2): [LV. 1 Gastly: 6 HP, LV. 1 Squirtle: 11 HP, LV. 1 Eevee: 10 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Charmander: 9 HP]"
         # "LV. 5 Venusaur: 17 HP"
@@ -245,6 +256,7 @@ class PokeTeam:
     def stack_string(self):
         """
         Returns string containing all elements of stack
+        :return: string output of the stack
         :complexity O(1)
         """
         stack_string = "" #initialise empty string for input of stack elements
@@ -260,6 +272,8 @@ class PokeTeam:
     def queue_string(self):
         """
         Method that returns all the elements of a queue in string form
+        :return: string output of the queue
+        :complexity: O(1)
         """
         queue_string = "" #initialise empty string for input of stack elements
         temp_queue = CircularQueue(len(self.team)) #initialise empty storage stack for holding popped elements for return
@@ -274,6 +288,8 @@ class PokeTeam:
     def list_string(self) -> str:
         """
         Method that returns a string with all list elements
+        :return: string output of the list
+        :complexity: O(1)
         """
         list_string = "" #initialise empty string
         for item in self.team:  #access ListItem elements
@@ -282,7 +298,9 @@ class PokeTeam:
 
     def is_empty(self) -> Bool:
         """
-
+        Method determining if the team is empty
+        :return: True if the team is empty, False otherwise
+        :complexity: O(1)
         """
         return self.team.is_empty()
 
@@ -327,6 +345,11 @@ class PokeTeam:
         raise NotImplementedError()
 
     def team_mode_0(self) -> ArrayStack:
+        """
+        Method
+        :return: a stack of all the team's pokemon
+        :complexity: O(n) where n is the num of pokemon(ie. sum(team_numbers))
+        """
         team_stack = ArrayStack(sum(self.team_numbers))
         for idx, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
@@ -343,6 +366,11 @@ class PokeTeam:
         return team_queue
 
     def get_base_pokemon(self, i: int) -> PokemonBase:
+        """
+        Creates an instance of the pokemon from the list of base pokemon order
+        :return: PokemonBase of the required pokemon
+        :complexity: O(1)
+        """
         pokemon = PokeTeam.BASE_ORDER[i]
         if pokemon == Charmander:
             p_instance = Charmander()
@@ -455,10 +483,12 @@ class PokeTeam:
 
 
     
-    def sort_into_team(self, pokemon):
+    def sort_into_team(self, pokemon) -> None:
         """
         Takes Pokemon and sorts back into team
         :pre: Pokemons key must be valid (already reversed for descending order)
+        :return: None
+        :complexity: O(n) where n is length of self.team
         """
         ### SORT BY FIRST KEY: CRITERION ###
         # if self.descending_order == True:
@@ -499,6 +529,15 @@ class PokeTeam:
             raise ValueError("Team is full")
     
     def break_tie(self, team_list: ArraySortedList, start_idx: int, end_idx: int):
+        """
+        Method breaks a tie by the pokemon order or further by their
+        initial ordering of the team
+        :param arg1: sorted array containing the team's pokemon
+        :param arg2: integer representing the starting index where the pokemon have a tie
+        :param arg3: integer representing the ending index where the pokemon have a tie
+        :return: None
+        :complexity: O(mlogn) where m is range of tie index and n is length of pokeorder_list
+        """
         team_tie_start = start_idx   #store the start of tie in reference to team_list.
         tie_range = end_idx - start_idx
         pokeorder_list = ArraySortedList(tie_range +1)
