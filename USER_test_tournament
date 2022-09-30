@@ -26,94 +26,105 @@ class TestTournament(unittest.TestCase):
     #     t.advance_tournament()
     #     # self.assertEqual()
 
-    def test_battle1_tournament(self):
-        """
-        Test that produces all the right values (TEST FOR battle0) THIS IS ALREADY GIVEN TEST
-        """
-        RandomGen.set_seed(123456)
-        output_list = []
-        t = Tournament()
-        t.set_battle_mode(0)
-        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        output_list.append(t.advance_tournament())
-        self.assertEqual(t.advance_tournament(), None)
-        # print([str(x[0]) for x in output_list])
-        # self.assertEqual([x[2] for x in output_list], [1,1,1,2,1,1,2])
-        RandomGen.set_seed(123456)
-        t = Tournament()
-        loop_list = []
-        t.set_battle_mode(0)
-        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-        while True:
-            res = t.advance_tournament()
-            if res is not None:
-                loop_list.append(res[2])
-            else:
-                break
+    # def test_battle1_tournament(self):
+    #     """
+    #     Test that produces all the right values (TEST FOR battle0) THIS IS ALREADY GIVEN TEST
+    #     """
+    #     RandomGen.set_seed(123456)
+    #     output_list = []
+    #     t = Tournament()
+    #     t.set_battle_mode(0)
+    #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     output_list.append(t.advance_tournament())
+    #     self.assertEqual(t.advance_tournament(), None)
+    #     # print([str(x[0]) for x in output_list])
+    #     # self.assertEqual([x[2] for x in output_list], [1,1,1,2,1,1,2])
+    #     # RandomGen.set_seed(123456)
+    #     # t = Tournament()
+    #     loop_list = []
+    #     # t.set_battle_mode(0)
+    #     # t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+    #     while True:
+    #         res = t.advance_tournament()
+    #         if res is not None:
+    #             loop_list.append(res)
+    #         else:
+    #             break
+    # def test_meta(self):
+    #     RandomGen.set_seed(123456)
+    #     t = Tournament()
+    #     t.set_battle_mode(0)
+    #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+    #     l = t.linked_list_with_metas()
+    #     for x in range(len(l)):
+    #         team1, team2, res = l[x]
+    #         print(l[x])  
+    # #         # self.assertEqual(expected[x], types)
+    # #     l = t.linked_list_with_metas()
+    # # #     # Roark = [0, 2, 1, 1, 1]
+    # # #     # Garderia = [0, 0, 2, 0, 1]
+    # #     # Maylene = [6, 0, 0, 0, 0]
+    # #     # Crasher_Wake = [0, 2, 0, 1, 0]
+    #     # Fantina = [0, 0, 1, 1, 1]
+    #     # Byron = [0, 2, 0, 0, 1]
+    #     # Candice = [2, 2, 1, 0, 0]
+    #     # Volkner = [0, 5, 0, 0, 0]
+    #     # RandomGen.set_seed(123456)
+    #     # t.start_tournament("Roark Gardenia + Maylene +")
+    #     expected = [
+    #         [],
+    #         [],
+    #         ['FIRE'],
+    #         ['GRASS'],
+    #         [],
+    #         [],
+    # #         []
 
-        self.assertEqual([x[2] for x in output_list], loop_list)
+
+    #     ]
+    #     for x in range(len(l)):
+    #         team1, team2, types = l[x]
+    #         # print(types)
+    #         # self.assertEqual(expected[x], types)
+
+        # self.assertEqual([x[2] for x in output_list], loop_list)
     # def test_creation(self):
     #     t = Tournament(Battle(verbosity=0))
     #     t.set_battle_mode(1)
     #     self.assertRaises(ValueError, lambda: t.start_tournament("t1 t2 + t3 t4 + + + t5 t6 + t7 t8 + + +"))
     #     t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
 
-    def test_is_valid_tournament(self):
-        t = Tournament(Battle(verbosity=0))
-        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + + t5 t6 + t7 t8 + + +"), False)
-        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + +"), True)
-        self.assertEqual(t.is_valid_tournament("t1 t2 + +"), False)    #test length stack < 2 at elt is operator
-        self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + t5"), False)  #test length stack != 1 at end (no winner)
-        self.assertEqual(t.is_valid_tournament("+ + + + + + +"), False) #correct format, but accessing protected + operator
-        self.assertEqual(t.is_valid_tournament("a b c d + + +"), True)
-        self.assertEqual(t.is_valid_tournament("- - + - - + + - +"), True)
-        self.assertEqual(t.is_valid_tournament("t1 +"), False)  #no opponent
-        self.assertEqual(t.is_valid_tournament("t1 t2 +"), True)    #minimum of tournament
-        self.assertEqual(t.is_valid_tournament("t1"), False)    #no operator, length < minimum
-        self.assertEqual(t.is_valid_tournament(" "), False) #empty
-        self.assertEqual(t.is_valid_tournament("+"), False) #just operator, length < minimum
-        self.assertEqual(t.is_valid_tournament("t1 t2"), False) #no operator
-        self.assertEqual(t.is_valid_tournament("+ t1 t2"), False)   #wrong order
-        self.assertEqual(t.is_valid_tournament(""), False)  #empty no space
+    # def test_is_valid_tournament(self):
+    #     t = Tournament(Battle(verbosity=0))
+    #     self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + + t5 t6 + t7 t8 + + +"), False)
+    #     self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + +"), True)
+    #     self.assertEqual(t.is_valid_tournament("t1 t2 + +"), False)    #test length stack < 2 at elt is operator
+    #     self.assertEqual(t.is_valid_tournament("t1 t2 + t3 t4 + + t5"), False)  #test length stack != 1 at end (no winner)
+    #     self.assertEqual(t.is_valid_tournament("+ + + + + + +"), False) #correct format, but accessing protected + operator
+    #     self.assertEqual(t.is_valid_tournament("a b c d + + +"), True)
+    #     self.assertEqual(t.is_valid_tournament("- - + - - + + - +"), True)
+    #     self.assertEqual(t.is_valid_tournament("t1 +"), False)  #no opponent
+    #     self.assertEqual(t.is_valid_tournament("t1 t2 +"), True)    #minimum of tournament
+    #     self.assertEqual(t.is_valid_tournament("t1"), False)    #no operator, length < minimum
+    #     self.assertEqual(t.is_valid_tournament(" "), False) #empty
+    #     self.assertEqual(t.is_valid_tournament("+"), False) #just operator, length < minimum
+    #     self.assertEqual(t.is_valid_tournament("t1 t2"), False) #no operator
+    #     self.assertEqual(t.is_valid_tournament("+ t1 t2"), False)   #wrong order
+    #     self.assertEqual(t.is_valid_tournament(""), False)  #empty no space
     
-    def test_meta(self):
-        RandomGen.set_seed(123456)
-        t = Tournament()
-        t.set_battle_mode(0)
-        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-        l = t.linked_list_with_metas()
-    #     # Roark = [0, 2, 1, 1, 1]
-    #     # Garderia = [0, 0, 2, 0, 1]
-        # Maylene = [6, 0, 0, 0, 0]
-        # Crasher_Wake = [0, 2, 0, 1, 0]
-        # Fantina = [0, 0, 1, 1, 1]
-        # Byron = [0, 2, 0, 0, 1]
-        # Candice = [2, 2, 1, 0, 0]
-        # Volkner = [0, 5, 0, 0, 0]
-        # RandomGen.set_seed(123456)
-        # t.start_tournament("Roark Gardenia + Maylene +")
-        expected = [
-            [],
-            [],
-            ['FIRE'],
-            ['GRASS'],
-            [],
-            [],
-            []
-
-
-        ]
-        for x in range(len(l)):
-            team1, team2, types = l[x]
-            # print(types)
-            # self.assertEqual(expected[x], types)
-        
+    def test_looping(self):
+            RandomGen.set_seed(123456)
+            t = Tournament(Battle(verbosity=0))
+            t.set_battle_mode(0)
+            t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+            # t.test_looping()
+            t.linked_list_with_metas()
 if __name__ == "__main__":
 
     unittest.main()
