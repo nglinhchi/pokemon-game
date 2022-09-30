@@ -7,6 +7,7 @@ import unittest
 from pokemon_base import *
 from pokemon import *
 from base_test import *
+from pokemon_base import StatusEffects
 
 class Testpokemonbase(BaseTest):
     def test_init(self):
@@ -124,7 +125,7 @@ class Testpokemonbase(BaseTest):
     def test_heal(self):
         s = Squirtle()
         s.lose_hp(2)
-        s.status_effect = StatusEffect.BURN
+        s.status_effect = StatusEffects.BURN
         s.heal()
         self.assertEqual(s.get_hp(), 11)
         self.assertEqual(s.get_status_effect(), None)
@@ -163,7 +164,7 @@ class Testpokemonbase(BaseTest):
     def test_should_evolve(self):
         e = Eevee()
         self.assertEqual(e.should_evolve(), False)
-        g = Ghastly()
+        g = Gastly()
         self.assertEqual(g.should_evolve(), True)
         h = Haunter()
         h.level_up()
@@ -189,7 +190,7 @@ class Testpokemonbase(BaseTest):
 
     def test_get_evolved_version(self):
         g = Gastly
-        g.status_effect = StatusEffect.BURN
+        g.status_effect = StatusEffects.BURN
         g.lose_hp(2)
         g.level_up()
         self.assertEqual(isinstance(g.get_evolved_version(), Haunter), True)
