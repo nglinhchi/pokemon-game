@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e0202ade-1c3b-4475-98e8-e2877c4acc62" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/poke_team.py" beforeDir="false" afterPath="$PROJECT_DIR$/poke_team.py" afterDir="false" />
     </list>
+=======
+    <list default="true" id="2fa793f8-5c7f-45ae-81d1-7e961ac49108" name="Changes" comment="" />
+>>>>>>> Task-5-test-cases
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
