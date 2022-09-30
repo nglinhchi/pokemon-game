@@ -1,22 +1,16 @@
 from __future__ import annotations
-from ast import operator
-from multiprocessing.dummy import Array
-from multiprocessing.sharedctypes import Value
-from nis import match
-from typing import Tuple
-from bset import BSet
-from linked_stack import LinkedStack
-from pokemon_base import PokeType
-from queue_adt import CircularQueue
-from stack_adt import ArrayStack
-from random_gen import RandomGen
-
 """
 Creates tournament class that implements all methods needed to create and run a tournament between PokeTeams.
 
 """
 __author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang"
 
+from bset import BSet
+from linked_stack import LinkedStack
+from pokemon_base import PokeType
+from queue_adt import CircularQueue
+from stack_adt import ArrayStack
+from random_gen import RandomGen
 from poke_team import PokeTeam
 from battle import Battle
 from linked_list import LinkedList
@@ -42,7 +36,6 @@ class Tournament:
         tournament
         :param battle_mode: Integer between 0 and 1 that represents valid battle mode
         :return: None
-        :complexity: best and worst O(1)
         """
         self.battle_mode = battle_mode
 
@@ -164,7 +157,7 @@ class Tournament:
     def linked_list_of_games(self) -> LinkedList[tuple[PokeTeam, PokeTeam]]:
         """
         Method that creates a linked list containing all matches performed in tournament.
-        
+
         :pre: start_tournament, set_battle_mode must have been called
         :post:  tournament battles have all resulted.
         :return: linked list of tuples containing the teams who fought in each battle, in descending sequential order (last match is at head)
