@@ -2,6 +2,10 @@ from poke_team import Action, Criterion, PokeTeam
 from pokemon import *
 from tests.base_test import BaseTest
 
+"""
+Tests the methods used in poke_team
+"""
+__author__ = "Jane Butcher"
 
 class TestPokeTeam(BaseTest):
 

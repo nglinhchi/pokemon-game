@@ -5,6 +5,10 @@ from base_test import *
 from battle import *
 from unittest.mock import patch
 
+"""
+Tests the methods used in battle
+"""
+__author__ = "Jane Butcher"
 
 class TestBattle(BaseTest):
     def test_simple_battle(self):

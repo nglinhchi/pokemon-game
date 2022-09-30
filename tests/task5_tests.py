@@ -5,6 +5,10 @@ from base_test import *
 from tower import *
 from battle import *
 
+"""
+Tests the methods used in tower
+"""
+__author__ = "Jane Butcher"
 
 class TestTower(BaseTest):
     def test_set_my_team(self):

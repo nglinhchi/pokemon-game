@@ -1,13 +1,13 @@
-"""
-Tests the methods used in pokemon_base and pokemon files
-"""
-__author__ = "Jane Butcher"
-
 import unittest
 from pokemon_base import *
 from pokemon import *
 from base_test import *
 from pokemon_base import StatusEffects
+
+"""
+Tests the methods used in pokemon_base and pokemon files
+"""
+__author__ = "Jane Butcher"
 
 class Testpokemonbase(BaseTest):
     def test_init(self):
