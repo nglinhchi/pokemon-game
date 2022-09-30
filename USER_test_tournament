@@ -43,13 +43,14 @@ class TestTournament(unittest.TestCase):
         output_list.append(t.advance_tournament())
         output_list.append(t.advance_tournament())
         self.assertEqual(t.advance_tournament(), None)
-        # print([str(x[0]) for x in output_list])
-        # self.assertEqual([x[2] for x in output_list], [1,1,1,2,1,1,2])
-        # RandomGen.set_seed(123456)
-        # t = Tournament()
+
+
+
+        RandomGen.set_seed(123456)
+        t = Tournament()
         loop_list = []
-        # t.set_battle_mode(0)
-        # t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
+        t.set_battle_mode(0)
+        t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
         while True:
             res = t.advance_tournament()
             if res is not None:
@@ -65,18 +66,18 @@ class TestTournament(unittest.TestCase):
         for x in range(len(l)):
             team1, team2, res = l[x]
             print(l[x])  
-    #         # self.assertEqual(expected[x], types)
-    #     l = t.linked_list_with_metas()
-    # #     # Roark = [0, 2, 1, 1, 1]
-    # #     # Garderia = [0, 0, 2, 0, 1]
-    #     # Maylene = [6, 0, 0, 0, 0]
-    #     # Crasher_Wake = [0, 2, 0, 1, 0]
-        # Fantina = [0, 0, 1, 1, 1]
-        # Byron = [0, 2, 0, 0, 1]
-        # Candice = [2, 2, 1, 0, 0]
-        # Volkner = [0, 5, 0, 0, 0]
-        # RandomGen.set_seed(123456)
-        # t.start_tournament("Roark Gardenia + Maylene +")
+            # self.assertEqual(expected[x], types)
+        # l = t.linked_list_with_metas()
+    #     # Roark = [0, 2, 1, 1, 1]
+    #     # Garderia = [0, 0, 2, 0, 1]
+        # Maylene = [6, 0, 0, 0, 0]
+        # Crasher_Wake = [0, 2, 0, 1, 0]
+        Fantina = [0, 0, 1, 1, 1]
+        Byron = [0, 2, 0, 0, 1]
+        Candice = [2, 2, 1, 0, 0]
+        Volkner = [0, 5, 0, 0, 0]
+        RandomGen.set_seed(123456)
+        t.start_tournament("Roark Gardenia + Maylene +")
         expected = [
             [],
             [],
@@ -93,7 +94,7 @@ class TestTournament(unittest.TestCase):
             # print(types)
             # self.assertEqual(expected[x], types)
 
-        self.assertEqual([x[2] for x in output_list], loop_list)
+
     def test_creation(self):
         t = Tournament(Battle(verbosity=0))
         t.set_battle_mode(1)

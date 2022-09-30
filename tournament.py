@@ -3,6 +3,7 @@ from ast import operator
 from multiprocessing.dummy import Array
 from multiprocessing.sharedctypes import Value
 from nis import match
+from typing import Tuple
 from bset import BSet
 from linked_stack import LinkedStack
 from pokemon_base import PokeType
@@ -104,14 +105,17 @@ class Tournament:
         self.battle_count = battle_count
         self.tournament = self.tournament_gen(tournament_queue)
     
-    def tournament_gen(self, tournament_queue: CircularQueue):
+    def tournament_gen(self, tournament_queue: CircularQueue) -> tuple[PokeTeam,PokeTeam,int]:
         """
         Method that represents an instance of the tournament. Takes queue generated in start_tournament as arg, then runs the battles sequentially
         according to the order set in the queue. Is a generator that is iterated through by advance_tournament
         :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
         :post: After iterations are exhausted, tournament should be complete with winner returned.
         :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
-        :complexity: O(==)
+        :return: tuple containing 3 values (team one, team two, result of match)
+        :complexity: 
+            - 1 iteration is O(B+R) Where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team
+            - Cost of iterating through entire tournament is O(T*(B+R)) where T is number of battles in tournament
         """
         tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
         for _ in range(self.battle_count):
@@ -138,7 +142,14 @@ class Tournament:
 
     def advance_tournament(self) -> tuple[PokeTeam, PokeTeam, int] | None:
         """
-        Complexity O(B+R) where B is complexity of battle, R is complexity of regenerate team
+        Performs next battle in tournament by calling next method (iteration) through the tournament generator store in self.tournament.
+        Returns result tuple received from the generator. If iterations have been exhausted in generator (i.e. no battles remaining), returns
+        None
+
+        :pre: tournament generator instance must have been created through start_tournament -> tournament_gen method.
+        :post: result from tournament gen is unmodified.
+        :return: None or tuple(team one: PokeTeam, team two: PokeTeam, result of battle: int)
+        :complexity: O(B+R) where B is complexity of battle, R is complexity of regenerate team
         """
         # next(self.tournament)
         try:
@@ -149,6 +160,14 @@ class Tournament:
             return None
 
     def linked_list_of_games(self) -> LinkedList[tuple[PokeTeam, PokeTeam]]:
+        """
+        Method that creates a linked list containing all matches performed in tournament.
+        
+        :pre: start_tournament, set_battle_mode must have been called
+        :post:  tournament battles have all resulted.
+        :return: linked list of tuples containing the teams who fought in each battle, in descending sequential order (last match is at head)
+        :complexity: O(T) where T is the number of matches in tournament
+        """
         l = LinkedList()
         while True:
             res = self.advance_tournament()
@@ -156,14 +175,19 @@ class Tournament:
                 break
             l.insert(0, (res[0], res[1]))
         return l
-    def test_looping(self):
-        while True:
-            res = self.advance_tournament()
-            print(res)
-            if res is None:
-                break
+
 
     def linked_list_with_metas(self) -> LinkedList[tuple[PokeTeam, PokeTeam, list[str]]]:
+        """
+        Returns linked list containing each battle of the tournament, the same as linked_list_of_games, but also includes a list of PokeTypes in
+        the meta: types that were not present in that battle, but were present in battles fought by either party previously.
+
+        :pre: start_tournament, set_battle_mode must have been called. 
+        :post: does not modify outcome of tournament or battles.
+        :return: linked list of tuples (team one: PokeTeam, team two: PokeTeam, list of PokeTypes: str)
+        :complexity: O(T*(B+P)) where T is the number of matches played in tournament, B is cost of running one battle, and P is max number of 
+        pokemon in a team.
+        """
         l = self.linked_list_of_games()
         lm = LinkedList()
         temp_stack = ArrayStack(self.battle_count) 
@@ -180,7 +204,7 @@ class Tournament:
             team2.regenerate_team()
             for _ in range(len(team1.team)):
                 poke1type = team1.retrieve_pokemon().get_type().get_type_index()
-                team1_set.add(poke1type + 1)                  
+                team1_set.add(poke1type + 1)    # + 1 because type_index starts at 0                  
             for _ in range(len(team2.team)):
                 poke2type = team2.retrieve_pokemon().get_type().get_type_index()
                 team2_set.add(poke2type + 1)
