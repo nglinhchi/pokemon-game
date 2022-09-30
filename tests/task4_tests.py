@@ -2,6 +2,7 @@ import unittest
 from pokemon_base import *
 from pokemon import *
 from base_test import *
+from battle import *
 from unittest.mock import patch
 
 
