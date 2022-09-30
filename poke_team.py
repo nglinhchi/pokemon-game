@@ -307,7 +307,7 @@ class PokeTeam:
             list_string += str(self.team[idx].value) + ", "
         return list_string[:-2] #do not include last comma and whitespace
 
-    def is_empty(self) -> Bool:
+    def is_empty(self) -> bool:
         """
         Method determining if the team is empty
         :return: True if the team is empty, False otherwise
