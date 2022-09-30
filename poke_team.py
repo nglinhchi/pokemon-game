@@ -50,35 +50,23 @@ class PokeTeam:
         """
         Creates user-specified Poketeam
         """ 
-
-        #Check type(team_name) == str
         if not type(team_name) == str:
             raise ValueError("Team name must be string")
 
-        #Check team_numbers: len == number of base pokemon (5), team_numbers[0] == 0, team_numbers[5] <= MAX_TEAM_SIZE, 0 <= team_numbers[1->4] <= team_numbers[5], check sorted == True
         if not len(team_numbers) == PokeTeam.NUM_BASE_POKEMON :  #Number of elements in list must equal number of base Pokemon
             raise ValueError(f"Team number length is not valid. The each base Pokemon must correspond to an element in list")
 
         for num in team_numbers:
             if type(num) != int:
                 raise ValueError("Elements in list must be integers")
-        
-        # if not team_numbers == sorted(team_numbers):
-        #     raise ValueError("Numbers must be sorted order (ascending)")
 
         if not sum(team_numbers) <= PokeTeam.MAX_TEAM_SIZE:
             raise ValueError("Number of Pokemon exceeds max team size")
-    
-        # elif team_numbers[-1] <= PokeTeam.MAX_TEAM_SIZE:
-        #     raise ValueError(f"Last element in team numbers list must be <= max team size: {PokeTeam.MAX_TEAM_SIZE}")
         
-        # if not (team_numbers[1] >= 0 and team_numbers[-2] <= team_numbers[-1]):   #Since we know from earlier check that list is sorted, only need to check second and second last element is valid as other element will be within that range.
-        #     raise ValueError(f"Numbers in list not within valid range: 0:{PokeTeam.MAX_TEAM_SIZE}")
-        
-        #Check battle_mode in [0,1,2]
+
         if battle_mode not in [0,1,2]:
             raise ValueError("Not valid Battle Mode")
-        #Check ai_type is valid (in PokeTeam.AI)
+
         if not ai_type in PokeTeam.AI:
             raise TypeError("AI Type is not valid")
         #If battle_mode == 2, criterion provided and in Criterion class
@@ -97,8 +85,8 @@ class PokeTeam:
         self.break_by_init = False
         self.initial_order_exist = False
         self.poke_on_field = None   #initialise pokemon on field
-        self.descending_order = False#Initially true by default descending
-        self.regenerate_team()
+        self.descending_order = False #Initially true by default descending
+        self.regenerate_team()  #create team
 
 
     # TODO
@@ -116,20 +104,12 @@ class PokeTeam:
                 half_team_max = cls.MAX_TEAM_SIZE//2
             team_size = RandomGen.randint(half_team_max, cls.MAX_TEAM_SIZE)
 
-        #sorted list
-        #add 0 and team size
         start_val = ListItem(0, 0) #value and key to sort by are same
         end_val = ListItem(team_size, team_size)
         team_sorted_list = ArraySortedList((cls.NUM_BASE_POKEMON + 1))
         team_sorted_list.add(start_val) #add 0
         team_sorted_list.add(end_val)   #add team size
         
-        #TODO fix wording: 
-        # Algorithm is calculated by getting difference of adjacent value in list (ascending),
-        #therefore requires number of base pokemon + 1 to assign to every base. First and 
-        #last numbers are 0 and team size, therefore need to generate number of base 
-        #pokemon - 1 random numbers
-
         for _ in range(1, cls.NUM_BASE_POKEMON):   
             rand_num = RandomGen.randint(0,team_size)
             team_sorted_list.add(ListItem(rand_num, rand_num))  #add to team_numbers
@@ -168,14 +148,6 @@ class PokeTeam:
             elif self.battle_mode == 1:
                 self.team.append(poke)
             elif self.battle_mode == 2:
-                # if self.descending_order == False:
-                #     # self.team = self.team.reverse_order()
-                #     # print("reset", self.team) 
-                #     self.sort_into_team(poke)
-                #     print("sorted", self.team)
-                #     self.team = self.team.reverse_order()
-                #     print("reverse reset", self.team)
-                # else:   #self descneding == True
                 self.sort_into_team(poke)
 
         else:
@@ -191,7 +163,6 @@ class PokeTeam:
             elif self.battle_mode == 1:
                 self.poke_on_field = self.team.serve()
             elif self.battle_mode == 2:
-                # self.current_poke_order = self.team[0].order    #store order and key for return
                 self.current_poke_key = self.team[0].key
                 self.current_poke_order = self.team[0].order
                 self.poke_on_field = self.team.delete_at_index(0).value  #First pokemon in list is the one for battle
@@ -222,21 +193,11 @@ class PokeTeam:
             for _ in range(count_first_half):
                 self.team.append(temp_stack.pop())
         elif self.battle_mode == 2:
-            
-            # print(self.poke_on_field, self.current_poke_key, self.current_poke_order)
-            # self.return_pokemon(self.poke_on_field)
             self.team = self.reverse_order()
-            # print(self.team)
             if self.descending_order == True:
                 self.descending_order = False
             elif self.descending_order == False:
                 self.descending_order = True
-            # self.retrieve_pokemon()
-            # self.retrieve_pokemon()
-            # print(self.descending_order, "descending?")
-            # print(self.team)
-    
-    # TODO
     def regenerate_team(self):
         self.heal_count = 3
         if self.battle_mode == 0:
@@ -255,8 +216,7 @@ class PokeTeam:
 
 
     def __str__(self):
-        # Dawn (2): [LV. 1 Gastly: 6 HP, LV. 1 Squirtle: 11 HP, LV. 1 Eevee: 10 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Charmander: 9 HP]"
-        # "LV. 5 Venusaur: 17 HP"
+
         str = f"{self.team_name} ({self.battle_mode}): ["
         if self.battle_mode == 0:
             str += self.stack_string()
@@ -400,9 +360,6 @@ class PokeTeam:
                     key = poke_to_add.get_speed()
                 assert type(key) == int, "Key is invalid: not an integer"
                 criterion_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
-                
-            # for _ in range(1, num_of_poke+1):
-            #     team_list.add(ListItem(poke_to_add, key)) #Sorted list by first criterion.
         
         ### Sort initial team ###
         self.team = criterion_list 
@@ -434,9 +391,6 @@ class PokeTeam:
             key = self.get_team()[idx].key * -1
             poke_to_add = self.get_team()[idx].value
             order = self.get_team()[idx].order 
-            # if self.descending_order == False:
-            #     reverse_arr.add_stable(ListItem(poke_to_add, key, order))
-            # elif self.descending_order == True:
             reverse_arr.add_in_front(ListItem(poke_to_add, key, order))
 
                 
@@ -450,8 +404,6 @@ class PokeTeam:
         :pre: Pokemons key must be valid (already reversed for descending order)
         """
         ### SORT BY FIRST KEY: CRITERION ###
-        # if self.descending_order == True:
-        # #     self.team = self.team.reverse_order()
         self.criterion_order(pokemon)
         ### CHECK IF TIE ###
         if len(self.team) >= 1:  #if not only pokemon on team 
@@ -484,11 +436,8 @@ class PokeTeam:
             key = poke_to_add.get_level()
         elif self.criterion == Criterion.SPD:
             key = poke_to_add.get_speed()
-        # if self.descending_order == Tru:
-        # key = key * -1 #reverse order by default. Could be problem if team is positive and this reverses
         if self.descending_order == True:
             key = key * -1
-        # # self.current_poke_key = key
         if not self.team.is_full():
             self.team.add(ListItem(poke_to_add, key, self.current_poke_order)) #Sorted list by first criterion.
         else:
@@ -502,7 +451,6 @@ class PokeTeam:
         while start_idx <= end_idx:
             pokemon_item = team_list[start_idx]
             pokemon = pokemon_item.value
-            # previous_key = team_list[start_idx].key
             key = pokemon.POKE_NO
             if self.descending_order == False:
                 key = key * -1
@@ -514,8 +462,6 @@ class PokeTeam:
         if self.initial_order_exist is True: #if true check/sort again
             unique_poke_nums = ASet(len(pokeorder_list))   
             for idx in range(len(pokeorder_list)):
-            # for idx, item in enumerate(pokeorder_list):
-                # try:
                 if not pokeorder_list[idx].key in unique_poke_nums:
                     unique_poke_nums.add(pokeorder_list[idx].key)
                 else:
@@ -524,20 +470,12 @@ class PokeTeam:
                     tie_last_idx = pokeorder_list.get_last_index(pokeorder_list[idx].key)
                     
                     self.initial_order(pokeorder_list, tie_start_idx, tie_last_idx)
-                # except:
-                #     print(f"failed init check{pokeorder_list[idx]}")
         #Otherwise Return. No more sorting left
         #Swap newly sorted items back into team_list
         for idx in range(len(pokeorder_list)):
             pokeorder_list[idx]
             team_list.swap_at_index(team_tie_start, pokeorder_list[idx])
-            team_tie_start += 1
-        # for idx, item in enumerate(pokeorder_list, team_tie_start):
-            # item.order = idx can be done at end by controller
-            #previous key should be set by swap at index
-            # team_list.swap_at_index(idx, item)
-            
-        
+            team_tie_start += 1  
         return
     
     def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
@@ -550,7 +488,6 @@ class PokeTeam:
         while start_idx <= end_idx:
             pokemon_item = pokeorder_list[start_idx]
             pokemon = pokemon_item.value
-            # previous_key = team_list[start_idx].key
             key  = pokemon_item.order
             if self.descending_order == False:
                 key = key * -1
@@ -564,15 +501,3 @@ class PokeTeam:
                 #swap items according to initial order in poke_order_list
                 pokeorder_list.swap_at_index(idx, item)
     
-    # while start_idx <= end_idx:
-    #         pokemon = team_list[start_idx].value
-    #         # previous_key = team_list[start_idx].key
-    #         key = pokemon.POKE_NO
-    #         pokeorder_list.add(ListItem(pokemon,key))
-    #         start_idx += 1
-
-    ### TESTS LEFT ###
-
-    #Test battle option attack
-
-    #test special mode 1
