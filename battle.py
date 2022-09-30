@@ -1,4 +1,5 @@
 """
+Performs the battle between two teams as specified in the specifications
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
@@ -13,11 +14,22 @@ from print_screen import *
 class Battle:
     
     def __init__(self, verbosity=0) -> None:
+        """
+        Initialises a battle instance
+        """
         self.verbosity = verbosity
 
 
 
     def battle(self, team1: PokeTeam, team2: PokeTeam) -> int:
+        """
+        Performs the battle between two teams including choosing the action to be taken,
+        retrieving/ returning pokemon and taking damage
+        :param arg1: PokeTeam instance representing the current state of team 1
+        :param arg2: PokeTeam instance representing the current state of team 2
+        :return: an integer (either 0,1 or 2) represnting a draw, team 1 winning and team 2 winning respectively
+        :complexity: best O(n), worst O(nlogn)
+        """
         
         pokemon1 = None
         pokemon2 = None
