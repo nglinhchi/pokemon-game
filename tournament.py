@@ -100,16 +100,21 @@ class Tournament:
                tournament_queue.append(PokeTeam.random_team(elt, self.battle_mode))
             else:
                 battle_count += 1
-                tournament_queue.append(0)
-
-        self.tournament = self.tournament_gen(tournament_queue, battle_count)
+                tournament_queue.append(0)  #append 0 in place of '+' because cheaper comparison
+        self.battle_count = battle_count
+        self.tournament = self.tournament_gen(tournament_queue)
     
-    def tournament_gen(self, tournament_queue: CircularQueue, battle_count: int):
+    def tournament_gen(self, tournament_queue: CircularQueue):
         """
-        
+        Method that represents an instance of the tournament. Takes queue generated in start_tournament as arg, then runs the battles sequentially
+        according to the order set in the queue. Is a generator that is iterated through by advance_tournament
+        :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
+        :post: After iterations are exhausted, tournament should be complete with winner returned.
+        :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
+        :complexity: O(==)
         """
-        tournament_stack = ArrayStack(battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
-        for _ in range(battle_count):
+        tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
+        for _ in range(self.battle_count):
             elt = tournament_queue.serve()
             if type(elt) is not int: 
                 team1 = elt
@@ -151,91 +156,55 @@ class Tournament:
                 break
             l.insert(0, (res[0], res[1]))
         return l
-    
-    def linked_list_with_metas(self) -> LinkedList[tuple[PokeTeam, PokeTeam, list[str]]]:
-        ###Access match tuple###
-        # branch_set = None
-        # new_branch_flag = 1
-        #TODO: Way to flag new branch so that branch is reset if it starts from a new branch.
-        #Need to store the old branch somewhere so that if it join with the new branch can merge the 2
-        #LINKED LIST?
-        lm = LinkedList()
+    def test_looping(self):
         while True:
-            not_in_match = []
             res = self.advance_tournament()
+            print(res)
             if res is None:
                 break
-            team1 = res[0]
-            team2 = res[1]
-            # result = res[2]
-            # print("res from advance", res)
-            print("result",self.result)
-            # team1.regenerate_team()
-            # team2.regenerate_team()
-            # if result == 0:
-            #     winning_team = res[0]
-            # else:
-            #     winning_team = res[result-1]    #-1 to match index
-            ###TODO: DECIDE REGEN HERE OR INSIDE ADVANCE(TOURNAMENT GEN)
-            #NOTE: RETRIEVE IS NOT O(1) FOR BM2
+
+    def linked_list_with_metas(self) -> LinkedList[tuple[PokeTeam, PokeTeam, list[str]]]:
+        l = self.linked_list_of_games()
+        lm = LinkedList()
+        temp_stack = ArrayStack(self.battle_count) 
+        for match_idx in range(self.battle_count): 
+            temp_stack.push(l[match_idx])
+        for _ in range(self.battle_count):    
+            not_in_match = []
+            item = temp_stack.pop()
+            team1 = item[0]
+            team2 = item[1]
             team1_set = BSet()
             team2_set = BSet()
-            #SETS ARE CAPPED BY MAX LIM OF POKEMON ON TEAM
+            team1.regenerate_team()
+            team2.regenerate_team()
             for _ in range(len(team1.team)):
                 poke1type = team1.retrieve_pokemon().get_type().get_type_index()
-                team1_set.add(poke1type + 1)    #+1 because type index starts form 0                       
-            for _ in range(len(team1.team)):
+                team1_set.add(poke1type + 1)                  
+            for _ in range(len(team2.team)):
                 poke2type = team2.retrieve_pokemon().get_type().get_type_index()
                 team2_set.add(poke2type + 1)
-            
-
             match_set = team1_set.union(team2_set)
-            # print(match_set)
-            print(team1, team1_set, team2, team2_set)
-            #WHEN TEAM1 FIRST MATCH
             try:
                 team1.branch_set
             except AttributeError:
                 team1.branch_set = team1_set   #SET TO CURRENT MATCH SET IF DOESN'T EXIST
-            #WHEN TEAM2 FIRST MATCH
             try:
                 team2.branch_set
             except AttributeError:
                 team2.branch_set = team2_set   #SET TO CURRENT MATCH SET IF DOESN'T EXIST
-            print(team1.branch_set, team2.branch_set)
-            #WHEN FIRST MATCH FOR ONE OR BOTH OF TEAMS
-            # print("team1,team2,winningteam" , team1,team2, winning_team)
-            # winning_team.branch_set = winning_team.branch_set.union(match_set)  #WINNING TEAM BRANCH SET CONTAINS BOTH LOSING TEAM AND ITSELF BRANCHES I.E ABSORBS BRANCHES
-            # print("match, winning", match_set, winning_team.branch_set)
-            # not_match_meta = winning_team.branch_set.difference(match_set)
-
-            
-
-
-
-
-            # if branch_set is None:  #First battle
-            #     branch_set = match_set  
-            # elif new_branch_flag == 1:
-            #     #TODO do something 
-            #     new_branch_flag = 0
-            # else:
-            #     branch_set = branch_set.union(match_set)    #keep total
-            
-            # #TODO: CHECK COMPLEXITY OF THIS APPROACH: IS CALLING len IN THIS INSTANCE MAKE IT P^2 OR JUST P
-            # # #EDIT USE SAFE BUT UGLY (NOT ENCAPSULATED) APPROACH FOR NOW
-            # for item in range(1, not_match_meta.elems.bit_length() + 1):
-            #     #TODO DIFFERENT WAY ACCESS NAME
-            #     # print("item in set", item)
-            #     if item in not_match_meta:
-            #         not_in_match.append(list(PokeType)[item-1].name)
+            combined_branch_set = team1.branch_set.union(team2.branch_set)
+            not_match_meta = combined_branch_set.difference(match_set)
+            team1.branch_set = team1.branch_set.union(match_set)
+            team2.branch_set = team2.branch_set.union(match_set)
+            for item in range(1, not_match_meta.elems.bit_length() + 1):
+                if item in not_match_meta:
+                    not_in_match.append(list(PokeType)[item-1].name)
             
             output_tup = (str(team1), str(team2), not_in_match)
-            # print("output tup", output_tup)
-            # print("lm",lm)
             lm.insert(0, output_tup)
         return lm
-                
+
 
 
             
