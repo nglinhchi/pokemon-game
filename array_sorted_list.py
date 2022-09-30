@@ -209,27 +209,18 @@ class ArraySortedList(SortedList[T]):
     def get_last_index(self, key: int):
         return self.stable_index_to_add(ListItem(None, key)) - 1  #returns index of last occurence of item with same key. Value set to none as does not matter
 
-    # def reverse_order(self):
-    """
-    NOW IMPLEMENTED INSIDE poke_team
-    """
-    #     """
-    #     Takes input array sorted in ascending order and reverses it using the same key
-    #     so that the array is descending.
-    #     :out: descending sorted array
-    #     """
-    #     reverse_arr = ArraySortedList(len(self.array))
-
-    #     for idx in range(len(self)):
-    #         key = self[idx].key * -1
-    #         poke_to_add = self[idx].value
-    #         order = self[idx].order 
-    #         reverse_arr.add_in_front(ListItem(poke_to_add, key, order))
+    def reverse_order(self):
+        """
+        Takes input array sorted in ascending order and reverses it using the same key
+        so that the array is descending.
+        :out: descending sorted array
+        """
+        reverse_arr = ArraySortedList(len(self))
+        for idx in range(len(self)):
+            key = self[idx].key * -1
+            poke_to_add = self[idx].value
+            reverse_arr.add_in_front(ListItem(poke_to_add, key))
             
-                
-    #     return reverse_arr
-
-
     def break_by_pokeno(self, start_idx,last_idx):
         """
         Breaks ties by pokedex number order for specified instance of tie. Returns new sorted
@@ -301,6 +292,7 @@ class ArraySortedList(SortedList[T]):
         """
         Adds item to the front instance.
         :pre: array list must not be full
+        :complexity: logn
         """
         if self.is_full():
             raise ValueError(f"List is full {self}")
@@ -328,17 +320,3 @@ class ArraySortedList(SortedList[T]):
         self.delete_at_index(index) #this method deletes at index and also checks that index is valid
         self[index] = item
         self.length += 1
-
-
-    # def sort_by_key(self, key, start_idx = 0, last_idx = None):
-    #     if last_idx == None:
-    #         last_idx = len(self)
-    #     sorted_list = ArraySortedList((last_idx-start_idx)+1)
-    #     while start_idx <= last_idx:
-    #         pokemon_to_sort = self[start_idx].value
-
-    #         #CHOOSE KEY FOR CRITERION#
-    #         key = pokemon_to_sort.key
-    #         sorted_list.add(ListItem(pokemon_to_sort,key))
-
-    #         start_idx += 1
