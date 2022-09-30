@@ -1,11 +1,22 @@
-"""
-"""
-__author__ = "Scaffold by Jackson Goerner, Code by ______________"
-
 from inspect import Attribute
 from multiprocessing.sharedctypes import Value
 from pokemon_base import PokemonBase, PokeType
 
+"""
+Creates 10 classes for 10 Pokemons, all of which are child class of PokemonBase and therefore implement abstract methods from PokemonBase
+These are:
+- Charizard
+- Charmander
+- Venusaur
+- Bulbasaur
+- Blastoise
+- Squirtle
+- Gengar
+- Haunter
+- Gastly
+- Eeve
+"""
+__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
 
 # *******************************************
 

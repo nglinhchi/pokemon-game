@@ -18,9 +18,9 @@ class Tournament:
     
     def __init__(self, battle: Battle|None=None) -> None:
         """
-        Initialises tournament with optional param battle which will set the battle instance for all tournament games. If none provided, creates
-        new instance
-
+        Initialises tournament with optional param battle which will set the battle instance for all tournament games. 
+        If none provided, creates new instance
+        
         :param battle: Battle class instance, default None
         :return: None
         """
@@ -31,9 +31,9 @@ class Tournament:
 
     def set_battle_mode(self, battle_mode: int) -> None:
         """
-        Sets instance variable battle_mode to be used by start_tournament to set battle mode for all teams generated within current
-        tournament
-        :param battle_mode: Integer between 0 and 1 that represents valid battle mode
+        Sets instance variable battle_mode to be used by start_tournament to set battle mode for all teams generated within current tournament
+        
+        :param arg1: Integer between 0 and 1 that represents valid battle mode
         :return: None
         :complexity: best and worstt O(1)
         """
@@ -105,9 +105,10 @@ class Tournament:
         """
         Method that represents an instance of the tournament. Takes queue generated in start_tournament as arg, then runs the battles sequentially
         according to the order set in the queue. Is a generator that is iterated through by advance_tournament
+        
+        :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
         :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
         :post: After iterations are exhausted, tournament should be complete with winner returned.
-        :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
         :return: tuple containing 3 values (team one, team two, result of match)
         :complexity: best and worst are the same
             - 1 iteration is O(B+R) Where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team
@@ -223,13 +224,4 @@ class Tournament:
             
             output_tup = (str(team1), str(team2), not_in_match)
             lm.insert(0, output_tup)
-        return lm
-
-
-
-            
-            
-
-
-
-    
+        return lm    

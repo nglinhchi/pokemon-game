@@ -14,6 +14,8 @@ with the aid of battletower iterator
 """
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen"
 
+
+
 class BattleTower:
 
     def __init__(self, battle: Battle|None=None) -> None:

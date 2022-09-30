@@ -5,15 +5,14 @@ from dataclasses import dataclass
 from multiprocessing.sharedctypes import Value
 from typing_extensions import Self
 from random_gen import RandomGen
-
 from enum import Enum, auto
 
 """
-
+Creates StatusEffects enum class
+Creates PokeType enum class
+Creates PokeBase abstract class that acts as the general class for instantiating Pokemons
 """
-__author__ = "Scaffold by Jackson Goerner, Code by JD, Chloe, Jane"
-
-
+__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang | Jane Butcher"
 
 class StatusEffects(Enum):
     """
@@ -39,11 +38,11 @@ class PokeType(Enum):
     Assigns corresponding status effect and an index for each type to be referenced to calculate type_multiplier value, and type_effectiveness values in a list
     """
     
-    FIRE =      (0,      [1,     2,      0.5,    1,      1], StatusEffects.BURN)
-    GRASS =     (1, [0.5,   1,      2,      1,      1], StatusEffects.POISON)
-    WATER =     (2, [2,     0.5,    1,      1,      1], StatusEffects.PARALYSIS)
+    FIRE =      (0,     [1,     2,      0.5,    1,      1], StatusEffects.BURN)
+    GRASS =     (1,     [0.5,   1,      2,      1,      1], StatusEffects.POISON)
+    WATER =     (2,     [2,     0.5,    1,      1,      1], StatusEffects.PARALYSIS)
     GHOST =     (3,     [1.25,  1.25,   1.25,   2,      0], StatusEffects.SLEEP)
-    NORMAL =    (4,  [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSE)
+    NORMAL =    (4,     [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSE)
     
     def __init__(self, type_index: int, type_effectiveness: list, effect: StatusEffects):
         self.type_index = type_index
@@ -51,6 +50,9 @@ class PokeType(Enum):
         self.type_effectiveness = type_effectiveness
 
     def get_type_index(self):
+        """
+        Return index of the poketype
+        """
         return self.type_index
 
     def type_multiplier(self, defend_poketype: PokeType):
@@ -65,12 +67,10 @@ class PokeType(Enum):
 class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
-        ###TODO MAKE USER FACING: HP and POKE_TYPE ###
-        self.name = self.get_name() #Ensures Pokemon Name is defined.
-        self.set_poketype(poke_type)    #Check for valid poke_type
-        self.set_base_hp(hp)    #Check for valid hp
+        self.name = self.get_name() # Ensures Pokemon Name is defined.
+        self.set_poketype(poke_type)    # Check for valid poke_type
+        self.set_base_hp(hp)    # Check for valid hp
         self.level = self.get_level()
-        ### Deleted level - make abstract to provide base level for individual pokemon- return accurate level on initialisation###
         self.status_effect = None
         self.max_hp = self.get_max_hp()
         self.hp = self.get_max_hp()
