@@ -4,6 +4,15 @@ from pokemon import *
 from base_test import *
 
 class Testpokemonbase(BaseTest):
+    def test_init(self):
+        self.assertRaises(TypeError, lambda: PokemonBase(9, PokeType.GHOST))
+        s = Squirtle()
+        self.assertEqual(s.poke_type, PokeType.WATER)
+        self.assertEqual(s.name, Squirtle)
+        b = Bulbasaur()
+        self.assertEqual(b.hp, 13)
+        self.assertEqual(b.status_effect, None)
+
     def test_level_up(self):
         e = Eevee()
         e.level_up()
