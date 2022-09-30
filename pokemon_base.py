@@ -50,6 +50,9 @@ class PokeType(Enum):
 class PokemonBase(ABC):
 
     def __init__(self, hp: int, poke_type: PokeType) -> None:
+        """
+        Initialises a PokemonBase instance
+        """
         self.name = self.__class__.__name__
         self.poke_type = poke_type
         self.level = 1
