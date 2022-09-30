@@ -10,6 +10,7 @@ from pokemon_base import PokeType
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack
 from random_gen import RandomGen
+
 """
 Creates tournament class that implements all methods needed to create and run a tournament between PokeTeams.
 
@@ -41,6 +42,7 @@ class Tournament:
         tournament
         :param battle_mode: Integer between 0 and 1 that represents valid battle mode
         :return: None
+        :complexity: best and worst O(1)
         """
         self.battle_mode = battle_mode
 
