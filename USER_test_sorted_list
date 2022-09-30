@@ -1,0 +1,230 @@
+from audioop import reverse
+from multiprocessing.dummy import Array
+from re import L
+from array_sorted_list import ArraySortedList
+from bset import BSet
+from sorted_list import *
+from poke_team import *
+#Test normal
+
+
+def test_normal():
+    test_arr = ArraySortedList(6)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 2)
+    d = ListItem('four', 2)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4)
+
+    list_items = [a,b,c,d,e,f]
+
+    for item in list_items:
+        # print("This item: ",item)
+        test_arr.add_stable(item)
+
+
+    # for _ in test_arr:
+    #     print(_)
+    return test_arr
+
+def test_stable():
+    test_arr = ArraySortedList(6)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 3)
+    d = ListItem('four', 4)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4) #test stable
+
+
+    list_items = [f,c,e, b,a,d]
+
+    for item in list_items:
+        print("This item: ",item)
+        test_arr.add_stable(item)
+
+
+    for _ in test_arr:
+        print(_)
+
+
+    # elif mid == 0 or self[mid-1].key != item.key: #change to stable. Make sure it's the first occurrence
+    #             print("mid")
+    #             return mid
+
+        # def find_last_index(self, low, high, item: ListItem) -> int:
+        # mid = low + (high - low)//2
+# test_normal()
+
+test_stable()
+
+###Test if order is maintained
+def second_sort_test():
+    test_arr = ArraySortedList(6)
+    second_arr = ArraySortedList(3)
+
+    a = ListItem('one', 1)
+    b = ListItem('two', 2)
+    c = ListItem('three', 2)
+    d = ListItem('four', 4)
+    e = ListItem('five', 4) #test stable
+    f = ListItem('six', 4)
+
+    list_items = [a,b,c,d,e,f]
+
+    for item in list_items:
+        print("This item: ",item)
+        test_arr.add_stable(item)
+    d.key = 5
+    e.key = 6
+    f.key = 5
+    # print("1st sort", test_arr)
+
+    for item in [d,e,f]:
+        second_arr.add_stable(item)
+    return second_arr
+    # print(second_arr)
+
+# new_test_normal()
+
+def test_deletion():
+    test_arr = test_normal()
+    for _ in range(1,4):    #run loop 3 times
+        test_arr.delete_at_index(3)
+        print(test_arr)
+    return test_arr
+
+def test_deletion_reinsertion():
+    test_arr = test_deletion()
+    second_arr = second_sort_test()
+    for item in second_arr:
+        test_arr.add_stable(item)
+    print(test_arr)
+
+# test_deletion_reinsertion()
+
+# test_arr = test_normal()
+# print(test_arr)
+# print(test_arr.get_last_index(0,6,4))
+#start, end (length of array), key to search
+def test_stable_index_to_add():
+    #This method should return the index to add to, so the occurrence of last
+    #index is the result of this function - 1
+    test_arr = test_normal()
+    test_arr.delete_at_index(5) #remove last element to make room
+    print(test_arr)
+    #[(one, 1), (two, 2), (three, 2), (four, 4), (five, 4)]
+
+    assert test_arr.stable_index_to_add(ListItem("seven", 2)) - 1 == 2  #will return index 3 - 1 = 2
+    assert test_arr.stable_index_to_add(ListItem("seven", 2)) -1 == test_arr.get_last_index(2)
+# test_stable_index_to_add()
+
+def test_reverse():
+    test_arr = test_normal()
+    reverse_arr = ArraySortedList(len(test_arr))
+    test_arr.delete_at_index(0)
+    for item in test_arr:
+        reverse_arr.add(ListItem(item.value, (item.key * -1)))
+    
+    reverse_arr_list = [x.value for x in reverse_arr]
+    
+    test_arr_list = [x.value for x in test_arr]
+    new_arr = ArraySortedList(6)
+    print(len(new_arr))
+    # new_arr.add_in_front(ListItem('one', 1))
+    print(new_arr)
+    print(test_arr)
+    reverse_arr = test_arr.reverse_order()
+    
+    print(reverse_arr, test_arr)
+    print(test_arr.reverse_order())
+    # print(test_arr.reverse_order())
+  
+    # assert reverse_arr_list == test_arr_list
+test_reverse()
+
+# test_arr = ArraySortedList(6)
+# a = ListItem('one', 2)
+# b = ListItem('two', 2)
+# c = ListItem('three', 2)
+# d = ListItem('four', 4)
+# e = ListItem('five', 4) #test stable
+# f = ListItem('six', 4)
+
+# list_items = [a,b,c,d,e,f]
+
+# for item in list_items:
+#     # print("This item: ",item)
+#     test_arr.add_stable(item)
+# a = test_arr[0]
+# test_arr.delete_at_index(0)
+
+# reverse_arr = ArraySortedList(len(test_arr))
+# for i in range(len(test_arr)):
+#     test_arr[i].key = test_arr[i].key * -1
+#     reverse_arr.add_stable(test_arr[i])
+
+# a.key = a.key * -1
+# print(reverse_arr)
+# print(test_arr)
+# reverse_arr.add(a)
+# print(reverse_arr)
+
+def test_get_first_index():
+    test_arr = test_normal()
+    print(test_arr.get_first_index(4))
+
+
+#for testing
+
+a = ListItem("new",2)
+b = ListItem("new 2",2)
+c = ListItem("new 3",2)
+
+def test_add_in_front():
+    test_arr = test_normal()
+    # print(test_arr)
+    test_arr.delete_at_index(3)
+    g= ListItem("front-most", 4)
+    test_arr.add_in_front(g)
+    print(test_arr)
+
+    #test when it's only item
+    test_arr = test_normal()
+    test_arr.delete_at_index(1)
+    test_arr[1] = a
+    test_arr.length += 1
+    test_arr.delete_at_index(2)
+    test_arr[2] = b
+    test_arr.length += 1
+    test_arr.delete_at_index(3)
+    test_arr[3] = c
+    test_arr.length += 1
+    # return test_arr
+    print(test_arr)
+test_add_in_front()
+
+def test_swap_at_index():
+    test_arr = test_normal()
+    test_arr.swap_at_index(1, a)
+    test_arr.swap_at_index(2, b)
+    test_arr.swap_at_index(3, c)
+    print(test_arr[3])
+# test_swap_at_index() 
+
+def test_listitem_order():
+    a = ListItem('test', 1, 2)
+    b = ListItem('test2', 1,3)
+    c = ListItem('test3', 2,1)
+    test_arr = ArraySortedList(3)
+    test_arr.add(a)
+    test_arr.add_stable(b)
+    test_arr.add(c)
+    print(test_arr)
+
+# test_listitem_order()
+# team_numbers = [0] * 6
+# print(team_numbers)

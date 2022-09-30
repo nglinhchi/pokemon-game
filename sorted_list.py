@@ -14,9 +14,11 @@ __docformat__ = 'reStructuredText'
 
 class ListItem(Generic[T, K]):
     """ Items to be stored in a list, including the value and the key used for sorting. """
-    def __init__(self, value: T, key: int):
+    ### Modified to add order ###
+    def __init__(self, value: T, key: int, order = None):
         self.value = value
         self.key = key
+        self.order = order
 
     def __str__(self) -> str:
         return '({0}, {1})'.format(self.value, self.key)

@@ -2,8 +2,9 @@
 """
 __author__ = "Scaffold by Jackson Goerner, Code by ______________"
 
+from inspect import Attribute
 from multiprocessing.sharedctypes import Value
-from pokemon_base import PokemonBase, StatusEffect, PokeType
+from pokemon_base import PokemonBase, PokeType
 
 
 # *******************************************
@@ -11,17 +12,28 @@ from pokemon_base import PokemonBase, StatusEffect, PokeType
 
 # CHARMANDER >> CHARIZARD
 class Charizard(PokemonBase): 
+    NAME = "Charizard"
+    BASE_LEVEL = 3
+    POKE_NO = 2 
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.FIRE)
-        self.level = 3 # base level
+        PokemonBase.__init__(self, 12, PokeType.FIRE)
     
-    def get_max_hp(self) -> int:
-        return 12 + 1 * self.level
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + 1 * self.level
+
+    def attack_damage_formula(self) -> int:
         return 10 + 2 * self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 9 + 1 * self.level
 
     def get_defence(self) -> int:
@@ -31,7 +43,7 @@ class Charizard(PokemonBase):
         return False
 
     def get_initial_evolved_version(self) -> PokemonBase:
-        raise ValueError(f"{self.name} does not have evolution")
+        raise ValueError(f"{self.get_name()} does not have evolution")
 
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
@@ -42,17 +54,28 @@ class Charizard(PokemonBase):
 
 # CHARMANDER
 class Charmander(PokemonBase):
-    
+    NAME = "Charmander"
+    BASE_LEVEL = 1
+    POKE_NO = 1
     def __init__(self):
-        PokemonBase.__init__(self, 9, PokeType.FIRE)
+        PokemonBase.__init__(self, 8, PokeType.FIRE)
     
-    def get_max_hp(self) -> int:
-        return 8 + 1 * self.level
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + 1 * self.level
+
+    def attack_damage_formula(self) -> int:
         return 6 + 1 * self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + 1 * self.level
 
     def get_defence(self) -> int:
@@ -67,8 +90,10 @@ class Charmander(PokemonBase):
     def defend(self, damage: int) -> None:
         if damage > self.get_defence():
             self.lose_hp(damage)
+
         else:
             self.lose_hp(damage//2)
+
 
 
 # *******************************************
@@ -76,18 +101,28 @@ class Charmander(PokemonBase):
 
 # BULBASAUR >> VENUSAUR
 class Venusaur(PokemonBase):
-
+    NAME = "Venusaur"
+    BASE_LEVEL = 2
+    POKE_NO = 4
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GRASS)
-        self.level = 2 # base level
+        PokemonBase.__init__(self, 20, PokeType.GRASS)
+
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
+
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
     
     def get_max_hp(self) -> int:
-        return 20 + self.level//2
+        return self.base_hp + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def attack_damage_formula(self) -> int:
         return 5
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 3 + self.level//2
 
     def get_defence(self) -> int:
@@ -97,7 +132,7 @@ class Venusaur(PokemonBase):
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
-        raise ValueError(f"{self.name} does not have evolution")
+        raise ValueError(f"{self.get_name()} does not have evolution")
 
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() + 5):
@@ -108,17 +143,28 @@ class Venusaur(PokemonBase):
 
 # BULBASAUR
 class Bulbasaur(PokemonBase):
-
+    NAME = "Bulbasaur"
+    BASE_LEVEL = 1
+    POKE_NO = 3
     def __init__(self):
-        PokemonBase.__init__(self, 13, PokeType.GRASS)
+        PokemonBase.__init__(self, 12, PokeType.GRASS)
     
-    def get_max_hp(self) -> int:
-        return 12 + 1 * self.level
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + 1 * self.level
+
+    def attack_damage_formula(self) -> int:
         return 5
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + self.level//2
 
     def get_defence(self) -> int:
@@ -142,17 +188,29 @@ class Bulbasaur(PokemonBase):
 
 # SQUIRTLE >> BLASTOISE
 class Blastoise(PokemonBase):
+    NAME = "Blastoise"
+    BASE_LEVEL = 3
+    POKE_NO = 6
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.WATER)
+        PokemonBase.__init__(self, 15, PokeType.WATER)
         self.level = 3 # base level
     
-    def get_max_hp(self) -> int:
-        return 15 + 2 * self.level
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + 2 * self.level
+
+    def attack_damage_formula(self) -> int:
         return 8 + self.level // 2
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 10
 
     def get_defence(self) -> int:
@@ -162,7 +220,7 @@ class Blastoise(PokemonBase):
         return False
 
     def get_initial_evolved_version(self) -> PokemonBase:
-        raise ValueError(f"{self.name} does not have evolution")
+        raise ValueError(f"{self.get_name()} does not have evolution")
         
     def defend(self, damage: int) -> None:
         if damage > (self.get_defence() * 2):
@@ -173,17 +231,28 @@ class Blastoise(PokemonBase):
 
 # SQUIRTLE
 class Squirtle(PokemonBase):
-
+    NAME = "Squirtle"
+    BASE_LEVEL = 1
+    POKE_NO = 5
     def __init__(self):
-        PokemonBase.__init__(self, 11, PokeType.WATER)
+        PokemonBase.__init__(self, 9, PokeType.WATER)
     
-    def get_max_hp(self) -> int:
-        return 9 + 2 * self.level
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+            
+    def get_max_hp(self) -> int:
+        return self.base_hp + 2 * self.level
+
+    def attack_damage_formula(self) -> int:
         return 4 + self.level//2
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7
 
     def get_defence(self) -> int:
@@ -207,18 +276,29 @@ class Squirtle(PokemonBase):
 
 # GASTLY >> HAUNTER >> GENGAR
 class Gengar(PokemonBase):
-
+    NAME = "Gengar"
+    BASE_LEVEL = 3
+    POKE_NO = 9
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        PokemonBase.__init__(self, 12, PokeType.GHOST)
         self.level = 3 # base level
-    
-    def get_max_hp(self) -> int:
-        return 12 + self.level//2
 
-    def get_attack_damage(self) -> int:
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
+
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + self.level//2
+
+    def attack_damage_formula(self) -> int:
         return 18
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 12
 
     def get_defence(self) -> int:
@@ -228,7 +308,7 @@ class Gengar(PokemonBase):
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
-        raise ValueError(f"{self.name} does not have evolution")
+        raise ValueError(f"{self.get_name()} does not have evolution")
         
     def defend(self, damage: int) -> None:
         self.lose_hp(damage)
@@ -236,18 +316,29 @@ class Gengar(PokemonBase):
 
 # GASTLY >> HAUNTER
 class Haunter(PokemonBase):
-
+    NAME = "Haunter"
+    BASE_LEVEL = 1
+    POKE_NO = 8
     def __init__(self):
-        PokemonBase.__init__(self, -1, PokeType.GHOST)
+        PokemonBase.__init__(self, 9, PokeType.GHOST)
         self.level = 1 # base level
     
-    def get_max_hp(self) -> int:
-        return 9 + self.level//2
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + self.level//2
+
+    def attack_damage_formula(self) -> int:
         return 8
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 6
 
     def get_defence(self) -> int:
@@ -265,17 +356,28 @@ class Haunter(PokemonBase):
 
 # GASTLY
 class Gastly(PokemonBase):
-
+    NAME = "Gastly"
+    BASE_LEVEL = 1
+    POKE_NO = 7
     def __init__(self):
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
-    def get_max_hp(self) -> int:
-        return 6 + self.level//2
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
 
-    def get_attack_damage(self) -> int:
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
+
+    def get_max_hp(self) -> int:
+        return self.base_hp + self.level//2
+
+    def attack_damage_formula(self) -> int:
         return 4
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 2
 
     def get_defence(self) -> int:
@@ -294,19 +396,30 @@ class Gastly(PokemonBase):
 # *******************************************
 
 
-# EEVE
+# EEVEE
 class Eevee(PokemonBase):
-    
+    NAME = "Eevee"
+    BASE_LEVEL = 1
+    POKE_NO = 10
     def __init__(self):
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
-    def get_max_hp(self) -> int:
-        return 10
+    def get_name(self) -> str:
+        return __class__.NAME  #Ensures name is set for pokemon
+    
+    def get_level(self) -> int:
+        try:
+            return self.level
+        except AttributeError: #when first initialising
+            return __class__.BASE_LEVEL #Ensures classes include base level.
 
-    def get_attack_damage(self) -> int:
+    def get_max_hp(self) -> int:
+        return self.base_hp
+
+    def attack_damage_formula(self) -> int:
         return 6 + self.level
 
-    def get_speed(self) -> int:
+    def speed_formula(self) -> int:
         return 7 + self.level
 
     def get_defence(self) -> int:
@@ -316,13 +429,15 @@ class Eevee(PokemonBase):
         return False
     
     def get_initial_evolved_version(self) -> PokemonBase:
-        raise ValueError(f"{self.name} does not have evolution")
+        raise ValueError(f"{self.get_name()} does not have evolution")
         
     def defend(self, damage: int) -> None:
+        print(damage, self.get_level())
         if damage >= self.get_defence():
             self.lose_hp(damage)
         else:
             self.lose_hp(0)
 
-
 # *******************************************
+
+

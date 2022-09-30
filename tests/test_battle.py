@@ -2,6 +2,7 @@ from random_gen import RandomGen
 from battle import Battle
 from poke_team import Criterion, PokeTeam
 from pokemon import Charizard, Charmander, Eevee, Gastly, Squirtle, Venusaur
+from stack_adt import ArrayStack
 from tests.base_test import BaseTest
 
 class TestBattle(BaseTest):
@@ -38,3 +39,5 @@ class TestBattle(BaseTest):
         self.assertIsInstance(remaining[0], Charizard)
         self.assertEqual(remaining[1].get_hp(), 6)
         self.assertIsInstance(remaining[1], Gastly)
+
+
