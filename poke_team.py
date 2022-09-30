@@ -50,6 +50,11 @@ class PokeTeam:
     def __init__(self, team_name: str, team_numbers: list[int], battle_mode: int, ai_type: PokeTeam.AI, criterion=None, criterion_value=None) -> None:
         """
         Creates user-specified Poketeam
+        :param arg1: string of the teams name
+        :param arg2: list of integers representing the num of each base pokemon
+        :param arg3: integer of the battle mode
+        :param arg4: AI class variable
+        :param arg5: optional Criterion class variable that determines the criteria for ordering
         :return: None
         :complexity O(n) where n is len(team numbers)
         """ 
@@ -162,7 +167,8 @@ class PokeTeam:
         returns the on field pokemon back to the team
         :param: a PokemonBase representing the team to return the pokemon to
         :return: None
-        :complexity: Best O(1) if battle mode = 1
+        :complexity: Best O(1) if battle mode = 1, worst O(n) when battle mode = 0 or 2
+         where n is len(team)
         """
         if not poke.is_fainted():
             if self.battle_mode == 0:
@@ -179,6 +185,9 @@ class PokeTeam:
     def retrieve_pokemon(self) -> PokemonBase | None:
         """
         Takes the first pokemon of the team and makes them the pokemon on field
+        :return: PokemonBase of the pokemon thats on the field or None if the team is empty
+        :complexity: best O(1) when battle mode = 1, worst O(n) when battle mode = 0 or 2
+         where n is len(team)
         """
         if self.battle_mode == 0:
             self.team = self.team.reverse()
@@ -194,9 +203,12 @@ class PokeTeam:
             
         return self.poke_on_field
     # TODO
-    def special(self):
+    def special(self) -> None:
         """
         Completes the special operation on the team as given in the specifications
+        :return: None
+        :complexity: best O(n) when battle mode = 0 or 1 , worst O(nlogn) when battle mode = 2
+         where n is len(team)
         """
         if self.battle_mode == 0:
             last = self.team.pop()
@@ -222,7 +234,8 @@ class PokeTeam:
         """
         Regenerates the team based from the same battle numbers
         :return: None
-        :complexity:
+        :complexity: worst O(nlogn) when battle mode = 2, best O(n) when battle mode = 0 or 1
+         where n = sum(team_numbers)
         """
         if self.battle_mode == 0:
             self.team = self.team_mode_0()
@@ -306,7 +319,13 @@ class PokeTeam:
 
 
     def choose_battle_option(self, my_pokemon: PokemonBase, their_pokemon: PokemonBase) -> Action:
-        
+        """
+        Selects what action should be taken in the battle
+        :param arg1: PokemonBase of the player's team
+        :param arg2: PokemonBase of the opponent's team
+        :return: action from Action class
+        :complexity: O(n) where n is number of actions
+        """
         if self.ai_type == PokeTeam.AI.ALWAYS_ATTACK:
             return Action.ATTACK
         
@@ -346,7 +365,7 @@ class PokeTeam:
 
     def team_mode_0(self) -> ArrayStack:
         """
-        Method
+        Method generates a stack of pokemon instances from a list of base pokemon
         :return: a stack of all the team's pokemon
         :complexity: O(n) where n is the num of pokemon(ie. sum(team_numbers))
         """
@@ -358,6 +377,11 @@ class PokeTeam:
         return team_stack
 
     def team_mode_1(self) -> CircularQueue:
+        """
+        Method generates a queue of pokemon instances from a list of base pokemon
+        :return: a queue of all the team's pokemon
+        :complexity: O(n) where n is the num of pokemon(ie. sum(team_numbers))
+        """
         team_queue = CircularQueue(sum(self.team_numbers))
         for i, num_pokemon in enumerate(self.team_numbers):
             for _ in range(num_pokemon):
@@ -384,9 +408,11 @@ class PokeTeam:
             p_instance = Eevee()
         return p_instance
 
-    def team_mode_2(self):
+    def team_mode_2(self) -> ArraySortedList:
         """
         Initial team for battle mode 2
+        :return: sorted list of all the pokemon
+        :complexity: O(nlogn) where n is sum(team_numbers)
         """
         sort_by = self.criterion
              
@@ -509,8 +535,13 @@ class PokeTeam:
 
     
                 
-    def criterion_order(self, pokemon):
-    
+    def criterion_order(self, pokemon) -> None:
+        """
+        Adds a pokemon to the team ordered based on the specified criterion
+        :param: pokemon instance to be added
+        :return: None
+        :complexity: O(logn)
+        """
         poke_to_add = pokemon
         if self.criterion == Criterion.DEF:
             key = poke_to_add.get_defence()
@@ -573,6 +604,14 @@ class PokeTeam:
         return
     
     def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
+        """
+        Breaks further ties using the initial ordering of the team
+        :param arg1: sorted list of pokemon's order
+        :param arg2: starting index of the pokemon which are tied
+        :param arg2: ending index of the pokemon which are tied
+        :return: None
+        :complexity: O(mlogn) where m is the tie range and n is len(team)
+        """
         assert [type(x) == ListItem for x in pokeorder_list], "Items must be ListItem type"
         assert type(pokeorder_list) == ArraySortedList
         tie_range = end_idx - start_idx

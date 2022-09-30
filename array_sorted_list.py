@@ -214,6 +214,7 @@ class ArraySortedList(SortedList[T]):
         Takes input array sorted in ascending order and reverses it using the same key
         so that the array is descending.
         :out: descending sorted array
+        :complexity: O(nlogn)
         """
         reverse_arr = ArraySortedList(len(self))
         for idx in range(len(self)):
@@ -296,6 +297,7 @@ class ArraySortedList(SortedList[T]):
         """
         Adds item to the front instance.
         :pre: array list must not be full
+        :complexity: logn
         """
         if self.is_full():
             raise ValueError(f"List is full {self}")
