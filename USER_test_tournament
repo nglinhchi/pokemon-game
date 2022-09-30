@@ -92,6 +92,7 @@ class TestTournament(unittest.TestCase):
         self.assertEqual(t.is_valid_tournament("t1 t2"), False) #no operator
         self.assertEqual(t.is_valid_tournament("+ t1 t2"), False)   #wrong order
         self.assertEqual(t.is_valid_tournament(""), False)  #empty no space
+    
     def test_meta(self):
         RandomGen.set_seed(123456)
         t = Tournament(Battle(verbosity=0))
@@ -106,6 +107,16 @@ class TestTournament(unittest.TestCase):
         # Byron = [0, 2, 0, 0, 1]
         # Candice = [2, 2, 1, 0, 0]
         # Volkner = [0, 5, 0, 0, 0]
+        RandomGen.set_seed(123456)
+        t.start_tournament("Roark Gardenia + Maylene +")
+        expected = [
+            []
+
+        ]
+        l = t.linked_list_with_metas
+        for x in range(len(l)):
+            team1, team2, types = l[x]
+            self.assertEqual(expected[x], types)
         
 if __name__ == "__main__":
 
