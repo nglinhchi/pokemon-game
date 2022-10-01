@@ -40,13 +40,9 @@ class Tournament:
         :pre: battle_mode must be 0 or 1
         :param arg1: Integer between 0 and 1 that represents valid battle mode
         :return: None
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         if not isinstance(battle_mode, int) or battle_mode not in [0,1]:
             raise ValueError("Invalid battle mode") 
@@ -96,21 +92,12 @@ class Tournament:
         can be iterated through
         :return: None
         :raises ValueError: if tournament_str param is not a valid form of tournament.
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
         :complexity:
             best case is O(T*(B+R))
             worst case is O(T*(B+R))
             where B is the cost of running a Battle between 2 teams,
             R is the cost of regenerating team,
             T is number of battles in tournament
->>>>>>> f1967ea469cf402b3fca291da5d9a53e15fe5414
-=======
-        :complexity:
-            best case is O(1) when user input is invalid
-            worst case is TODO
->>>>>>> Stashed changes
         """
         if not self.is_valid_tournament(tournament_str):
             raise ValueError("Invalid tournament string")
@@ -137,30 +124,12 @@ class Tournament:
         :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
         :post: After iterations are exhausted, tournament should be complete with winner returned.
         :return: tuple containing 3 values (team one, team two, result of match)
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-        :complexity: best and worst are the same
-            - 1 iteration is O(B+R) Where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team
-            - Cost of iterating through entire tournament is O(T*(B+R)) where T is number of battles in tournament
-=======
         :complexity:
                 best case is O(T*(B+R))
                 worst case is O(T*(B+R))
                 where B is the cost of running a Battle between 2 teams,
                 R is the cost of regenerating team,
                 T is number of battles in tournament
->>>>>>> f1967ea469cf402b3fca291da5d9a53e15fe5414
-=======
-        :complexity:
-            - 1 iteration:
-                best case is O(B+R)
-                worst case is O(B+R)
-                where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team,
-            - iterate through entire tournament:
-                best case is O(T*(B+R))
-                worst case is O(T*(B+R))
-                where T is number of battles in tournament
->>>>>>> Stashed changes
         """
         tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
         for _ in range(self.battle_count):

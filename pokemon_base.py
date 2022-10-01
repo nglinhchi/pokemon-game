@@ -73,16 +73,6 @@ class PokeType(Enum):
         self.effect = effect
         self.type_effectiveness = type_effectiveness
 
-<<<<<<< HEAD
-    def get_type_index(self) -> int:
-        """
-        :return: index of the poketype
-        :complexity: best and worst O(1)
-        """
-        return self.type_index
-
-    def type_multiplier(self, defend_poketype: PokeType) -> int:
-=======
     def get_type_index(self) -> None:
         """
         Return index of the poketype
@@ -93,18 +83,12 @@ class PokeType(Enum):
         return self.type_index
 
     def type_multiplier(self, defend_poketype: PokeType) -> float:
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent.
         :pre: defend_poketype must be of PokeType class
-<<<<<<< HEAD
-        :return: integer of the multiplier
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         if not isinstance(defend_poketype, PokeType):
             raise ValueError("Type of defending Pokemon not in PokeType class")
@@ -183,13 +167,9 @@ class PokemonBase(ABC):
         """
         Getter method returning the name of the pokemon.
         :return: string of the pokemon's name
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass  
 
@@ -198,13 +178,9 @@ class PokemonBase(ABC):
         """
         Getter method returning the type of the pokemon.
         :return: pokemon's poketype
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         return self.type
     
@@ -220,31 +196,19 @@ class PokemonBase(ABC):
     @abstractmethod
     def get_level(self) -> int:
         """
-<<<<<<< HEAD
-        Getter method returning current Level
-        :return: integer of the pokemon's current level
-        :complexity: best and worst O(1)
-=======
         Getter method returning current Level.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
     def get_status_effect(self) -> StatusEffects:
         """
-<<<<<<< HEAD
-        Getter method returning the status effects currently inflicted on a pokemon
-        :return: pokemon's current status effects
-        :complexity:best and worst O(1)
-=======
         Getter method returning the status effects currently inflicted on a pokemon.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         return self.status_effect
 
@@ -253,44 +217,27 @@ class PokemonBase(ABC):
         """
         Abstract method containing HP scaling formula for individual pokemon. Calculates this max HP using base_hp and returns.
         :pre: base_hp must be defined
-<<<<<<< HEAD
-        :return: integer of pokemon's max hp
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
     def get_hp(self) -> int:
         """
-<<<<<<< HEAD
-        Getter method returning current HP
-        :return: integer of the pokemon's current HP
-        :complexity: best and worst O(1)
-=======
         Getter method returning current HP.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         return self.hp
 
     def get_speed(self) -> int:
         """
-<<<<<<< HEAD
-        Getter method returning current Speed stat calculated for individual Pokemon with impact of status effects
-        :return: integer of pokemon's speed
-        :complexity: best and worst O(1)
-=======
         Getter method returning current Speed stat calculated for individual Pokemon with impact of status effects.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         speed = self.speed_formula()
         if self.get_status_effect() == StatusEffects.PARALYSIS:
@@ -300,31 +247,19 @@ class PokemonBase(ABC):
     @abstractmethod
     def speed_formula(self) -> int:
         """
-<<<<<<< HEAD
-        Abstract method returning speed stat calculated for individual pokemon without impact of status effects
-        :return: integer of pokemon's speed
-        :complexity: best and worst O(1)
-=======
         Abstract method returning speed stat calculated for individual pokemon without impact of status effects.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
     
     def get_attack_damage(self) -> int:
         """
-<<<<<<< HEAD
-        Getter method returning current Attack stat calculated for individual Pokemon with impact of status effects
-        :return: integer of pokemon's attack damage
-        :complexity: best and worst O(1)
-=======
         Getter method returning current Attack stat calculated for individual Pokemon with impact of status effects.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         ad = self.attack_damage_formula()
         if self.get_status_effect() == StatusEffects.BURN:
@@ -334,16 +269,10 @@ class PokemonBase(ABC):
     @abstractmethod
     def attack_damage_formula(self) -> int:
         """
-<<<<<<< HEAD
-        Abstract method returning current current attack stat for individual without impact of status effects
-        :return: integer of pokemon's attack manage without impaact of staus efects
-        :complexity: best and worst O(1)
-=======
         Abstract method returning current current attack stat for individual without impact of status effects.
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
@@ -351,14 +280,9 @@ class PokemonBase(ABC):
     def get_defence(self) -> int:
         """
         Abstract getter method returning current Defence stat calculated for individual Pokemon
-<<<<<<< HEAD
-        :return: integer of pokemon's defence
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
@@ -366,13 +290,9 @@ class PokemonBase(ABC):
         """
         Method determining whether a pokemon has fainted or not
         :return: True if pokemon has fainted, False if it hasn't
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         return self.hp <= 0
 
@@ -382,15 +302,9 @@ class PokemonBase(ABC):
         and set as current HP
         :param arg1: integer representing the value of hp for the pokemon to lose
         :pre: hp to lose must be non negative integer
-<<<<<<< HEAD
-        :param: integer representing the value of hp for the pokemon to lose
-        :return: None
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         if not isinstance(lost_hp, int) or lost_hp < 0:
             raise ValueError("Lost hp must be non-negative integer")
@@ -399,14 +313,9 @@ class PokemonBase(ABC):
     def heal(self) -> None:
         """
         Restores current HP to full and removes any status effects
-<<<<<<< HEAD
-        :return: None
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         self.hp = self.max_hp
         self.status_effect = None
@@ -419,14 +328,9 @@ class PokemonBase(ABC):
         damage amount onto Pokemon's health.
         :pre: damage must be non negative integer
         :param: integer representing the value of the attack from the other pokemon
-<<<<<<< HEAD
-        :return: None
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
@@ -440,14 +344,9 @@ class PokemonBase(ABC):
         own status effect onto defending Pokemon
         :pre: other must be a Pokemon of PokemonBase class
         :param: a PokemonBase that represents the other pokemon to attack
-<<<<<<< HEAD
-        :return: None
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         if not isinstance(other, PokemonBase):
             raise ValueError("Pokemon to attack must be an instance of PokemonBase class")
@@ -475,13 +374,9 @@ class PokemonBase(ABC):
         """
         Check if pokemon has met level requirement to evolve
         :return: boolean expression depending on whether the pokemon has met the requirements
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         return self.level >= self.get_initial_evolved_version().get_level()
 
@@ -490,13 +385,9 @@ class PokemonBase(ABC):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
@@ -506,13 +397,9 @@ class PokemonBase(ABC):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         pass
 
@@ -523,13 +410,9 @@ class PokemonBase(ABC):
         updating current HP by subtracting from new max HP.
         :pre: max_hp and hp must be defined
         :return: None
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         previous_max_hp = self.max_hp  
         previous_hp = self.hp          
@@ -541,13 +424,9 @@ class PokemonBase(ABC):
         """
         Take instance of evolved Pokemon and passes Pre-Evolved Pokemon's necessary attributes onto it.
         :return: PokemonBase of the evolved version
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         evolved = self.get_initial_evolved_version()
         evolved.level = self.level
@@ -561,13 +440,9 @@ class PokemonBase(ABC):
         """
         Increase pokemon's level, scale hp and max_hp.
         :return: None
-<<<<<<< HEAD
-        :complexity: best and worst O(1)
-=======
         :complexity:
             best case is O(1)
             worst case is O(1)
->>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         self.level += 1
         self.update_hp()

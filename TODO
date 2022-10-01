@@ -61,9 +61,9 @@ type hint:
 
 
 TESTING
-[ ] 3 documented unit tests in test directory
-[ ] test cases missing requested descriptive comment
-[ ] test cases not enough description, not following given format for test
+[X] 3 documented unit tests in test directory
+[X] test cases missing requested descriptive comment
+[X] test cases not enough description, not following given format for test
 
 
 
