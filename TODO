@@ -10,23 +10,23 @@ ALL TASKS
 ___________________________________________________________________________
 
 GENERAL
-[ ] user facing —> precondition —> check for incorrect/invalid argument input —> violate then raise Exception / ValueError
-[ ] pre-cons need to be checked in abstract method
-[ ] docstring must contain both best and worts case complexity
-[ ] don’t modify ADT, don’t add methods to ADT 
-[ ] easy to change constant / magic number
-[ ] adhere to OOP principles
-[ ] documentation for each file, class, function
+[X] user facing —> precondition —> check for incorrect/invalid argument input —> violate then raise Exception / ValueError
+[X] pre-cons need to be checked in abstract method
+[X] docstring must contain both best and worst case complexity
+[X] don’t modify ADT, don’t add methods to ADT 
+[X] easy to change constant / magic number
+[X] adhere to OOP principles
+[X] documentation for each file, class, function
 
 
 DOCUMENTATION
-[ ] no file header documentation (format)
-[ ] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
-[ ] missing/incorrect/incomplete complexity documentation
-[ ] missing method’s summarisation
-[ ] missing methods’ precondition if any
-[ ] missing method’s commenting
-[ ] class constance not uppercase
+[X] no file header documentation (format)
+[X] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
+[X] missing/incorrect/incomplete complexity documentation
+[X] missing method’s summarisation
+[X] missing methods’ precondition if any
+[X] missing method’s commenting
+[X] class constance not uppercase
 
 
 FILE HEADER DOCUMENTATION
@@ -61,9 +61,9 @@ type hint:
 
 
 TESTING
-- [ ] 3 documented unit tests in test directory
-- [ ] test cases missing requested descriptive comment
-- [ ] test cases not enough description, not following given format for test
+[ ] 3 documented unit tests in test directory
+[ ] test cases missing requested descriptive comment
+[ ] test cases not enough description, not following given format for test
 
 
 

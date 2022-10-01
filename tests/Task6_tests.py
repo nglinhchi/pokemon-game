@@ -100,5 +100,5 @@ def test_advance_tournament(self):
         t.advance_tournament()
         t.advance_tournament()
         self.assertEqual(t.advance_tournament, None)
-        
+
     def test_linked_list_with_metas(self):

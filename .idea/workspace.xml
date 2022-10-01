@@ -3,14 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="453d9f1d-895c-4f1d-b462-c0a30168022c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/TODO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/battle.py" beforeDir="false" afterPath="$PROJECT_DIR$/battle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poke_team.py" beforeDir="false" afterPath="$PROJECT_DIR$/poke_team.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pokemon.py" beforeDir="false" afterPath="$PROJECT_DIR$/pokemon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pokemon_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/pokemon_base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Task6_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Task6_tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/task1+2_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task1+2_tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/task3_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task3_tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/task4_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task4_tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/task5_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task5_tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournament.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tower.py" beforeDir="false" afterPath="$PROJECT_DIR$/tower.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
