@@ -16,21 +16,17 @@ __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chian
 
 
 
-class HiddenPrints:
-    
-    def __enter__(self):
-        self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stdout = self._original_stdout
-
 class Battle:
+    """
+    Implements the method to handle a battle between 2 teams
+    """
     
     def __init__(self, verbosity=0) -> None:
         """
         Initialises a battle instance
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
         """
         self.verbosity = verbosity
 
@@ -41,32 +37,40 @@ class Battle:
         :param arg1: PokeTeam instance representing the current state of team 1
         :param arg2: PokeTeam instance representing the current state of team 2
         :return: an integer (either 0,1 or 2) represnting a draw, team 1 winning and team 2 winning respectively
-        :complexity: best O(n), worst O(nlogn)
+        :complexity:
+            best case is O(n)
+            worst case is O(nlogn)
         """
         # with HiddenPrints():
         pokemon1 = None
         pokemon2 = None
         while True:
             
+            # both teams don't have any pokemons left -> DRAW
             if pokemon1 == None and team1.team.is_empty() and pokemon2 == None and team2.team.is_empty():
                 return 0
+            # team 1 doesn't have any pokemons left -> TEAM 2 WIN
             elif pokemon1 == None and team1.team.is_empty():
                 team2.return_pokemon(pokemon2)
                 return 2
+            #  team 2 doesn't have any pokemons left -> TEAM 1 WIN
             elif pokemon2 == None and team2.team.is_empty():
-                # assert pokemon1 != None, f"{pokemon1}, {team1}, {pokemon2}, {team2}"``
                 team1.return_pokemon(pokemon1)
                 return 1
-            else: # both teams still have pokemon -> battle
+            # both teams still have pokemon -> BATTLE
+            else: 
+                # retrieve a new pokemon if pokemon battled in previous match fainted
                 if pokemon1 == None:
                     pokemon1 = team1.retrieve_pokemon()
                 if pokemon2 == None: 
                     pokemon2 = team2.retrieve_pokemon()
                 
+                # ACTION SELECTION ---------------------------------------------------------
 
                 action1 = team1.choose_battle_option(pokemon1, pokemon2)
                 action2 = team2.choose_battle_option(pokemon2, pokemon1)
-                # PRE-ATTACKS -------------------------------------------------------------------
+                
+                # SWAP -------------------------------------------------------------------
 
                 if action1 == Action.SWAP:
                     team1.return_pokemon(pokemon1)
@@ -75,6 +79,8 @@ class Battle:
                 if action2 == Action.SWAP:
                     team2.return_pokemon(pokemon2)
                     pokemon2 = team2.retrieve_pokemon()
+
+                # SPECIAL -------------------------------------------------------------------
 
                 if action1 == Action.SPECIAL:
                     team1.return_pokemon(pokemon1) #Should be implemented inside special
@@ -85,6 +91,8 @@ class Battle:
                     team2.return_pokemon(pokemon2)
                     team2.special()
                     pokemon2 = team2.retrieve_pokemon()
+
+                # HEAL ------------------------------------------------------------------- 
 
                 if action1 == Action.HEAL:
                     if team1.heal_count < 0:
@@ -100,7 +108,7 @@ class Battle:
                         team2.heal_count -= 1
                         pokemon2.heal()
                 
-                # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
+                # ATTACK -------------------------------------------------------------------
 
                 if action1 == Action.ATTACK and action2 == Action.ATTACK: # both attacks
                     # get speed
@@ -126,7 +134,7 @@ class Battle:
                 elif action2 == Action.ATTACK: # team 2 attacks
                     pokemon2.attack(pokemon1)
 
-                # battle ends here ------------------------------------------------------------
+                # ACTIONS EXECUTION ends here ------------------------------------------------------------
                 
                 # both pokemons are not fainted --> both lose 1 hp
                 if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()): #should not be elif next because the lose hp could make a pokemon faint, resulting in other one level up
