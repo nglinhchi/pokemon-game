@@ -11,7 +11,10 @@ from linked_list import LinkedList
 """
 Creates tournament class that implements all methods needed to create and run a tournament between PokeTeams.
 """
+
 __author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang"
+
+
 
 class Tournament:
     

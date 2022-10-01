@@ -1,26 +1,24 @@
 from __future__ import annotations
+from array_sorted_list import ArraySortedList
+from aset import ASet
+from enum import Enum, auto
+from pokemon_base import PokemonBase
+from random_gen import RandomGen
+from multiprocessing.dummy import Array
+from multiprocessing.sharedctypes import Value
+from tracemalloc import start
+from stack_adt import ArrayStack
+from sorted_list import ListItem
+from pokemon import *
+from queue_adt import CircularQueue
+
 """
 Implements the methods to construct a team and implements the different battle modes.
-
 """
 
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
 
-from enum import Enum, auto
-from pokemon_base import PokemonBase
-from random_gen import RandomGen
-from ast import Num
-from multiprocessing.dummy import Array
-from multiprocessing.sharedctypes import Value
-from random import Random
-from tracemalloc import start
-from typing import List
-from sorted_list import ListItem
-from pokemon import *
-from array_sorted_list import ArraySortedList
-from queue_adt import CircularQueue
-from stack_adt import ArrayStack
-from aset import ASet
+
 
 class Action(Enum):
     ATTACK = auto()

@@ -1,18 +1,16 @@
-"""
-Implements the different pokemons (both base and evolved) and their characteristics.
-
-"""
-
-__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
-
+from __future__ import annotations
 from inspect import Attribute
 from multiprocessing.sharedctypes import Value
 from pokemon_base import PokemonBase, PokeType
 
-# *******************************************
+"""
+Implements the different pokemons (both base and evolved) and their characteristics.
+"""
+
+__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
 
 
-# CHARMANDER >> CHARIZARD
+
 class Charizard(PokemonBase): 
     NAME = "Charizard"
     BASE_LEVEL = 3

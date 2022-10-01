@@ -1,3 +1,4 @@
+from __future__ import annotations
 from multiprocessing.connection import Listener
 from os import popen
 from tkinter import ACTIVE
@@ -8,9 +9,12 @@ from print_screen import *
 import os, sys
 
 """
-Creates Battle class and implements the methods to handle a battle between 2 teams
+Implements the methods to handle a battle between 2 teams.
 """
+
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
+
+
 
 class HiddenPrints:
     

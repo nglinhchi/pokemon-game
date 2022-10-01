@@ -9,9 +9,10 @@ from stack_adt import ArrayStack
 import unittest
 
 """
-Creates battletower class that implements all methods needed to create and run a tower between user team and opponent teams,
-with the aid of battletower iterator
+Creates battletower class that implements all methods needed to create and run a tower between user team and opponent teams
+with the aid of battletower iterator.
 """
+
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen"
 
 

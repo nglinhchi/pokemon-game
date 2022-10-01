@@ -1,12 +1,4 @@
 from __future__ import annotations
-
-"""
-Implements the base functions/moves that are required to be performed by all pokemon.
-
-"""
-
-__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
-
 from abc import abstractmethod, ABC
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
@@ -14,6 +6,14 @@ from multiprocessing.sharedctypes import Value
 from typing_extensions import Self
 from random_gen import RandomGen
 from enum import Enum, auto
+
+"""
+Implements the base functions/moves that are required to be performed by all pokemon.
+"""
+
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang | Chloe Nguyen | Jane Butcher"
+
+
 
 class StatusEffects(Enum):
     """
