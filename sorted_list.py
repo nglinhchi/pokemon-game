@@ -13,7 +13,11 @@ __author__ = 'Maria Garcia de la Banda and Brendon Taylor. Modified by Alexey Ig
 __docformat__ = 'reStructuredText'
 
 class ListItem(Generic[T, K]):
-    """ Items to be stored in a list, including the value and the key used for sorting. """
+    """ Items to be stored in a list, including the value and the key used for sorting. 
+    
+    :param order: integer that is assigned on initialised a PokeTeam in Battle Mode 2, default is None.
+    :complexity: best and worst case O(1)
+    """
     ### Modified to add order ###
     def __init__(self, value: T, key: int, order = None):
         self.value = value

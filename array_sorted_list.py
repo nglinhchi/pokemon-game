@@ -266,6 +266,12 @@ class ArraySortedList(SortedList[T]):
         return initorder_list
 
     def get_first_index(self, key: int):
+        """
+        Returns first index position of given key
+
+        :pre: key must be integer
+        """
+        
         item = ListItem(None, key)  #dummy item to get key
         pivot = self._index_to_add(item)
         
