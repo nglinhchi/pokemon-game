@@ -22,9 +22,11 @@ class Tournament:
         """
         Initialises tournament with optional param battle which will set the battle instance for all tournament games. 
         If none provided, creates new instance
-        
         :param battle: Battle class instance, default None
         :return: None
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
         """
         if battle is not None:
             self.battle = battle
@@ -38,7 +40,13 @@ class Tournament:
         :pre: battle_mode must be 0 or 1
         :param arg1: Integer between 0 and 1 that represents valid battle mode
         :return: None
+<<<<<<< HEAD
         :complexity: best and worst O(1)
+=======
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
+>>>>>>> 9c2ed3e0788ef61b041383a57ee2e6d9a655258f
         """
         if not isinstance(battle_mode, int) or battle_mode not in [0,1]:
             raise ValueError("Invalid battle mode") 
@@ -53,9 +61,10 @@ class Tournament:
         :pre: Tournament string must be in postfix notation and competitor name must not be '+' as this is used for checking
         :post: Tournament string remains unchanged
         :return: True or False, depending on if string passes check (True means string is valid)
-        :complexity: best O(1) when invalid user input, worst O(N) where N is length of temp_stack
+        :complexity:
+            best case is O(1) when invalid user input
+            worst case is O(n) where n is length of temp_stack
         """
-      
         if type(tournament_str) is not str:
             return False
         valid_operator = ["+"]
@@ -70,24 +79,24 @@ class Tournament:
             if elt in valid_operator and len(temp_stack) < 2:
                 return False
             elif elt in valid_operator:
-                temp_stack.pop()    #Get rid of one team and leave one remaining (represent winner)
-        if len(temp_stack) != 1:    #If one winner is not remaining at end, return false
+                temp_stack.pop()    # Get rid of one team and leave one remaining (represent winner)
+        if len(temp_stack) != 1:    # If one winner is not remaining at end, return false
             return False
-        
-        return True  
+        else:
+            return True  
 
     def start_tournament(self, tournament_str: str) -> None:
         """
         Initiates tournament according to tournament_str, which is validated through is_valid_tournament. Generates random teams that represent
         tournament competitors. Places these teams in a queue according to order of the tournament and creates an instance of tournament_gen
         that represents the tournament instance itself.
-
         :param tournament_str: string representing tournament
         :pre: instance variable battle_mode must be set
         :post: instance variable tournament representing tournament is created by passing args into and calling tournament_gen method, that 
         can be iterated through
         :return: None
         :raises ValueError: if tournament_str param is not a valid form of tournament.
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
         :complexity:
@@ -97,6 +106,11 @@ class Tournament:
             R is the cost of regenerating team,
             T is number of battles in tournament
 >>>>>>> f1967ea469cf402b3fca291da5d9a53e15fe5414
+=======
+        :complexity:
+            best case is O(1) when user input is invalid
+            worst case is TODO
+>>>>>>> Stashed changes
         """
         if not self.is_valid_tournament(tournament_str):
             raise ValueError("Invalid tournament string")
@@ -119,11 +133,11 @@ class Tournament:
         """
         Method that represents an instance of the tournament. Takes queue generated in start_tournament as arg, then runs the battles sequentially
         according to the order set in the queue. Is a generator that is iterated through by advance_tournament
-        
         :param tournament_queue: CircularQueue representing the tournament draw, with first battle at front of queue
         :pre: self.battle_count set by start_tournament, representing num of battles in tournament, function must be called inside start_tournament,
         :post: After iterations are exhausted, tournament should be complete with winner returned.
         :return: tuple containing 3 values (team one, team two, result of match)
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         :complexity: best and worst are the same
             - 1 iteration is O(B+R) Where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team
@@ -136,6 +150,17 @@ class Tournament:
                 R is the cost of regenerating team,
                 T is number of battles in tournament
 >>>>>>> f1967ea469cf402b3fca291da5d9a53e15fe5414
+=======
+        :complexity:
+            - 1 iteration:
+                best case is O(B+R)
+                worst case is O(B+R)
+                where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team,
+            - iterate through entire tournament:
+                best case is O(T*(B+R))
+                worst case is O(T*(B+R))
+                where T is number of battles in tournament
+>>>>>>> Stashed changes
         """
         tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
         for _ in range(self.battle_count):
@@ -163,15 +188,15 @@ class Tournament:
     def advance_tournament(self) -> tuple[PokeTeam, PokeTeam, int] | None:
         """
         Performs next battle in tournament by calling next method (iteration) through the tournament generator store in self.tournament.
-        Returns result tuple received from the generator. If iterations have been exhausted in generator (i.e. no battles remaining), returns
-        None
-
+        Returns result tuple received from the generator. If iterations have been exhausted in generator (i.e. no battles remaining), returns None.
         :pre: tournament generator instance must have been created through start_tournament -> tournament_gen method.
         :post: result from tournament gen is unmodified.
         :return: None or tuple(team one: PokeTeam, team two: PokeTeam, result of battle: int)
-        :complexity: best and worst are the same, O(B+R) where B is complexity of battle, R is complexity of regenerate team
+        :complexity:
+            best case is O(B+R)
+            worst case is O(B+R)
+            where B is complexity of battle, R is complexity of regenerate team
         """
-        # next(self.tournament)
         try:
             self.result = next(self.tournament)   #result of battle (int)
             return next(self.tournament)   #res tuple   (team1,team2, result(int))
@@ -181,11 +206,13 @@ class Tournament:
     def linked_list_of_games(self) -> LinkedList[tuple[PokeTeam, PokeTeam]]:
         """
         Method that creates a linked list containing all matches performed in tournament.
-
         :pre: start_tournament, set_battle_mode must have been called
         :post:  tournament battles have all resulted.
         :return: linked list of tuples containing the teams who fought in each battle, in descending sequential order (last match is at head)
-        :complexity: O(T) where T is the number of matches in tournament
+        :complexity:
+            best case is O(T)
+            worst case is O(T)
+            where T is the number of matches in tournament
         """
         l = LinkedList()
         while True:
@@ -200,12 +227,13 @@ class Tournament:
         """
         Returns linked list containing each battle of the tournament, the same as linked_list_of_games, but also includes a list of PokeTypes in
         the meta: types that were not present in that battle, but were present in battles fought by either party previously.
-
         :pre: start_tournament, set_battle_mode must have been called. 
         :post: does not modify outcome of tournament or battles.
         :return: linked list of tuples (team one: PokeTeam, team two: PokeTeam, list of PokeTypes: str)
-        :complexity: O(T*(B+P)) where T is the number of matches played in tournament, B is cost of running one battle, and P is max number of 
-        pokemon in a team.
+        :complexity:
+            best case is O(T*(B+P))
+            worst case is O(T*(B+P))
+            where T is the number of matches played in tournament, B is cost of running one battle, and P is max number of pokemon in a team.
         """
         l = self.linked_list_of_games()
         lm = LinkedList()
