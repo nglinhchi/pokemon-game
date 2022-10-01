@@ -73,8 +73,8 @@ class PokeTeam:
             arg4 must be a valid ai type (ai enum)
             arg5 if provided must be a valid criterion (criterion enum)
         :complexity:
-            best case is O(1)
-            worst case is O(n)
+            best case is O(n) when battle mode is 0 or 1
+            worst case is O(nlogn)  when battle mode is 2
             where n is len(team_numbers)
         """ 
         if not type(team_name) == str:
@@ -125,7 +125,7 @@ class PokeTeam:
         :pre: team_size must be positive integer
         :return: PokeTeam instance of the team
         :complexity:
-            best case is O(1)
+            best case is O(n)
             worst case is O(n)
             where n is len(team_members)
         """
@@ -396,20 +396,24 @@ class PokeTeam:
         """
         if self.get_ai_type() == PokeTeam.AI.ALWAYS_ATTACK:
             return Action.ATTACK
+        
         elif self.get_ai_type() == PokeTeam.AI.SWAP_ON_SUPER_EFFECTIVE:
             if their_pokemon.get_type().type_multiplier(my_pokemon.get_type()) >= 1.5:
                 return Action.SWAP 
             else:
                 return Action.ATTACK
+        
         elif self.get_ai_type() == PokeTeam.AI.RANDOM:
             actions = list(Action)
             if self.get_heal_count() == 0:
                 actions.remove(Action.HEAL)
             return actions[RandomGen.randint(0, len(actions)- 1)]
+        
         elif self.get_ai_type() == PokeTeam.AI.USER_INPUT:
             prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
             actions = list("APHS")
             while True:
+                print(prompt)
                 action = input("   Your Move: ")
                 if action not in actions:
                     raise ValueError("Invalid action. Please try again.")
@@ -534,8 +538,8 @@ class PokeTeam:
         Takes input array sorted in ascending order and reverses it using the same key so that the array is descending.
         :return: descending sorted array
         :complexity:
-            best case is O(n)
-            worst case is O(n)
+            best case is O(nlogn)
+            worst case is O(nlogn)
             where n is len(team)
         """
         reverse_arr = ArraySortedList(len(self.get_team().array))
@@ -550,7 +554,6 @@ class PokeTeam:
         """
         Takes Pokemon and sorts back into team. Default method to be called when returning Pokemon in Battle Mode 2. 
         Sorts by Criterion order -> PokeDex Number -> Initial ordering.
-
         :pre: Pokemon must be of PokemonBase class, Poketeam must have already been initialised (have initial order)
         :return: None
         :complexity:

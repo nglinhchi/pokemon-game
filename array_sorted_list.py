@@ -294,11 +294,14 @@ class ArraySortedList(SortedList[T]):
             else:
                 return mid
         return low
+
     def add_in_front(self, item: ListItem):
         """
         Adds item to the front instance.
         :pre: array list must not be full
-        :complexity: logn
+        :complexity:
+            best case is O(logn)
+            worst case is O(logn)
         """
         if self.is_full():
             raise ValueError(f"List is full {self}")
@@ -306,7 +309,10 @@ class ArraySortedList(SortedList[T]):
         self[idx] = item
         self.length += 1
     
-    def is_tied(self):
+    def is_tied(self) -> bool:
+        """
+        Checks if list has ties
+        """
         unique_set = BSet() #initialise set for check
         for item in self:
             unique_set.add(item.key)
@@ -319,6 +325,7 @@ class ArraySortedList(SortedList[T]):
         Replaces current item at index with new item passed as arg.
         :pre: List contains an item at the index currently. Item swapped in maintains same key as item that it is replacing
         :post: List length remains the same
+        
         """
         key = self[index].key
         item.key = key

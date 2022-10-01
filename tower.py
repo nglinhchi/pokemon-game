@@ -160,7 +160,7 @@ class BattleTowerIterator:
         """ Removes any opponent teams in tower that have more than 1 pokemons of the same type.
         :post: opponent teams' state remains unchanged
         :complexity:
-            best case is O(N) if there's no opponent teams in tower,
+            best case is O(1) if there's no opponent teams in tower,
             worst case is O(N*P) if there's at least 1 opponent team in tower,
             where N is the number of trainers remaining in the battle tower and P is the limit on the number of pokemon per team.
         """
