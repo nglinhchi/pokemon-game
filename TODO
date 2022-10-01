@@ -20,8 +20,8 @@ GENERAL
 
 
 DOCUMENTATION
-[ ] no file header documentation (format)
-[ ] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
+[X] no file header documentation (format)
+[X] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
 [ ] missing/incorrect/incomplete complexity documentation
 [ ] missing method’s summarisation
 [ ] missing methods’ precondition if any
