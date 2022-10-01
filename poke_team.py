@@ -171,7 +171,7 @@ class PokeTeam:
         """
         return self.battle_mode
 
-    def get_ai_type(self):
+    def get_ai_type(self) -> AI:
         """
         Getter method returning ai type in use
         :complexity:
@@ -180,7 +180,7 @@ class PokeTeam:
         """
         return self.ai_type
 
-    def get_heal_count(self):
+    def get_heal_count(self) -> int:
         """
         Getter method returning remaining heal count
         :complexity:
@@ -189,7 +189,7 @@ class PokeTeam:
         """
         return self.heal_count
 
-    def use_heal(self):
+    def use_heal(self) -> None:
         """
         Performs heal action
         :complexity:
@@ -243,7 +243,7 @@ class PokeTeam:
                 self.poke_on_field = self.team.delete_at_index(0).value  #First pokemon in list is the one for battle
         return self.poke_on_field
     
-    def special(self):
+    def special(self) -> None:
         """
         Changes ordering for pokemon in team depending on battle mode. 
         :pre: All pokemon should be returned to team
@@ -274,7 +274,8 @@ class PokeTeam:
                 self.descending_order = False
             elif self.descending_order == False:
                 self.descending_order = True
-    def regenerate_team(self):
+
+    def regenerate_team(self) -> None:
         """
         Regenerates the team based from the same battle numbers
         :return: None
@@ -293,7 +294,7 @@ class PokeTeam:
             self.descending_order = False
             self.team = self.team_mode_2()
 
-    def get_team(self):
+    def get_team(self) -> ArrayStack | CircularQueue | ArraySortedList:
         """
         Getter methods returning team containing pokemons.
         :pre: team must be instantiated
@@ -304,7 +305,6 @@ class PokeTeam:
         if self.team == None:
             raise ValueError("Team has not been created")
         return self.team
-
 
     def __str__(self) -> str:
         """
@@ -529,7 +529,7 @@ class PokeTeam:
         self.initial_order_exist = True
         return self.team
         
-    def reverse_order(self):
+    def reverse_order(self) -> ArraySortedList:
         """
         Takes input array sorted in ascending order and reverses it using the same key so that the array is descending.
         :return: descending sorted array
@@ -604,7 +604,7 @@ class PokeTeam:
         else:
             raise ValueError("Team is full")
     
-    def break_tie(self, team_list: ArraySortedList, start_idx: int, end_idx: int):
+    def break_tie(self, team_list: ArraySortedList, start_idx: int, end_idx: int) -> None:
         """
         Method breaks a tie by the pokemon order or further by their
         initial ordering of the team
@@ -651,7 +651,7 @@ class PokeTeam:
             team_tie_start += 1  
         return
     
-    def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int):
+    def initial_order(self, pokeorder_list: ArraySortedList, start_idx: int, end_idx: int) -> None:
         """
         Breaks further ties using the initial ordering of the team
         :param arg1: sorted list of pokemon's order
