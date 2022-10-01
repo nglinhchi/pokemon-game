@@ -18,10 +18,17 @@ __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen"
 
 
 class BattleTower:
+    """
+    Implements methods for battle tower creation.
+    """
 
     def __init__(self, battle: Battle|None=None) -> None:
         """
+        Instantiates new battletower instance
         :param arg1: battle instance that will be used to perform battles between user team and opponent teams
+        :complexity:
+            best case is O(1)
+            worst case if O(1)
         """
         if battle is not None:
             self.battle = battle
@@ -32,18 +39,24 @@ class BattleTower:
         self.end_tower = False
     
     def set_my_team(self, team: PokeTeam) -> None:
-        """ Assigns the value for user team of the tower
+        """
+        Assigns the value for user team of the tower.
         :param arg1: user team that will be facing and battling with opponent teams
-        :complexity: best and worst O(1)
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
         """
         self.me = team
 
     def generate_teams(self, n: int) -> None:
-        """ Generates a number of teams based on user input, where each time will be assigned with 
-            a random number of lives. These teams will be added to the opponents list of tower
-        :pre: n must be a positive integer
+        """ Generates a number of teams based on user input, where each time will be assigned with a random number of lives.
+        These teams will be added to the opponents list of tower.
         :param arg1: number of opponent teams user would like to have in the tower
-        :complexity: best and worst O(N) where N is the length of opponents
+        :pre: n must be a positive integer
+        :complexity:
+            best case is O(n)
+            worse case is O(n)
+            where n is len(opponents) (i.e. n provided by user)
         """
         if type(n) is not int or n < 0:
             raise ValueError("n must be a positive integer")
@@ -57,30 +70,44 @@ class BattleTower:
         self.opponents = teams
 
     def __iter__(self):
-        """ Magic method, creates and returns an iterator for the tower """
+        """
+        Magic method, creates and returns an iterator for the tower
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
+        """
         return BattleTowerIterator(self)
 
 class BattleTowerIterator:
 
     def __init__(self, bt: BattleTower) -> None:
         """
-        :param arg1: instance of battle tower that will be lnked to the iterator
+        Instantiates the iterator for given battle tower.
+        :param arg1: instance of battle tower that will be linked to the iterator
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
         """
         self.tower = bt
         self.current_opponent = bt.opponents.head
         self.previous_opponent = None
         
     def __iter__(self):
-        """ Returns itself, as required to be iterable. """
+        """
+        Returns itself, as required to be iterable.
+        :complexity:
+            best case is O(1)
+            worst case is O(1)
+        """
         return self
 
     def __next__(self):
         """ Performs 1 battle in tower, between current opponent and user team and returns battle result, 
         user team after battle, opponent team after battle, remaining lives of opponent team
         :raises StopIteration: if user previously lose a battle, or has defeated all opponent teams (i.e. opponents list is empty)
-        :complexity: best O(1) if there's no oponnent teams in tower,
-                     worst O(B), where there's at least one opponent team in tower,
-                     where B is complexity of battle()
+        :complexity:
+            best case is O(1) if there's no oponnent teams in tower
+            worst case is O(B), where there's at least one opponent team in tower, where B is complexity of battle()
         """
         if self.tower.end_tower:  
             raise StopIteration     
@@ -132,62 +159,63 @@ class BattleTowerIterator:
     def avoid_duplicates(self):
         """ Removes any opponent teams in tower that have more than 1 pokemons of the same type.
         :post: opponent teams' state remains unchanged
-        :complexity: best O(1) if there's no opponent teams in tower,
-                     worst O(N*P) if there's at least 1 opponent team in tower,
-                     where N is the number of trainers remaining in the battle tower and
-                     P is the limit on the number of pokemon per team.
+        :complexity:
+            best case is O(N) if there's no opponent teams in tower,
+            worst case is O(N*P) if there's at least 1 opponent team in tower,
+            where N is the number of trainers remaining in the battle tower and P is the limit on the number of pokemon per team.
         """
 
-        while self.current_opponent is not None:                            # O(N)
+        while self.current_opponent is not None:                           
 
-            opponent_poke_team = self.current_opponent.item                 # O(1) * N = O(N)
-            opponent_team = self.current_opponent.item.team                 # O(1) * N = O(N)
-            type_set = BSet(len(opponent_team))                             # 0(1) * N = O(N)
-            contain_duplicates = False                                      # 0(1) * N = O(N)
+            opponent_poke_team = self.current_opponent.item                 
+            opponent_team = self.current_opponent.item.team                 
+            type_set = BSet(len(opponent_team))                             
+            contain_duplicates = False                                      
             
             # CHECK IF TEAM CONTAINS DUPLICATE
-            if opponent_poke_team.battle_mode == 0:                         # 0(1) * N = O(N)
-                temp_stack = ArrayStack(len(opponent_team))                 # 0(1) * N = O(N)
-                for _ in range(len(opponent_team)):                         # 0(P) * N = O(N*P)
-                    pokemon = opponent_team.pop()                           # O(1) * N * P = O(N*P)
-                    type_index = pokemon.get_type().get_type_index() + 1    # O(1) * N * P = O(N*P)
-                    if type_index not in type_set:                          # O(1) * N * P = O(N*P)
-                        type_set.add(type_index)                            # O(1) * N * P = O(N*P)
-                    else:                                                   # O(1) * N * P = O(N*P)
-                        contain_duplicates = True                           # O(1) * N * P = O(N*P)
-                        break                                               # O(1) * N * P = O(N*P)
-                for _ in range(len(temp_stack)):                            # 0(P) * N = O(N*P) 
-                    opponent_team.push(temp_stack.pop())                    # O(1) * N * P = O(N*P)
-            elif opponent_poke_team.battle_mode == 1:                       # 0(1) * N = O(N)
-                for _ in range(len(opponent_team)):                         # 0(P) * N = O(N*P)
-                    pokemon = opponent_team.serve()                         # O(1) * N * P = O(N*P)
-                    type_index = pokemon.get_type().get_type_index() + 1    # O(1) * N * P = O(N*P)
-                    opponent_team.append(pokemon)                           # O(1) * N * P = O(N*P)
-                    if type_index not in type_set:                          # O(1) * N * P = O(N*P)
-                        type_set.add(type_index)                            # O(1) * N * P = O(N*P)
-                    else:                                                   # O(1) * N * P = O(N*P)
-                        contain_duplicates = True                           # O(1) * N * P = O(N*P)
-                        break                                               # O(1) * N * P = O(N*P)
+            # mode 0
+            if opponent_poke_team.battle_mode == 0:                         
+                temp_stack = ArrayStack(len(opponent_team))                 
+                # iterate through stack -> check for duplicates
+                for _ in range(len(opponent_team)):                         
+                    pokemon = opponent_team.pop()                           
+                    type_index = pokemon.get_type().get_type_index() + 1    
+                    if type_index not in type_set:                          
+                        type_set.add(type_index)                            
+                    else:                                                   
+                        contain_duplicates = True                           
+                        break                                               
+                # put back pokemon to team -> state of team remains unchanged
+                for _ in range(len(temp_stack)):                             
+                    opponent_team.push(temp_stack.pop())                    
+            # mode 1
+            elif opponent_poke_team.battle_mode == 1:
+                undone_count = len(opponent_team)
+                # iterate through queue -> check for duplicates
+                for _ in range(len(opponent_team)):                         
+                    pokemon = opponent_team.serve()                         
+                    type_index = pokemon.get_type().get_type_index() + 1    
+                    opponent_team.append(pokemon)   
+                    undone_count -= 1                        
+                    if type_index not in type_set:                          
+                        type_set.add(type_index)
+                    else:                                                   
+                        contain_duplicates = True                           
+                        break  
+                # append the unserved pokemon to team -> state of team reamins unchanged
+                for _ in range(undone_count):
+                    opponent_team.append(opponent_team.serve())
 
             # HANDLE DELETION OF TEAMS WITH DUPLICATES
-            if contain_duplicates:                                          # O(1) * N = O(N)
-                if self.current_opponent == self.tower.opponents.head:      # O(1) * N = O(N)
-                    self.tower.opponents.head = self.current_opponent.next  # O(1) * N = O(N)
-                else:                                                       # O(1) * N = O(N)
-                    self.previous_opponent.next = self.current_opponent.next# O(1) * N = O(N)
+            if contain_duplicates:                                          
+                if self.current_opponent == self.tower.opponents.head:      
+                    self.tower.opponents.head = self.current_opponent.next  
+                else:                                                       
+                    self.previous_opponent.next = self.current_opponent.next
             
-            # TEAM WITHOUT DUPLICATE BECOMES PREVIOUS OPP
-            else:                                                           # O(1) * N = O(N)
-                self.previous_opponent = self.current_opponent              # O(1) * N = O(N)
+            # TEAM WITHOUT DUPLICATE BECOMES PREVIOUS OPPONENT
+            else:                                                           
+                self.previous_opponent = self.current_opponent              
             
-            # STANDARD INCREMENT TO POINT TO NEXT OPPONENT
-            self.current_opponent = self.current_opponent.next              # O(1) * N = O(N)
-
-
-class TestBattleTower(unittest.TestCase):
-    def test_iter(self):
-        bt = BattleTower()
-        bt.set_my_team(PokeTeam.random_team("Jackson", 0, team_size=6))
-        bt.generate_teams(10)
-        it = iter(bt)
-        print(next(it))
+            # STANDARD INCREMENT TO POINT TO NEXT OPPONENT FOR NEXT ITERATION
+            self.current_opponent = self.current_opponent.next              
