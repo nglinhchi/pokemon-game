@@ -22,11 +22,11 @@ GENERAL
 DOCUMENTATION
 [X] no file header documentation (format)
 [X] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
-[ ] missing/incorrect/incomplete complexity documentation
-[ ] missing method’s summarisation
-[ ] missing methods’ precondition if any
-[ ] missing method’s commenting
-[ ] class constance not uppercase
+[X] missing/incorrect/incomplete complexity documentation
+[X] missing method’s summarisation
+[X] missing methods’ precondition if any
+[X] missing method’s commenting
+[X] class constance not uppercase
 
 
 FILE HEADER DOCUMENTATION

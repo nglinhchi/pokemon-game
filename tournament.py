@@ -94,7 +94,7 @@ class Tournament:
         :return: None
         :raises ValueError: if tournament_str param is not a valid form of tournament.
         :complexity:
-            best case is TODO
+            best case is O(1) when user input is invalid
             worst case is TODO
         """
         if not self.is_valid_tournament(tournament_str):
