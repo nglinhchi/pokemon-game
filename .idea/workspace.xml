@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="e0202ade-1c3b-4475-98e8-e2877c4acc62" name="Changes" comment="">
+    <list default="true" id="453d9f1d-895c-4f1d-b462-c0a30168022c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poke_team.py" beforeDir="false" afterPath="$PROJECT_DIR$/poke_team.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pokemon.py" beforeDir="false" afterPath="$PROJECT_DIR$/pokemon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pokemon_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/pokemon_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Task6_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Task6_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/task1+2_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task1+2_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/task3_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task3_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/task4_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task4_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/task5_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/task5_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournament.py" afterDir="false" />
     </list>
-=======
-    <list default="true" id="2fa793f8-5c7f-45ae-81d1-7e961ac49108" name="Changes" comment="" />
->>>>>>> Task-5-test-cases
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,8 +23,26 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2FWqn1A6Opnowe8gjyk5PUWIMUN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="453d9f1d-895c-4f1d-b462-c0a30168022c" name="Changes" comment="" />
+      <created>1664618352823</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664618352823</updated>
+    </task>
     <servers />
   </component>
 </project>

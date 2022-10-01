@@ -22,9 +22,19 @@ class Charizard(PokemonBase):
         PokemonBase.__init__(self, 12, PokeType.FIRE)
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -36,7 +46,7 @@ class Charizard(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + 1 * self.level
 
@@ -44,7 +54,7 @@ class Charizard(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 10 + 2 * self.level
 
@@ -52,7 +62,7 @@ class Charizard(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 9 + 1 * self.level
 
@@ -60,7 +70,7 @@ class Charizard(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 4
     
@@ -68,7 +78,7 @@ class Charizard(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return False
 
@@ -77,7 +87,7 @@ class Charizard(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         raise ValueError(f"{self.get_name()} does not have evolution")
 
@@ -89,7 +99,7 @@ class Charizard(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -111,9 +121,19 @@ class Charmander(PokemonBase):
         PokemonBase.__init__(self, 8, PokeType.FIRE)
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -125,7 +145,7 @@ class Charmander(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + 1 * self.level
 
@@ -133,7 +153,7 @@ class Charmander(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 6 + 1 * self.level
 
@@ -141,7 +161,7 @@ class Charmander(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 7 + 1 * self.level
 
@@ -149,7 +169,7 @@ class Charmander(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 4
     
@@ -157,7 +177,7 @@ class Charmander(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return True
 
@@ -166,7 +186,7 @@ class Charmander(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return Charizard()
 
@@ -178,7 +198,7 @@ class Charmander(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -205,9 +225,19 @@ class Venusaur(PokemonBase):
         PokemonBase.__init__(self, 20, PokeType.GRASS)
 
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -219,7 +249,7 @@ class Venusaur(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + self.level//2
 
@@ -227,7 +257,7 @@ class Venusaur(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 5
 
@@ -235,7 +265,7 @@ class Venusaur(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 3 + self.level//2
 
@@ -243,7 +273,7 @@ class Venusaur(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 10
     
@@ -251,7 +281,7 @@ class Venusaur(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return False
     
@@ -260,7 +290,7 @@ class Venusaur(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         raise ValueError(f"{self.get_name()} does not have evolution")
 
@@ -272,7 +302,7 @@ class Venusaur(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -294,9 +324,19 @@ class Bulbasaur(PokemonBase):
         PokemonBase.__init__(self, 12, PokeType.GRASS)
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -308,7 +348,7 @@ class Bulbasaur(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + 1 * self.level
 
@@ -316,7 +356,7 @@ class Bulbasaur(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 5
 
@@ -324,7 +364,7 @@ class Bulbasaur(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 7 + self.level//2
 
@@ -332,7 +372,7 @@ class Bulbasaur(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 5
     
@@ -340,7 +380,7 @@ class Bulbasaur(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return True
     
@@ -349,7 +389,7 @@ class Bulbasaur(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return Venusaur()
 
@@ -361,7 +401,7 @@ class Bulbasaur(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -388,9 +428,19 @@ class Blastoise(PokemonBase):
         self.level = 3 # base level
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -402,7 +452,7 @@ class Blastoise(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + 2 * self.level
 
@@ -410,7 +460,7 @@ class Blastoise(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 8 + self.level // 2
 
@@ -418,7 +468,7 @@ class Blastoise(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 10
 
@@ -426,7 +476,7 @@ class Blastoise(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 8 + 1 * self.level
     
@@ -434,7 +484,7 @@ class Blastoise(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return False
 
@@ -443,7 +493,7 @@ class Blastoise(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         raise ValueError(f"{self.get_name()} does not have evolution")
         
@@ -455,7 +505,7 @@ class Blastoise(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -478,9 +528,19 @@ class Squirtle(PokemonBase):
         PokemonBase.__init__(self, 9, PokeType.WATER)
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -492,7 +552,7 @@ class Squirtle(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + 2 * self.level
 
@@ -500,7 +560,7 @@ class Squirtle(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 4 + self.level//2
 
@@ -508,7 +568,7 @@ class Squirtle(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 7
 
@@ -516,7 +576,7 @@ class Squirtle(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 6 + self.level
     
@@ -524,7 +584,7 @@ class Squirtle(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return True
 
@@ -533,7 +593,7 @@ class Squirtle(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return Blastoise()
 
@@ -545,7 +605,7 @@ class Squirtle(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -571,9 +631,19 @@ class Gengar(PokemonBase):
         self.level = 3 # base level
 
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -585,7 +655,7 @@ class Gengar(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + self.level//2
 
@@ -593,7 +663,7 @@ class Gengar(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 18
 
@@ -601,7 +671,7 @@ class Gengar(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 12
 
@@ -609,7 +679,7 @@ class Gengar(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 3
     
@@ -617,7 +687,7 @@ class Gengar(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return False
     
@@ -626,7 +696,7 @@ class Gengar(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         raise ValueError(f"{self.get_name()} does not have evolution")
         
@@ -638,7 +708,7 @@ class Gengar(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -658,9 +728,19 @@ class Haunter(PokemonBase):
         self.level = 1 # base level
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -672,7 +752,7 @@ class Haunter(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + self.level//2
 
@@ -680,7 +760,7 @@ class Haunter(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 8
 
@@ -688,7 +768,7 @@ class Haunter(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 6
 
@@ -696,7 +776,7 @@ class Haunter(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 6
     
@@ -704,7 +784,7 @@ class Haunter(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return True
 
@@ -713,7 +793,7 @@ class Haunter(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return Gengar()
 
@@ -725,7 +805,7 @@ class Haunter(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -744,9 +824,19 @@ class Gastly(PokemonBase):
         PokemonBase.__init__(self, 6, PokeType.GHOST)
 
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
 
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -758,7 +848,7 @@ class Gastly(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp + self.level//2
 
@@ -766,7 +856,7 @@ class Gastly(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 4
 
@@ -774,7 +864,7 @@ class Gastly(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 2
 
@@ -782,7 +872,7 @@ class Gastly(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 8
     
@@ -790,7 +880,7 @@ class Gastly(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return True
     
@@ -799,7 +889,7 @@ class Gastly(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return Haunter()
 
@@ -811,7 +901,7 @@ class Gastly(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")
@@ -833,9 +923,19 @@ class Eevee(PokemonBase):
         PokemonBase.__init__(self, 10, PokeType.NORMAL)
     
     def get_name(self) -> str:
+        """
+        Getter method returning the name of the pokemon
+        :return: string of pokemon's name
+        :complexity: best and worst O(1)
+        """
         return __class__.NAME  #Ensures name is set for pokemon
     
     def get_level(self) -> int:
+        """
+        Getter method returning the current level of the pokemon
+        :return: integer of pokemon's level
+        :complexity: best and worst O(1)
+        """
         try:
             return self.level
         except AttributeError: #when first initialising
@@ -847,7 +947,7 @@ class Eevee(PokemonBase):
         this max HP using base_hp and returns.
         :pre: base_hp must be defined
         :return: integer of pokemon's max hp
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return self.base_hp
 
@@ -855,7 +955,7 @@ class Eevee(PokemonBase):
         """
         Getter method returning current Attack stat calculated for individual Pokemon
         :return: integer of pokemon's attack damage
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 6 + self.level
 
@@ -863,7 +963,7 @@ class Eevee(PokemonBase):
         """
         Getter method returning current Speed stat calculated for individual Pokemon
         :return: integer of pokemon's speed
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 7 + self.level
 
@@ -871,7 +971,7 @@ class Eevee(PokemonBase):
         """
         Getter method returning current Defence stat calculated for individual Pokemon
         :return: integer of pokemon's defence
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return 4 + self.level
     
@@ -879,7 +979,7 @@ class Eevee(PokemonBase):
         """
         Returns whether an evolved version of the pokemon exists
         :return: True if Base pokemon, False for evolved pokemon
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         return False
     
@@ -888,7 +988,7 @@ class Eevee(PokemonBase):
         Retrieves the base evolved pokemon
         :raises ValueError: if the pokemon is fully evolved
         :return: a pokemon base of the evolved version
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         raise ValueError(f"{self.get_name()} does not have evolution")
         
@@ -900,7 +1000,7 @@ class Eevee(PokemonBase):
         :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
-        :complexity: O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(damage, int) or damage < 0:
             raise ValueError("damage must be non-negative integer")

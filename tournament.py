@@ -38,7 +38,7 @@ class Tournament:
         :pre: battle_mode must be 0 or 1
         :param arg1: Integer between 0 and 1 that represents valid battle mode
         :return: None
-        :complexity: best and worstt O(1)
+        :complexity: best and worst O(1)
         """
         if not isinstance(battle_mode, int) or battle_mode not in [0,1]:
             raise ValueError("Invalid battle mode") 
@@ -228,4 +228,4 @@ class Tournament:
             
             output_tup = (str(team1), str(team2), not_in_match)
             lm.insert(0, output_tup)
-        return lm    
+        return lm

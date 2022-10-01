@@ -12,6 +12,9 @@ __author__ = "Jane Butcher"
 
 class TestTower(BaseTest):
     def test_set_my_team(self):
+        """
+        tests that the passed poketeam is set as the users team for the tower
+        """
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
         b.set_my_team(PokeTeam.random_team("my_team", 0))
@@ -23,7 +26,16 @@ class TestTower(BaseTest):
         self.assertIsInstance(b.me, PokeTeam)
         self.assertEqual(b.me.battle_mode, 1)
 
+        b = BattleTower(Battle(verbosity=0))
+        b.set_my_team(PokeTeam("teamname", [5, 0, 1, 0, 0], 1, PokeTeam.AI.ALWAYS_ATTACK))
+        self.assertIsInstance(b.me, PokeTeam)
+        self.assertEqual(b.me.team_name, "teamname")
+
     def test_generate_teams(self):
+        """
+        tests that generate_teams produces the number of teams given as parameter with all teams having lives
+        within range(2, 10). Also tests that it raises an error when a non integer is passed in
+        """
         # tests that an error is raised when anything but an int is passed
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
@@ -52,6 +64,9 @@ class TestTower(BaseTest):
         self.assertEqual(count, 10)
 
     def test_next(self):
+        """
+        tests that next performs the next battle in the tower and returns the required tuple
+        """
         # tests a simple tower returns the required tuple
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
@@ -77,6 +92,10 @@ class TestTower(BaseTest):
             self.assertEqual(len(tuple), 4)
 
     def test_avoid_duplicates(self):
+        """
+        tests that avoid_duplicates removes all currently alive trainers from the
+        battle tower which have multiple pokemon with the same types.
+        """
         RandomGen.set_seed(2)
         b = BattleTower(Battle(verbosity=0))
         b.set_my_team(PokeTeam.random_team("my_team", 2, team_size=6, criterion=Criterion.HP))

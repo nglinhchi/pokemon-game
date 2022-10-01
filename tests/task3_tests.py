@@ -8,10 +8,11 @@ Tests the methods used in poke_team
 __author__ = "Jane Butcher"
 
 class TestPokeTeam(BaseTest):
-
-    # test __init__ ??
-
     def test_random_team(self):
+        """
+        tests that random_team generates a team following the guidelines
+        (team numbers <= max team size, random teams are a Poketeam instance, etc)
+        """
         t = PokeTeam.random_team("Bob", 1)
         self.assertIsInstance(t, PokeTeam)      # tests random_team returns a PokeTeam
         self.assertGreaterEqual(6, sum(t.team_numbers))     # tests that team numbers does not exceed the max team size
@@ -19,6 +20,9 @@ class TestPokeTeam(BaseTest):
         self.assertEqual(sum(t.team_numbers), 4)        # tests that the specified team size is returned in team numbers
 
     def test_is_empty(self):
+        """
+        tests whether is_empty returns the correct Boolean depending on whether the team is empty
+        """
         t = PokeTeam("team", [0, 0, 0, 0, 0], 0, PokeTeam.AI.RANDOM)
         self.assertEqual(t.is_empty(), True)
         t = PokeTeam("team", [2, 0, 0, 1, 1], 1, PokeTeam.AI.RANDOM)
@@ -27,6 +31,9 @@ class TestPokeTeam(BaseTest):
         self.assertEqual(t.is_empty(), False)
 
     def test_retrieve_pokemon(self):
+        """
+        tests that the correct pokemon is retrieved according to the battle mode expressed
+        """
         # test battle mode 0 retrieves first pokemon in team
         t = PokeTeam("team0", [1, 1, 0, 0, 2], 0, PokeTeam.AI.RANDOM)
         t.retrieve_pokemon()
@@ -61,6 +68,9 @@ class TestPokeTeam(BaseTest):
             self.assertIsInstance(p, e)
 
     def test_return_pokemon(self):
+        """
+        tests that the pokemon on field is returned to the correct position according to the battle mode expressed
+        """
         # test battle mode 0 returns the pokemon to the front of the team
         t = PokeTeam("team0", [1, 1, 0, 0, 2], 0, PokeTeam.AI.RANDOM)
         p = t.retrieve_pokemon()
@@ -102,6 +112,9 @@ class TestPokeTeam(BaseTest):
             self.assertIsInstance(p, e)
 
     def test_special(self):
+        """
+        tests that the pokemon are swapped correctly according to the battle mode expressed
+        """
         # test battle mode 0 special swaps the first and last pokemon
         t = PokeTeam("team0", [1, 1, 0, 0, 2], 0, PokeTeam.AI.RANDOM)
         t.special()
@@ -134,6 +147,9 @@ class TestPokeTeam(BaseTest):
             self.assertIsInstance(p, e)
 
     def test_regenerate_team(self):
+        """
+        tests that a PokeTeam is regenerated correctly from the same numbers as the initial team
+        """
         # test battle mode 0 regenerates team
         t = PokeTeam("team0", [1, 1, 0, 0, 2], 0, PokeTeam.AI.RANDOM)
         while not t.is_empty():             # all pokemon will eventually faint
@@ -177,6 +193,9 @@ class TestPokeTeam(BaseTest):
             self.assertIsInstance(p, e)
 
     def test_choose_battle_option(self):
+        """
+        tests that the correct action is chosen depending on the AI mode specified
+        """
         # test ALWAYS_ATTACK returns ATTACK
         t = PokeTeam("Bob", [1, 1, 0, 0, 2], 0, PokeTeam.AI.ALWAYS_ATTACK)
         p = t.retrieve_pokemon()
@@ -196,6 +215,9 @@ class TestPokeTeam(BaseTest):
         self.assertEqual(t.choose_battle_option(p, c), Action.SWAP)
 
     def test_str(self):
+        """
+        tests that str returns a valid representation of the current team as given in the spec
+        """
         # test battle mode 0 prints the correct string
         t = PokeTeam("Bob", [1, 1, 0, 0, 2], 0, PokeTeam.AI.RANDOM)
         self.assertEqual(str(t), "Bob (0): [LV. 1 Charmander: 9 HP, LV. 1 Bulbasaur: 13 HP, LV. 1 Eevee: 10 HP, LV. 1 Eevee: 10 HP]")
