@@ -1,6 +1,8 @@
 """
-Implements the different pokemons (both base and evolved) and their characteristics
+Implements the different pokemons (both base and evolved) and their characteristics.
+
 """
+
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
 
 from inspect import Attribute

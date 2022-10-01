@@ -1,4 +1,11 @@
 from __future__ import annotations
+"""
+Implements the methods to construct a team and implements the different battle modes.
+
+"""
+
+__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
+
 from enum import Enum, auto
 from pokemon_base import PokemonBase
 from random_gen import RandomGen
@@ -14,11 +21,6 @@ from array_sorted_list import ArraySortedList
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack
 from aset import ASet
-
-"""
-Implements the methods to construct a team and implements the different battle modes
-"""
-__author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
 
 class Action(Enum):
     ATTACK = auto()

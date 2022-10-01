@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 """
-Implements the base functions/moves that are required to be performed by all pokemon
+Implements the base functions/moves that are required to be performed by all pokemon.
+
 """
 
 __author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
