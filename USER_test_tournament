@@ -1,7 +1,6 @@
 import unittest
 
 from battle import Battle
-from linked_stack import LinkedStack
 from random_gen import RandomGen
 from tournament import *
 import os, sys
@@ -119,13 +118,6 @@ class TestTournament(unittest.TestCase):
         self.assertEqual(t.is_valid_tournament("+ t1 t2"), False)   #wrong order
         self.assertEqual(t.is_valid_tournament(""), False)  #empty no space
     
-    def test_looping(self):
-            RandomGen.set_seed(123456)
-            t = Tournament(Battle(verbosity=0))
-            t.set_battle_mode(0)
-            t.start_tournament("Roark Gardenia + Maylene Crasher_Wake + Fantina Byron + + + Candice Volkner + +")
-            # t.test_looping()
-            t.linked_list_with_metas()
 if __name__ == "__main__":
 
     unittest.main()

@@ -13,11 +13,11 @@ class Testpokemonbase(BaseTest):
     def test_init(self):
         self.assertRaises(TypeError, lambda: PokemonBase(9, PokeType.GHOST))
         s = Squirtle()
-        self.assertEqual(s.poke_type, PokeType.WATER)
-        self.assertEqual(s.name, Squirtle)
+        self.assertEqual(s.get_type(), PokeType.WATER)
+        self.assertEqual(s.get_name(), 'Squirtle')
         b = Bulbasaur()
-        self.assertEqual(b.hp, 13)
-        self.assertEqual(b.status_effect, None)
+        self.assertEqual(b.get_hp(), 13)
+        self.assertEqual(b.get_status_effect(), None)
 
     def test_level_up(self):
         e = Eevee()
@@ -40,11 +40,11 @@ class Testpokemonbase(BaseTest):
 
     def test_get_type(self):
         b = Blastoise()
-        self.assertEqual(b.get_type(), 'WATER')
+        self.assertEqual(b.get_type(), PokeType.WATER)
         b = Bulbasaur()
-        self.assertEqual(b.get_type(), 'GRASS')
+        self.assertEqual(b.get_type(), PokeType.GRASS)
         g = Gengar()
-        self.assertEqual(g.get_type(), 'GHOST')
+        self.assertEqual(g.get_type(), PokeType.GHOST)
 
     def test_get_level(self):
         g = Gengar()
@@ -58,10 +58,10 @@ class Testpokemonbase(BaseTest):
         c = Charizard()
         self.assertEqual(c.get_status_effect(), None)
         b = Bulbasaur()
-        c.status_effect = b.poke_type.status_effect
-        self.assertEqual(c.get_status_effect(), 'POISON')
-        b.status_effect = c.poke_type.status_effect
-        self.assertEqual(b.get_status_effect(), 'BURN')
+        c.status_effect = b.get_type_effect()
+        self.assertEqual(c.get_status_effect(), StatusEffects.POISON)
+        b.status_effect = c.get_type_effect()
+        self.assertEqual(b.get_status_effect(), StatusEffects.BURN)
 
     def test_get_max_hp(self):
         c = Charmander()
@@ -106,11 +106,11 @@ class Testpokemonbase(BaseTest):
 
     def test_is_fainted(self):
         h = Haunter()
-        self.assertEqual(h.is_fainted, False)
+        self.assertEqual(h.is_fainted(), False)
         h.hp = 0
-        self.assertEqual(h.is_fainted, True)
+        self.assertEqual(h.is_fainted(), True)
         g = Gengar()
-        self.assertEqual(g.is_fainted, False)
+        self.assertEqual(g.is_fainted(), False)
 
     def test_lose_hp(self):
         c = Charmander()
@@ -144,6 +144,7 @@ class Testpokemonbase(BaseTest):
         b = Blastoise()
         b.defend(21)
         self.assertEqual(b.get_hp(), 11)
+        self.assertRaises(b.defend("string"), ValueError)
 
     def test_attack(self):
         e = Eevee()
@@ -189,11 +190,11 @@ class Testpokemonbase(BaseTest):
             e.get_initial_evolved_version()
 
     def test_get_evolved_version(self):
-        g = Gastly
+        g = Gastly()
         g.status_effect = StatusEffects.BURN
         g.lose_hp(2)
         g.level_up()
-        self.assertEqual(isinstance(g.get_evolved_version(), Haunter), True)
+        self.assertEqual(isinstance(g.get_evolved_version(), Haunter()), True)
         g.get_evolved_version()
         self.assertEqual(g.get_level, 2)
         self.assertEqual(g.get_status_effect, 'BURN')
@@ -209,3 +210,6 @@ class Testpokemonbase(BaseTest):
         s.lose_hp(2)
         s.level_up()
         self.assertEqual(s.get_hp(), 10)
+
+if __name__ == "__main__":
+    unittest.main()

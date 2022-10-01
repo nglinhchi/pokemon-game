@@ -1,4 +1,11 @@
 from __future__ import annotations
+
+"""
+Implements the base functions/moves that are required to be performed by all pokemon
+"""
+
+__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
+
 from abc import abstractmethod, ABC
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
@@ -6,12 +13,6 @@ from multiprocessing.sharedctypes import Value
 from typing_extensions import Self
 from random_gen import RandomGen
 from enum import Enum, auto
-
-"""
-Implements the base functions/moves that are required to be performed by all pokemon
-"""
-__author__ = "Scaffold by Jackson Goerner, Code by Joong Do Chiang, Chloe Nguyen, Jane Butcher"
-
 
 class StatusEffects(Enum):
     """
@@ -35,6 +36,9 @@ class StatusEffects(Enum):
 class PokeType(Enum):
     """
     Assigns corresponding status effect and an index for each type to be referenced to calculate type_multiplier value, and type_effectiveness values in a list
+
+    :pre: Each PokeType defined must include a type_effectiveness list against other types, and be assigned to unique index that corresponds to
+    own place in type_effectiveness table. Type must include corresponding status effect from StatusEffect Enum class.
     """
     
     FIRE =      (0,     [1,     2,      0.5,    1,      1], StatusEffects.BURN)
@@ -44,6 +48,13 @@ class PokeType(Enum):
     NORMAL =    (4,     [1.25,  1.25,   1.25,   0,      1], StatusEffects.CONFUSE)
     
     def __init__(self, type_index: int, type_effectiveness: list, effect: StatusEffects):
+        if not isinstance(type_index, int):
+            raise ValueError("Type index must be unique integer")
+        if not isinstance(type_effectiveness, list) or len(type_effectiveness) < 0:
+            raise ValueError("Type effectiveness table must be a list and non-empty")
+        if not isinstance(effect, StatusEffects):
+            raise ValueError("Status effect must be of StatusEffects class")
+        
         self.type_index = type_index
         self.effect = effect
         self.type_effectiveness = type_effectiveness
@@ -57,7 +68,12 @@ class PokeType(Enum):
     def type_multiplier(self, defend_poketype: PokeType):
         """
         Poketype is opponent poketype arg. returns effective multiplier against opponent 
+
+        :pre: defend_poketype must be of PokeType class
         """
+        if not isinstance(defend_poketype, PokeType):
+            raise ValueError("Type of defending Pokemon not in PokeType class")
+        
         multiplier = self.type_effectiveness[defend_poketype.get_type_index()]
     
         return multiplier
@@ -68,6 +84,8 @@ class PokemonBase(ABC):
     def __init__(self, hp: int, poke_type: PokeType) -> None:
         """
         Initialises a PokemonBase instance
+
+        :pre: hp must be positive integer, poke_type must be of Enum class PokeType
         """
         self.name = self.get_name() # Ensures Pokemon Name is defined.
         self.set_poketype(poke_type)    # Check for valid poke_type
@@ -80,14 +98,24 @@ class PokemonBase(ABC):
         self.defence = self.get_defence()
         self.speed = self.get_speed
 
-    def set_poketype(self, poke_type: StatusEffects):
+    def set_poketype(self, poke_type: PokeType):
+        """
+        Validates poke_type argument passed into init
+
+        :param: poke_type from init class
+        """
         if poke_type not in PokeType:
             raise ValueError("Invalid Poke Type")
         self.type = poke_type
 
     def set_base_hp(self, hp: int):
-        if type(hp) is not int or hp > 0 is False:
-            raise ValueError("Invalid Max HP")
+        """
+        Validates hp argument passed into init
+
+        :param: hp from init class
+        """
+        if not isinstance(hp, int) or hp <= 0:
+            raise ValueError("HP must be positive integer")
         else:
             self.base_hp = hp
             
@@ -109,6 +137,7 @@ class PokemonBase(ABC):
         :complexity: O(1)
         """
         pass  
+
     
     def get_type(self) -> PokeType:
         """
@@ -225,10 +254,13 @@ class PokemonBase(ABC):
         """
         Lose hp equal to amount passed as arg. Subtract this amount from current HP (stored in hp)
         and set as current HP
+        :pre: hp to lose must be non negative integer
         :param: integer representing the value of hp for the pokemon to lose
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(lost_hp, int) or lost_hp < 0:
+            raise ValueError("Lost hp must be non-negative integer")
         self.hp -= lost_hp
 
     def heal(self) -> None:
@@ -246,6 +278,7 @@ class PokemonBase(ABC):
         Abstract method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be non negative integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
@@ -260,10 +293,13 @@ class PokemonBase(ABC):
         of the Pokemon, and applies defending Pokemon's defence calc to this amount.
         Then takes any relevant damage due to status effects and has chance of inflicting
         own status effect onto defending Pokemon
+        :pre: other must be a Pokemon of PokemonBase class
         :param: a PokemonBase that represents the other pokemon to attack
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(other, PokemonBase):
+            raise ValueError("Pokemon to attack must be an instance of PokemonBase class")
         # >>> Step 1: Status effects on attack damage / redirecting attacks
         if self.get_status_effect() == StatusEffects.SLEEP:
             return

@@ -1,11 +1,11 @@
-from inspect import Attribute
-from multiprocessing.sharedctypes import Value
-from pokemon_base import PokemonBase, PokeType
-
 """
 Implements the different pokemons (both base and evolved) and their characteristics
 """
 __author__ = "Scaffold by Jackson Goerner, Code by Chloe Nguyen | Joong Do Chiang"
+
+from inspect import Attribute
+from multiprocessing.sharedctypes import Value
+from pokemon_base import PokemonBase, PokeType
 
 # *******************************************
 
@@ -86,10 +86,13 @@ class Charizard(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         if damage > self.get_defence():
             self.lose_hp(2*damage)
         else:
@@ -172,10 +175,13 @@ class Charmander(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         if damage > self.get_defence():
             self.lose_hp(damage)
 
@@ -263,10 +269,13 @@ class Venusaur(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         if damage > (self.get_defence() + 5):
             self.lose_hp(damage)
         else:
@@ -349,10 +358,14 @@ class Bulbasaur(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
+        
         if damage > (self.get_defence() + 5):
             self.lose_hp(damage)
         else:
@@ -439,10 +452,14 @@ class Blastoise(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
+
         if damage > (self.get_defence() * 2):
             self.lose_hp(damage)
         else:
@@ -525,10 +542,13 @@ class Squirtle(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         if damage > (self.get_defence() * 2):
             self.lose_hp(damage)
         else:
@@ -615,10 +635,13 @@ class Gengar(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         self.lose_hp(damage)
 
 
@@ -699,10 +722,13 @@ class Haunter(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         self.lose_hp(damage)
 
 
@@ -782,10 +808,13 @@ class Gastly(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         self.lose_hp(damage)
 
 
@@ -868,10 +897,13 @@ class Eevee(PokemonBase):
         Method that calculates damage mitigation/damage to take depending on
         individual Pokemon's Defence Calculation attribute. Calls lose_hp to reflect
         damage amount onto Pokemon's health.
+        :pre: damage must be integer
         :param: integer representing the value of the attack from the other pokemon
         :return: None
         :complexity: O(1)
         """
+        if not isinstance(damage, int) or damage < 0:
+            raise ValueError("damage must be non-negative integer")
         if damage >= self.get_defence():
             self.lose_hp(damage)
         else:

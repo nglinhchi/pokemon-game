@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 from random_gen import RandomGen
 from battle import Battle
 from poke_team import Criterion, PokeTeam
@@ -118,3 +119,5 @@ def test_basic_battle():
 # s.push(6)
 # print(s.pop())
 
+s = Squirtle()
+assert s.defend('sdf') == ValueError

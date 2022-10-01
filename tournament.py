@@ -1,6 +1,5 @@
 from __future__ import annotations
 from bset import BSet
-from linked_stack import LinkedStack
 from pokemon_base import PokeType
 from queue_adt import CircularQueue
 from stack_adt import ArrayStack
@@ -33,10 +32,13 @@ class Tournament:
         """
         Sets instance variable battle_mode to be used by start_tournament to set battle mode for all teams generated within current tournament
         
+        :pre: battle_mode must be 0 or 1
         :param arg1: Integer between 0 and 1 that represents valid battle mode
         :return: None
         :complexity: best and worstt O(1)
         """
+        if not isinstance(battle_mode, int) or battle_mode not in [0,1]:
+            raise ValueError("Invalid battle mode") 
         self.battle_mode = battle_mode
 
     def is_valid_tournament(self, tournament_str: str) -> bool:
