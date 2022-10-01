@@ -52,7 +52,6 @@ class BattleTower:
             battle_mode = RandomGen.randint(0,1)
             opponent = PokeTeam.random_team(team_name, battle_mode)
             opponent.live = RandomGen.randint(2,10)
-            print(f"{opponent} >>> {opponent.live} <3")
             teams.insert(i, opponent) 
         self.opponents = teams
 

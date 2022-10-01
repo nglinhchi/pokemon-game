@@ -266,7 +266,6 @@ class PokemonBase(ABC):
         """
         # >>> Step 1: Status effects on attack damage / redirecting attacks
         if self.get_status_effect() == StatusEffects.SLEEP:
-            print("sleeped")
             return
         elif self.get_status_effect() == StatusEffects.CONFUSE:
             if(RandomGen.random_chance(0.5)): # 50% of attacking self
@@ -274,7 +273,6 @@ class PokemonBase(ABC):
         # >>> Step 2: Do the attack
         base_attack = self.get_attack_damage()
         multipler = self.get_type().type_multiplier(other.get_type())
-        print(base_attack, multipler)
         effective_attack = base_attack * multipler
         other.defend(int(effective_attack))
         # >>> Step 3: Losing hp to status effects

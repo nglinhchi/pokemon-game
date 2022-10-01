@@ -151,7 +151,6 @@ class Tournament:
         # next(self.tournament)
         try:
             self.result = next(self.tournament)   #result of battle (int)
-            # print(self.result)
             return next(self.tournament)   #res tuple   (team1,team2, result(int))
         except StopIteration as e:
             return None

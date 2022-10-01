@@ -42,7 +42,6 @@ class Battle:
         # with HiddenPrints():
         pokemon1 = None
         pokemon2 = None
-        print("heal counts", team1.get_heal_count(), team2.get_heal_count(), "aiType", team1.get_ai_type(), team2.get_ai_type())
         while True:
             
             if pokemon1 == None and team1.team.is_empty() and pokemon2 == None and team2.team.is_empty():
@@ -51,7 +50,7 @@ class Battle:
                 team2.return_pokemon(pokemon2)
                 return 2
             elif pokemon2 == None and team2.team.is_empty():
-                # assert pokemon1 != None, f"{pokemon1}, {team1}, {pokemon2}, {team2}"
+                # assert pokemon1 != None, f"{pokemon1}, {team1}, {pokemon2}, {team2}"``
                 team1.return_pokemon(pokemon1)
                 return 1
             else: # both teams still have pokemon -> battle
@@ -60,52 +59,30 @@ class Battle:
                 if pokemon2 == None: 
                     pokemon2 = team2.retrieve_pokemon()
                 
-                # print_game_screen(pokemon1.get_name(), pokemon2.get_name(), 
-                #                   pokemon1.get_hp(), pokemon1.get_max_hp(), pokemon2.get_hp(), pokemon2.get_max_hp(), 
-                #                   pokemon1.get_level(), pokemon2.get_level(), 
-                #                   pokemon1.get_status_effect(), pokemon2.get_status_effect(), 
-                #                   len(team1.team), len(team2.team))
 
-                # battle here -----------------------------------------------------------------
-                # team1.poke_on_field = pokemon1
-                # team2.poke_on_field = pokemon2
-                
                 action1 = team1.choose_battle_option(pokemon1, pokemon2)
                 action2 = team2.choose_battle_option(pokemon2, pokemon1)
-                print("pre attack status effects:", pokemon1.get_status_effect(), pokemon2.get_status_effect())
                 # PRE-ATTACKS -------------------------------------------------------------------
-                # TODO if current implementation work -> change the order to SWAPS/SPECIALS/HEALS instead of
-                # SWAP/SPECIAL/HEAL/SWAP/SPECIAL/HEAL
 
                 if action1 == Action.SWAP:
-                    print("swapping")
-                    print("self descending?", team1.descending_order)
-                    print("prior swap", team1.team)
                     team1.return_pokemon(pokemon1)
-                    print("after swap return", team1.team)
                     pokemon1 = team1.retrieve_pokemon()
 
                 if action2 == Action.SWAP:
-                    print("swapping2")
                     team2.return_pokemon(pokemon2)
                     pokemon2 = team2.retrieve_pokemon()
 
                 if action1 == Action.SPECIAL:
-                    print("poke prior to speci 1-2", pokemon1, pokemon2)
-                    print("special")
-                    print("descending?", team1.descending_order)
                     team1.return_pokemon(pokemon1) #Should be implemented inside special
                     team1.special()
                     pokemon1 = team1.retrieve_pokemon()
 
                 if action2 == Action.SPECIAL:
-                    print("special2")
                     team2.return_pokemon(pokemon2)
                     team2.special()
                     pokemon2 = team2.retrieve_pokemon()
 
                 if action1 == Action.HEAL:
-                    print("heal")
                     if team1.heal_count < 0:
                         return 2
                     else:
@@ -113,19 +90,15 @@ class Battle:
                         pokemon1.heal()
 
                 if action2 == Action.HEAL:
-                    print("heal2")
                     if team2.heal_count < 0:
                         return 1
                     else:
                         team2.heal_count -= 1
                         pokemon2.heal()
-                print("teamstate1", team1, team1.team)
-                print("teamstate2", team2)
                 
                 # TEAM 1 AND 2 ATTACKS -------------------------------------------------------------------
 
                 if action1 == Action.ATTACK and action2 == Action.ATTACK: # both attacks
-                    print("both attack")
                     # get speed
                     speed1 = pokemon1.get_speed()
                     speed2 = pokemon2.get_speed()
@@ -144,16 +117,12 @@ class Battle:
                         pokemon2.attack(pokemon1)
 
                 elif action1 == Action.ATTACK: # team 1 attacks
-                    print("attack")
                     pokemon1.attack(pokemon2)
                     
                 elif action2 == Action.ATTACK: # team 2 attacks
-                    print(pokemon2)
-                    print("attack2")
                     pokemon2.attack(pokemon1)
 
                 # battle ends here ------------------------------------------------------------
-                print("before post battle", pokemon1, pokemon2, "status effects", pokemon1.get_status_effect(), pokemon2.get_status_effect())
                 
                 # both pokemons are not fainted --> both lose 1 hp
                 if (not pokemon1.is_fainted()) and (not pokemon2.is_fainted()): #should not be elif next because the lose hp could make a pokemon faint, resulting in other one level up

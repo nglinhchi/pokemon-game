@@ -340,7 +340,6 @@ class PokeTeam:
             prompt = "A [ATTACK], P [SWAP], H [HEAL], S [SPECIAL]"
             actions = list("APHS")
             while True:
-                print(prompt)
                 action = input("   Your Move: ")
                 if action not in actions:
                     raise ValueError("Invalid action. Please try again.")
@@ -480,7 +479,6 @@ class PokeTeam:
         if len(self.team) >= 1:  #if not only pokemon on team 
             try:
                 unique_key = ASet(len(self.team))   
-                # print(f"new instance, {self}, {pokemon}")
                 for idx in range(len(self.team)):
                 # for idx, item in enumerate(self.team):
                     if not self.team[idx].key in unique_key:
