@@ -112,9 +112,10 @@ class PokeTeam:
         :return: PokeTeam instance of the team
         :complexity: O(n)
         """
-        # assign team_size
-        if not isinstance(team_size, int) or team_size <= 0:
-            raise ValueError("Team size must be positive integer")
+        # assign team_size:
+        if team_size is not None:
+            if not isinstance(team_size, int) or team_size <= 0:
+                raise ValueError("Team size must be positive integer")
         
         if team_size == None:
             if cls.MAX_TEAM_SIZE % 2 != 0:
@@ -497,8 +498,6 @@ class PokeTeam:
         """
         if not isinstance(pokemon, PokemonBase):
             raise ValueError("Pokemon must be PokemonBase class")
-        if pokemon.order is None:
-            raise ValueError("Pokemon must have initial order set (Team must be instantiated through team_mode_2")
         ### SORT BY FIRST KEY: CRITERION ###
         self.criterion_order(pokemon)
         ### CHECK IF TIE ###
