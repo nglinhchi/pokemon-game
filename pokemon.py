@@ -142,6 +142,7 @@ class Charmander(PokemonBase):
     NAME = "Charmander"
     BASE_LEVEL = 1
     POKE_NO = 1
+
     def __init__(self):
         """
         Initialises a Charmander instance
@@ -264,6 +265,7 @@ class Venusaur(PokemonBase):
     NAME = "Venusaur"
     BASE_LEVEL = 2
     POKE_NO = 4
+
     def __init__(self):
         """
         Initialises a Venusaur instance
@@ -386,6 +388,7 @@ class Bulbasaur(PokemonBase):
     NAME = "Bulbasaur"
     BASE_LEVEL = 1
     POKE_NO = 3
+
     def __init__(self):
         """
         Initialises a Bulbasaur instance
@@ -508,6 +511,7 @@ class Blastoise(PokemonBase):
     NAME = "Blastoise"
     BASE_LEVEL = 3
     POKE_NO = 6
+
     def __init__(self):
         """
         Initialises a Blastoise instance
@@ -631,6 +635,7 @@ class Squirtle(PokemonBase):
     NAME = "Squirtle"
     BASE_LEVEL = 1
     POKE_NO = 5
+
     def __init__(self):
         """
         Initialises a Squirtle instance
@@ -753,6 +758,7 @@ class Gengar(PokemonBase):
     NAME = "Gengar"
     BASE_LEVEL = 3
     POKE_NO = 9
+
     def __init__(self):
         """
         Initialises a Gengar instance
@@ -873,6 +879,7 @@ class Haunter(PokemonBase):
     NAME = "Haunter"
     BASE_LEVEL = 1
     POKE_NO = 8
+
     def __init__(self):
         """
         Initialises a Haunter instance
@@ -993,6 +1000,7 @@ class Gastly(PokemonBase):
     NAME = "Gastly"
     BASE_LEVEL = 1
     POKE_NO = 7
+
     def __init__(self):
         """
         Initialises a Gastly instance
@@ -1112,6 +1120,7 @@ class Eevee(PokemonBase):
     NAME = "Eevee"
     BASE_LEVEL = 1
     POKE_NO = 10
+    
     def __init__(self):
         """
         Initialises an Eevee instance

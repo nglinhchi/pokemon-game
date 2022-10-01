@@ -61,7 +61,6 @@ class Tournament:
             best case is O(1) when invalid user input
             worst case is O(n) where n is length of temp_stack
         """
-      
         if type(tournament_str) is not str:
             return False
         valid_operator = ["+"]
@@ -79,8 +78,8 @@ class Tournament:
                 temp_stack.pop()    # Get rid of one team and leave one remaining (represent winner)
         if len(temp_stack) != 1:    # If one winner is not remaining at end, return false
             return False
-        
-        return True  
+        else:
+            return True  
 
     def start_tournament(self, tournament_str: str) -> None:
         """
