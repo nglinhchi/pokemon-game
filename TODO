@@ -1,0 +1,172 @@
+SUBMISSION
+___________________________________________________________________________
+
+- group work agreement
+- submit python files, zip as A2_Group_33_assignment2.zip
+- upload to gradescope and moodle
+
+
+ALL TASKS
+___________________________________________________________________________
+
+GENERAL
+[ ] user facing —> precondition —> check for incorrect/invalid argument input —> violate then raise Exception / ValueError
+[ ] pre-cons need to be checked in abstract method
+[ ] docstring must contain both best and worts case complexity
+[ ] don’t modify ADT, don’t add methods to ADT 
+[ ] easy to change constant / magic number
+[ ] adhere to OOP principles
+[ ] documentation for each file, class, function
+
+
+DOCUMENTATION
+[ ] no file header documentation (format)
+[ ] methods missing type hints / type hints incorrect (for arguments and return value, if return nothing then do -> None)
+[ ] missing/incorrect/incomplete complexity documentation
+[ ] missing method’s summarisation
+[ ] missing methods’ precondition if any
+[ ] missing method’s commenting
+[ ] class constance not uppercase
+
+
+FILE HEADER DOCUMENTATION
+“””
+[file summarisation]
+“””
+__author__ : “author 1, author 2, author 3”
+
+
+
+CLASS DOCUMENTATION
+“””
+[class summarisation]
+“””
+CLASS_CONSTANT_UPPERCASE = True
+
+
+
+METHOD DOCUMENTATION 
+type hint:
+- declare for all arguments and return
+- if function does not return anything, use -> None
+“””
+[method summarisation]
+:pre: (must have for user facing)
+:post: (optional, usually for making sure object state doesn’t change)
+:complexity: 
+	best case is O() when [reason]
+	worst case is O() when [reason]
+“””
+# inline comments throughout for readability and comprehension
+
+
+TESTING
+- [ ] 3 documented unit tests in test directory
+- [ ] test cases missing requested descriptive comment
+- [ ] test cases not enough description, not following given format for test
+
+
+
+TASK 1 & 2 [5pt]
+___________________________________________________________________________
+
+quality
+- instance variables vs. class variables
+- pre-cons not enforced
+- abstract method
+- abstract class not set-up properly, preconditions not check in abstract class
+- premature exit due to failure
+
+correctness
+- no pre-condition enforcement when invalid input given to function
+- incorrect formula for attack damage / defence 
+- incorrect __str__
+- pokemon not instantiated correctly
+- pokemon doesn’t faint when HP goes to 0 or below
+
+
+
+TASK 3 [15pt]
+___________________________________________________________________________
+
+quality
+- repeated code
+- battle mode not set up correctly
+- ADT selection is poor
+- AI doesn’t function
+- random team gen causes failure
+- program crashes when running
+- user facing methods don’t handle invalid input
+- mild issues with pre-condition
+
+correctness
+    - teams not set up properly
+    - incorrect ADT choice
+    - pokemon not added to team correctly
+    - input validation not performed
+
+
+
+TASK 4 [10pt]
+___________________________________________________________________________
+
+quality
+- incorrect battle logic
+- not returning pokemon to right location
+- logic not fully translated correctly
+
+correctness
+- not decreasing hp when both alive
+- returning pokemon that is not alive
+- not following battle mode order
+- battle mode not using correct ADT
+- battle method return wrong value
+- pokemon battle from different position
+
+
+
+TASK 5 [10pt]
+___________________________________________________________________________
+
+quality
+- battle tower not implement correctly
+- iterator incorrectly set up
+- duplicates not removed on request
+- trainers with 0 lives not removed from tower
+- iterator not stop iterating using correct exception
+- insufficient / poor choice of ADT
+- user facing methods handle invalid input
+- issues with preconditions
+
+correctness
+- same mistakes in quality (IMPORTANT: double lose/gain points)
+- logical errors cause test case to fail
+- incorrect translation of attribute
+
+
+
+TASK 6 [10pt]
+___________________________________________________________________________
+
+quality
+- user facing —> precondition —> check for incorrect/invalid argument input —> violate then raise Exception / ValueError
+- tournament creation is invalid
+- instructions not followed
+- stages of tournament not set up correctly / done in incorrect order
+- incorrect/inefficient ADT used to set up tournament
+- user facing methods handle invalid input if provided
+- tournament validity not checked prior to start tournament
+
+correctness
+- incorrect logic when run tournament
+- validity is not checked
+- tournament swapping logic is incorrect
+- result from battle nor stored/retrieved correctly
+- battle logic is flawed
+
+
+PEER EVALUATION [15pt]
+___________________________________________________________________________
+
+contribution
+communication
