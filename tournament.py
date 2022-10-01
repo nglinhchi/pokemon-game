@@ -93,8 +93,11 @@ class Tournament:
         :return: None
         :raises ValueError: if tournament_str param is not a valid form of tournament.
         :complexity:
-            best case is O(1) when user input is invalid
-            worst case is TODO
+            best case is O(T*(B+R))
+            worst case is O(T*(B+R))
+            where B is the cost of running a Battle between 2 teams,
+            R is the cost of regenerating team,
+            T is number of battles in tournament
         """
         if not self.is_valid_tournament(tournament_str):
             raise ValueError("Invalid tournament string")
@@ -122,14 +125,11 @@ class Tournament:
         :post: After iterations are exhausted, tournament should be complete with winner returned.
         :return: tuple containing 3 values (team one, team two, result of match)
         :complexity:
-            - 1 iteration:
-                best case is O(B+R)
-                worst case is O(B+R)
-                where B is the cost of running a Battle between 2 teams and R is the cost of regenerating team,
-            - iterate through entire tournament:
                 best case is O(T*(B+R))
                 worst case is O(T*(B+R))
-                where T is number of battles in tournament
+                where B is the cost of running a Battle between 2 teams,
+                R is the cost of regenerating team,
+                T is number of battles in tournament
         """
         tournament_stack = ArrayStack(self.battle_count)    #For every battle there will only be one winner, so stack only needs to store these winners
         for _ in range(self.battle_count):

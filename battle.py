@@ -36,7 +36,7 @@ class Battle:
         retrieving/ returning pokemon and taking damage
         :param arg1: PokeTeam instance representing the current state of team 1
         :param arg2: PokeTeam instance representing the current state of team 2
-        :return: an integer (either 0,1 or 2) represnting a draw, team 1 winning and team 2 winning respectively
+        :return: an integer (either 0,1 or 2) representing a draw, team 1 winning and team 2 winning respectively
         :complexity:
             best case is O(n)
             worst case is O(nlogn)
